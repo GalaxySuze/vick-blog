@@ -1,5 +1,5 @@
 <p align="center">
-<img src="public/icon.png" width="10%" height="10%">
+<img src="public/icon.png" width="5%" height="5%">
 </p>
 
 # Charm Man
