@@ -9,13 +9,18 @@
 namespace App\Services\FormServices;
 
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\Label;
+use App\Support\ToolkitSupport;
 use Carbon\Carbon;
 
 class ArticleFormService
 {
+    use ToolkitSupport;
+
     private $articelInfo = null;
 
-    public function __construct($modelId)
+    public function __construct($modelId = null)
     {
         if ($modelId) {
             $this->articelInfo = Article::find($modelId);
@@ -68,12 +73,7 @@ class ArticleFormService
                         'label' => '标签',
                         'placeholder' => '请输入文章标签',
                         'value' => optional($this->articelInfo)->label,
-                        'options' => [
-                            1 => 'PHP',
-                            2 => 'Python',
-                            3 => 'JS',
-                            4 => 'Nginx',
-                        ],
+                        'options' => $this->setArticleLabels(),
                     ],
                 ]
             ],
@@ -108,11 +108,7 @@ class ArticleFormService
                         'label' => '分类',
                         'placeholder' => '',
                         'value' => optional($this->articelInfo)->category,
-                        'options' => [
-                            0 => '前端',
-                            1 => '后端',
-                            2 => '生活',
-                        ],
+                        'options' => $this->setArticleCategories(),
                     ],
                     [
                         'inputName' => 'is_original',
@@ -143,11 +139,23 @@ class ArticleFormService
                         'required' => false,
                         'label' => '内容',
                         'placeholder' => '请输入文章内容',
-                        'value' => optional($this->articelInfo)->content,
+                        'value' => optional($this->articelInfo)->original_content,
                     ]
                 ]
             ],
         ];
         return $form;
+    }
+
+    public function setArticleLabels($labelList = [])
+    {
+        $labelData = empty($labelList) ? Label::getLabels() : $labelList;
+        return $this->customKV($labelData, 'id', 'label');
+    }
+
+    public function setArticleCategories($categoryList = [])
+    {
+        $categoryData = empty($categoryList) ? Category::getCategories() : $categoryList;
+        return $this->customKV($categoryData, 'id', 'name');
     }
 }

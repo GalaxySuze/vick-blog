@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Backstage;
 
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\Label;
+use App\Services\FormServices\ArticleFormService;
+use App\Services\TableServices\ArticleTableService;
+use App\Support\MarkdownSupport;
 use App\Support\ResponseSupport;
 use App\Support\UploadSupport;
 use Illuminate\Http\Request;
@@ -38,12 +43,18 @@ class ArticleController extends Controller
 
     public function handleDataDisplay(&$data)
     {
-        $data->each(function ($item, $key) {
+        $upload = new UploadSupport();
+        $table = new ArticleFormService();
+        $data->each(function ($item, $key) use ($upload, $table) {
             $item->editRoute = route('backstage.article.editor', $item->id);
             $item->delRoute = route('backstage.article.del', $item->id);
             $item->status = Article::$statusConf[$item->status];
+            $item->label = implode(', ', $table->setArticleLabels(
+                Label::getLabels(['id' => $item->label])
+            ));
+            $item->category = optional(Category::getCategories(['id' => $item->category]))->name;
             $item->is_original = $item->is_original ? '是' : '否';
-            $item->page_image = !empty($item->page_image) ? app('url')->asset('storage/' . self::UPLOAD_USED_DIR . $item->page_image) : null;
+            $item->page_image = !empty($item->page_image) ? $upload->setFileUrl($item->page_image, true) : null;
         });
     }
 
@@ -56,17 +67,18 @@ class ArticleController extends Controller
     {
         return view('backstage.editor', [
             'formEvent' => 'articleForm',
+            'editRoute' => route('backstage.article.edit'),
             'formName' => $this->formServices . 'ArticleFormService',
             'modelId' => $id
         ]);
     }
 
-    public function edit(Request $request, UploadSupport $uploadSupport)
+    public function edit(Request $request, UploadSupport $uploadSupport, MarkdownSupport $markdownSupport)
     {
         try {
             $this->validate($request, $this->validateRules(), $this->validateMessages());
             $input = $request->all();
-            $this->handleInput($input);
+            $this->handleInput($input, $markdownSupport);
             $pageImg = $input['page_image'];
             $msg = '操作异常!';
             if (!empty($input['id'])) {
@@ -76,9 +88,6 @@ class ArticleController extends Controller
                     if (!empty($pageImg) && !$uploadSupport->existsFile(UploadSupport::UPLOAD_USED_DIR . $pageImg)) {
                         // 如果有上传img,但是在used目录没有,那就是新上传的
                         $uploadSupport->moveFile($pageImg);
-                        if ($article->page_image) {
-                            $uploadSupport->delFile(UploadSupport::UPLOAD_USED_DIR . $article->page_image);
-                        }
                     }
                 }
             } else {
@@ -128,8 +137,11 @@ class ArticleController extends Controller
         ];
     }
 
-    private function handleInput(&$input)
+    private function handleInput(&$input, ...$support)
     {
+        list($mdSupport) = $support;
+        $input['original_content'] = $input['content'];
+        $input['content'] = $mdSupport->parse($input['content']);
         $input['label'] = array_keys($input['label']);
         $input['user_id'] = 1; //TODO: 用户登录的id
         $input['is_original'] = empty($input['is_original']) ? 0 : 1;
@@ -162,7 +174,7 @@ class ArticleController extends Controller
             } else {
                 $uploadSupport->delAllFile($file);
             }
-            return $this->successfulResponse(['删除图片成功!']);
+            return $this->successfulResponse(['删除图片成功!']); //<删除图片成功!> 字符与前端ajax处理绑定
         } catch (\Throwable $e) {
             $getError = env('APP_DEBUG') ? $e->getMessage() : '删除图片发生错误!';
             return $this->failedResponse([$getError]);

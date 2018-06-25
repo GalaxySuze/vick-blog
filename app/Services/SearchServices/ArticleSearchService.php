@@ -9,8 +9,13 @@
 namespace App\Services\SearchServices;
 
 
+use App\Models\Category;
+use App\Support\ToolkitSupport;
+
 class ArticleSearchService
 {
+    use ToolkitSupport;
+
     public function __construct()
     {
 
@@ -55,16 +60,17 @@ class ArticleSearchService
                         'label' => '分类',
                         'placeholder' => '',
                         'value' => null,
-                        'options' => [
-                            0 => '请选择...',
-                            1 => '前端',
-                            2 => '后端',
-                            3 => '生活',
-                        ],
+                        'options' => [0 => '请选择...'] + $this->setArticleCategories(),
                     ],
                 ]
             ],
         ];
         return $searchBar;
+    }
+
+    public function setArticleCategories($categoryList = [])
+    {
+        $categoryData = empty($categoryList) ? Category::getCategories() : $categoryList;
+        return $this->customKV($categoryData, 'id', 'name');
     }
 }

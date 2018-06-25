@@ -142,7 +142,7 @@
             @component('home.layouts.main.search-bar') @endcomponent
 
             <!-- card list -->
-            @component('home.layouts.main.card-list') @endcomponent
+            @component('home.layouts.main.card-list', ['articles' => $articles]) @endcomponent
 
         @show
     </main>

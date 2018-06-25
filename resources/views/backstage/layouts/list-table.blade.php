@@ -1,7 +1,6 @@
 <table class="layui-table"
        lay-filter="listTable"
        lay-data="{
-       height:315,
        url:'{{ $dataRoute }}',
        page:true,
        size:'lg',
@@ -12,7 +11,7 @@
             @foreach($tableThead as $thead)
                 <th lay-data="{
                     field: '{{ $thead['field'] ?? '' }}',
-                    width: {{ $thead['width'] }},
+                    width: '{{ $thead['width']}}',
                     align: '{{ $thead['align'] }}',
                     sort: {{ $thead['sort'] ?? 0 }},
                     toolbar: '{{ $thead['toolbar'] ?? '' }}',
@@ -41,22 +40,14 @@
     </div>
 </script>
 
+<script type="text/html" id="labelIconTd">
+    <div class="labelIconAlbum">
+        <img layer-pid="@{{ d.id }}" src="@{{ d.label_icon }}" alt="@{{ d.label }}" width="15%" height="15%">
+    </div>
+</script>
+
 <script>
 @section('scriptMain')
-//监听工具条
-table.on('tool(listTable)', function(obj){
-    var row = obj.data; //获得当前行数据
-    var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-
-    if(layEvent === 'del'){
-        layer.confirm('是否确认删除!', function(index){
-            submitAjax('get', row.delRoute, row.id, obj);
-        });
-    } else if(layEvent === 'edit'){ //编辑
-        window.location.href = row.editRoute;
-    }
-
-});
 
 @endsection
 </script>

@@ -23,6 +23,7 @@ class Article extends Model
     protected $fillable = [
         'title',
         'content',
+        'original_content',
         'page_image',
         'desc',
         'link',
@@ -50,6 +51,9 @@ class Article extends Model
         }
         if (!empty($conditions['category']) && $conditions['category'] != 0) {
             $query->where('category', $conditions['category']);
+        }
+        if (!empty($conditions['status'])) {
+            $query->whereIn('status', $conditions['status']);
         }
         $data = $query->get(['articles.*', 'users.name as created_user']);
         return $data;

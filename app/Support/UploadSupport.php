@@ -37,7 +37,7 @@ class UploadSupport
         $fileSaved = $fileDir . '/' . $filename;  // 设置字段保存值
         Storage::disk($this->uploadDrive)->put(self::UPLOAD_TMP_DIR . $fileSaved, file_get_contents($path));
         return [
-            'imgUrl' => app('url')->asset('storage/' . self::UPLOAD_TMP_DIR . $fileSaved),
+            'imgUrl' => $this->setFileUrl($fileSaved),
             'imgName' => $fileSaved
         ];
     }
@@ -48,7 +48,18 @@ class UploadSupport
      */
     public function setUploadFileName($ext)
     {
-        return Carbon::now()->toDateTimeString() . '_' . uniqid() . '.' . $ext;
+        return Carbon::now() . '_' . uniqid() . '.' . $ext;
+    }
+
+    /**
+     * @param $file
+     * @param bool $isUsed
+     * @return mixed
+     */
+    public function setFileUrl($file, $isUsed = false)
+    {
+        $dir = $isUsed ? self::UPLOAD_USED_DIR : self::UPLOAD_TMP_DIR;
+        return app('url')->asset('storage/' . $dir . $file);
     }
 
     /**
@@ -57,8 +68,17 @@ class UploadSupport
      */
     public function delFile($file)
     {
-        throw_if(! $this->existsFile($file), \Throwable::class, '删除文件不存在!');
+        throw_if(!$this->existsFile($file), \Throwable::class, '删除文件不存在!');
         Storage::disk($this->uploadDrive)->delete($file);
+    }
+
+    /**
+     * @param $file
+     * @return bool
+     */
+    public function existsFile($file)
+    {
+        return Storage::disk($this->uploadDrive)->exists($file);
     }
 
     /**
@@ -75,20 +95,13 @@ class UploadSupport
 
     /**
      * @param $file
+     * @param string $from
+     * @param string $to
      * @return bool
      */
-    public function moveFile($file)
+    public function moveFile($file, $from = self::UPLOAD_TMP_DIR, $to = self::UPLOAD_USED_DIR)
     {
-        return Storage::disk($this->uploadDrive)->move(self::UPLOAD_TMP_DIR . $file, self::UPLOAD_USED_DIR . $file);
-    }
-
-    /**
-     * @param $file
-     * @return bool
-     */
-    public function existsFile($file)
-    {
-        return Storage::disk($this->uploadDrive)->exists($file);
+        return Storage::disk($this->uploadDrive)->move($from . $file, $to . $file);
     }
 
 }

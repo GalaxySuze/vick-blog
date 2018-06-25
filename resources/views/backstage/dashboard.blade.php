@@ -31,7 +31,7 @@
         <div class="layui-logo layui-bg-orange layui-anim layui-anim-scale">Vick ` Blog Admin</div>
         <ul class="layui-nav layui-layout-left" style="font-size: 20px;">
             <li class="layui-nav-item">
-                <a href="#">
+                <a href="{{ url('backstage/dashboard') }}">
                     <i class="layui-icon layui-icon-home"></i> 主页
                 </a>
             </li>
@@ -58,7 +58,8 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree">
-                @foreach(config('dashboardNav.navTree') as $navTitle => $navInfo)
+                @inject('BuildNav', 'App\Services\NavigationServices\BackstageNavService')
+                @foreach($BuildNav->setNav() as $navTitle => $navInfo)
                     <li class="layui-nav-item {{ $navTitle=='文章管理' ? 'layui-nav-itemed' : '' }}">
                         <a href="{{ isset($navInfo['subNav']) ? '#' : $navInfo['navItemRoute'] }}">
                             <i class="layui-icon {{ $navInfo['icon'] }}" style="color: {{ $navInfo['color'] }};"></i>&nbsp;
@@ -282,11 +283,6 @@
             return errMsgStr;
         }
 
-        form.on('submit(articleForm)', function(data){
-            submitAjax('post', '{{ url('backstage/article/edit') }}', data.field);
-            return false;
-        });
-
         function showUploadImgBox(boxId) {
             layer.photos({
                 photos: boxId,
@@ -294,6 +290,21 @@
             });
         }
         showUploadImgBox('.uploadImageAlbum');
+
+        //监听工具条
+        table.on('tool(listTable)', function(obj){
+            var row = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+            if(layEvent === 'del'){
+                layer.confirm('是否确认删除!', function(index){
+                    submitAjax('get', row.delRoute, row.id, obj);
+                });
+            } else if(layEvent === 'edit'){ //编辑
+                window.location.href = row.editRoute;
+            }
+
+        });
 
         @yield('scriptMain')
     });

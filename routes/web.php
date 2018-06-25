@@ -14,17 +14,15 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home.home');
-});
+    return redirect(route('home.home-page'));
+})->name('home.index');
 
 Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
+    Route::get('home-page', 'HomePageController@homePage')->name('home.home-page');
+
     Route::get('metro', function () {
         return view('metro');
     });
-
-    Route::get('/', function () {
-        return view('home.home');
-    })->name('index');
 
     Route::get('detail', function () {
         return view('home.detail');
@@ -55,8 +53,21 @@ Route::group(['prefix' => 'backstage', 'namespace' => '\Backstage'], function ()
     Route::get('article/list-data', 'ArticleController@listData')->name('backstage.article.list-data');
     Route::match(['get', 'post'], 'article/editor/{id?}', 'ArticleController@editor')->name('backstage.article.editor');
     Route::post('article/edit', 'ArticleController@edit')->name('backstage.article.edit');
-    Route::post('article/upload-image', 'ArticleController@uploadImage')->name('backstage.article.upload-image');
     Route::get('article/del/{id}', 'ArticleController@delArticle')->name('backstage.article.del');
+    Route::post('article/upload-image', 'ArticleController@uploadImage')->name('backstage.article.upload-image');
     Route::post('article/del-upload-image', 'ArticleController@delUploadImage')->name('backstage.article.del-upload-image');
 
+    // 标签管理
+    Route::get('label/list', 'LabelController@list')->name('backstage.label.list');
+    Route::get('label/list-data', 'LabelController@listData')->name('backstage.label.list-data');
+    Route::match(['get', 'post'], 'label/editor/{id?}', 'LabelController@editor')->name('backstage.label.editor');
+    Route::post('label/edit', 'LabelController@edit')->name('backstage.label.edit');
+    Route::get('label/del/{id}', 'LabelController@delLabel')->name('backstage.label.del');
+
+    // 分类管理
+    Route::get('category/list', 'CategoryController@list')->name('backstage.category.list');
+    Route::get('category/list-data', 'CategoryController@listData')->name('backstage.category.list-data');
+    Route::match(['get', 'post'], 'category/editor/{id?}', 'CategoryController@editor')->name('backstage.category.editor');
+    Route::post('category/edit', 'CategoryController@edit')->name('backstage.category.edit');
+    Route::get('category/del/{id}', 'CategoryController@delCategory')->name('backstage.category.del');
 });

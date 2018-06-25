@@ -61,18 +61,18 @@ class ArticleTableService
             [
                 'name' => '分类',
                 'field' => 'category',
-                'width' => '80',
+                'width' => '150',
                 'align' => 'center',
             ],
             [
                 'name' => '标签',
                 'field' => 'label',
-                'width' => '80',
+                'width' => '150',
                 'align' => 'center',
             ],
             [
                 'name' => '内容',
-                'field' => 'content',
+                'field' => 'original_content',
                 'width' => '160',
                 'align' => 'center',
             ],

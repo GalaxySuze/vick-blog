@@ -6,7 +6,7 @@
     <div class="layui-input-block" id="uploadBar" style="display: {{ !empty($value) ? 'none' : 'block' }};">
         <div style="margin-left: 12px;">
             <button type="button" class="layui-btn layui-btn-warm" id="uploadImage"
-                    lay-data="{url: '{{ $route }}', accept: 'images', size: '1024', number: 1, data: { _token: '{{ csrf_token() }}' }}">
+                    lay-data="{url: '{{ $route }}', accept: 'images', size: '5000', number: 1, data: { _token: '{{ csrf_token() }}' }}">
                 <i class="layui-icon">&#xe67c;</i>上传封面
             </button>
         </div>

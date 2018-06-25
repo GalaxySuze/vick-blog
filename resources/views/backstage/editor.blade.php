@@ -20,9 +20,9 @@
                 <div class="layui-col-md12">
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <input type="hidden" name="id" value="{{ $modelId }}">
+                            <input type="hidden" name="id" value="{{ $modelId }}" id="modelId">
                             <button class="layui-btn layui-bg-blue" lay-submit lay-filter="{{ $formEvent }}">提交</button>
-                            <a href="{{ url('backstage/article/list') }}" class="layui-btn layui-btn-primary">返回</a>
+                            <a href="{{ url()->previous() }}" class="layui-btn layui-btn-primary">返回</a>
                         </div>
                     </div>
                 </div>
@@ -33,6 +33,12 @@
 
 <script>
     @section('scriptMain')
+
+    form.on('submit({{ $formEvent }})', function(data){
+        submitAjax('post', '{{ $editRoute }}', data.field);
+        return false;
+    });
+
     //文件上传
     upload.render({
         elem: '#uploadImage',
@@ -58,12 +64,10 @@
         }
     });
 
-    showUploadImgBox('#uploadImgBox');
-
     $('#delUploadImg').click(function () {
         layer.confirm('是否确认删除!', function(index){
             var img = $('#page_image').val();
-            var imgRowId = $('#id').val();
+            var imgRowId = $('#modelId').val();
             submitAjax('post', '{{ url('backstage/article/del-upload-image') }}', {'img': img, 'id': imgRowId});
         });
     });
@@ -73,6 +77,10 @@
         $('#uploadBar').show(100);
         $('#uploadShow').hide(100);
     }
+
+    $('#uploadPageImg').click(function () {
+        showUploadImgBox('#uploadImgBox');
+    });
 
     $('#uploadPageImg').hover(function () {
         layer.tips('点击查看图片', '#uploadPageImg', {
