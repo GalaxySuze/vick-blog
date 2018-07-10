@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Models\Article;
+use App\Support\UploadSupport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +16,6 @@ class HomePageController extends Controller
 
     public function homePage()
     {
-        dd($this->articlesCardList());
         return view('home.home', [
             'articles' => $this->articlesCardList()
         ]);
@@ -27,16 +27,23 @@ class HomePageController extends Controller
             ->orderBy('release_time', 'desc')
             ->get();
         $articleList = [];
+        // 瀑布流计算
         foreach ($articles as $item) {
-            $count = $articles->count();
-            if ($count <= 4) {
-                $articleList[] = [
-                    $item
-                ];
-            } elseif ($count <= 2) {
-
+            if (array_key_exists($item->category, $articleList)) {
+                $articleList[$item->category][] = $item->toArray();
+            } else {
+                $articleList[$item->category][] = $item->toArray();
             }
         }
-        dd($articles);
+        return $articleList;
+    }
+
+    public function handleDisplay($list)
+    {
+        $uploadSupport = new UploadSupport();
+        foreach ($list as &$v) {
+            $v['page_image'] = $uploadSupport->setFileUrl($v['page_image'], true);
+        }
+        return $list;
     }
 }
