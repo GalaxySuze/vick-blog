@@ -58,4 +58,11 @@ class Article extends Model
         $data = $query->get(['articles.*', 'users.name as created_user']);
         return $data;
     }
+
+    public static function getArticleList()
+    {
+        return Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)
+            ->orderBy('release_time', 'desc')
+            ->get();
+    }
 }

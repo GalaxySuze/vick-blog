@@ -12,6 +12,7 @@ namespace App\Support;
 trait ToolkitSupport
 {
     /**
+     * 自定义数组key value
      * @param array $data
      * @param $key
      * @param null $value
@@ -24,5 +25,17 @@ trait ToolkitSupport
             $arr[$item->{$key}] = $item->{$value} ?? $item;
         }
         return $arr;
+    }
+
+    /**
+     * @param $data
+     * @param $key
+     */
+    public function customGroup($data, $key)
+    {
+        $arr = [];
+        foreach ($data as $item) {
+            $arr[$item[$key]][] = $item;
+        }
     }
 }

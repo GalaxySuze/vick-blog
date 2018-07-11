@@ -48,7 +48,7 @@ class UploadSupport
      */
     public function setUploadFileName($ext)
     {
-        return Carbon::now() . '_' . uniqid() . '.' . $ext;
+        return Carbon::today()->toDateString() . '_' . uniqid() . '.' . $ext;
     }
 
     /**
@@ -83,12 +83,13 @@ class UploadSupport
 
     /**
      * @param $file
+     * @throws \Throwable
      */
     public function delAllFile($file)
     {
         foreach (self::$uploadDirs as $dir) {
-            if (Storage::disk($this->uploadDrive)->exists($dir . $file)) {
-                Storage::disk($this->uploadDrive)->delete($dir . $file);
+            if ($this->existsFile($dir . $file)) {
+                $this->delFile($dir . $file);
             }
         }
     }

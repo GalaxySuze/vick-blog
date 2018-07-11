@@ -11,6 +11,22 @@ namespace App\Support;
 
 trait ResponseSupport
 {
+    private $successCode = 0;
+    private $failureCode = 1;
+
+    /**
+     * 成功的响应
+     * @param array $value
+     * @return array
+     */
+    public function successfulResponse(array $value)
+    {
+        return array_merge(
+            $this->setResponseValue($value),
+            ['code' => $this->successCode]
+        );
+    }
+
     /**
      * @param array $value
      * @return array
@@ -32,22 +48,15 @@ trait ResponseSupport
     }
 
     /**
-     * 成功的响应
-     * @param array $value
-     * @return array
-     */
-    public function successfulResponse(array $value)
-    {
-        return array_merge($this->setResponseValue($value), ['code' => 0]);
-    }
-
-    /**
      * 失败的响应
      * @param array $value
      * @return array
      */
     public function failedResponse(array $value)
     {
-        return array_merge($this->setResponseValue($value), ['code' => 1]);
+        return array_merge(
+            $this->setResponseValue($value),
+            ['code' => $this->failureCode]
+        );
     }
 }

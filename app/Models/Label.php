@@ -29,4 +29,5 @@ class Label extends Model
         $data = $query->get();
         return $data;
     }
+
 }
