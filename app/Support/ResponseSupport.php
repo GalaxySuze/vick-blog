@@ -28,6 +28,7 @@ trait ResponseSupport
     }
 
     /**
+     * 约定消息参数位
      * @param array $value
      * @return array
      */

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Label;
 use App\Services\FormServices\ArticleFormService;
 use App\Services\TableServices\ArticleTableService;
+use App\Support\Helper;
 use App\Support\MarkdownSupport;
 use App\Support\ResponseSupport;
 use App\Support\UploadSupport;
@@ -16,11 +17,13 @@ use Illuminate\Support\Carbon;
 
 class ArticleController extends Controller
 {
-    use ResponseSupport;
+    private $formEvent = 'articleForm';
+
+    private $routeConf;
 
     public function __construct()
     {
-
+        $this->routeConf = Helper::routeDefault('article');
     }
 
     public function list()
@@ -28,9 +31,9 @@ class ArticleController extends Controller
         return view('backstage.list', [
             'tableName' => $this->tableServices . 'ArticleTableService',
             'searchBarName' => $this->searchServices . 'ArticleSearchService',
-            'addRoute' => route('backstage.article.editor'),
-            'dataRoute' => route('backstage.article.list-data'),
-            'formEvent' => 'articleForm',
+            'addRoute' => route($this->routeConf['add']),
+            'dataRoute' => route($this->routeConf['data']),
+            'formEvent' => $this->formEvent,
         ]);
     }
 
@@ -46,8 +49,8 @@ class ArticleController extends Controller
         $upload = new UploadSupport();
         $table = new ArticleFormService();
         $data->each(function ($item, $key) use ($upload, $table) {
-            $item->editRoute = route('backstage.article.editor', $item->id);
-            $item->delRoute = route('backstage.article.del', $item->id);
+            $item->editRoute = route($this->routeConf['edit'], $item->id);
+            $item->delRoute = route($this->routeConf['del'], $item->id);
             $item->status = Article::$statusConf[$item->status];
             $item->label = implode(', ', $table->setArticleLabels(
                 Label::getLabels(['id' => $item->label])
@@ -60,16 +63,16 @@ class ArticleController extends Controller
 
     public function delArticle($id)
     {
-        return parent::del(Article::class, $id, route('backstage.article.list'));
+        return parent::del(Article::class, $id, route($this->routeConf['list']));
     }
 
     public function editor($id = null)
     {
         return view('backstage.editor', [
-            'formEvent' => 'articleForm',
-            'editRoute' => route('backstage.article.edit'),
+            'editRoute' => route($this->routeConf['edit']),
             'formName' => $this->formServices . 'ArticleFormService',
-            'modelId' => $id
+            'modelId' => $id,
+            'formEvent' => $this->formEvent
         ]);
     }
 
@@ -99,7 +102,7 @@ class ArticleController extends Controller
                 }
             }
             $request->session()->flash('msg', $msg);
-            return $this->successfulResponse([$msg, route('backstage.article.list')]);
+            return $this->successfulResponse([$msg, route($this->routeConf['list'])]);
         } catch (\Throwable $e) {
             $getError = env('APP_DEBUG') ? $e->getMessage() : '当前操作发生错误!';
             return $this->failedResponse([$getError]);

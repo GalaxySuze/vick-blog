@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Backstage;
 
 use App\Models\Label;
+use App\Support\Helper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class LabelController extends Controller
 {
+    private $formEvent = 'labelForm';
+
+    private $routeConf;
+
     public function __construct()
     {
-
+        $this->routeConf = Helper::routeDefault('label');
     }
 
     public function list()
@@ -18,9 +23,9 @@ class LabelController extends Controller
         return view('backstage.list', [
             'tableName' => $this->tableServices . 'LabelTableService',
             'searchBarName' => $this->searchServices . 'LabelSearchService',
-            'addRoute' => route('backstage.label.editor'),
-            'dataRoute' => route('backstage.label.list-data'),
-            'formEvent' => 'labelForm',
+            'addRoute' => route($this->routeConf['add']),
+            'dataRoute' => route($this->routeConf['data']),
+            'formEvent' => $this->formEvent,
         ]);
     }
 
@@ -34,8 +39,8 @@ class LabelController extends Controller
     public function handleDataDisplay(&$data)
     {
         $data->each(function ($item, $key) {
-            $item->editRoute = route('backstage.label.editor', $item->id);
-            $item->delRoute = route('backstage.label.del', $item->id);
+            $item->editRoute = route($this->routeConf['edit'], $item->id);
+            $item->delRoute = route($this->routeConf['del'], $item->id);
             $item->label_icon = app('url')->asset('img/icon/' . $item->label_icon);
         });
     }
@@ -43,10 +48,10 @@ class LabelController extends Controller
     public function editor($id = null)
     {
         return view('backstage.editor', [
-            'formEvent' => 'labelForm',
-            'editRoute' => route('backstage.label.edit'),
+            'editRoute' => route($this->routeConf['edit']),
             'formName' => $this->formServices . 'LabelFormService',
-            'modelId' => $id
+            'modelId' => $id,
+            'formEvent' => $this->formEvent,
         ]);
     }
 
@@ -67,7 +72,7 @@ class LabelController extends Controller
                 }
             }
             $request->session()->flash('msg', $msg);
-            return $this->successfulResponse([$msg, route('backstage.label.list')]);
+            return $this->successfulResponse([$msg, route($this->routeConf['list'])]);
         } catch (\Throwable $e) {
             $getError = env('APP_DEBUG') ? $e->getMessage() : '当前操作发生错误!';
             return $this->failedResponse([$getError]);
@@ -101,6 +106,6 @@ class LabelController extends Controller
 
     public function delLabel($id)
     {
-        return parent::del(Label::class, $id, route('backstage.label.list'));
+        return parent::del(Label::class, $id, route($this->routeConf['list']));
     }
 }

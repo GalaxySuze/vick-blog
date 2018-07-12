@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Backstage;
 
 use App\Models\Category;
+use App\Support\Helper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
+    private $formEvent = 'categoryForm';
+
+    private $routeConf;
+
     public function __construct()
     {
-
+        $this->routeConf = Helper::routeDefault('category');
     }
 
     public function list()
@@ -18,9 +23,9 @@ class CategoryController extends Controller
         return view('backstage.list', [
             'tableName' => $this->tableServices . 'CategoryTableService',
             'searchBarName' => $this->searchServices . 'CategorySearchService',
-            'addRoute' => route('backstage.category.editor'),
-            'dataRoute' => route('backstage.category.list-data'),
-            'formEvent' => 'categoryForm',
+            'addRoute' => route($this->routeConf['add']),
+            'dataRoute' => route($this->routeConf['data']),
+            'formEvent' => $this->formEvent,
         ]);
     }
 
@@ -34,18 +39,18 @@ class CategoryController extends Controller
     public function handleDataDisplay(&$data)
     {
         $data->each(function ($item, $key) {
-            $item->editRoute = route('backstage.category.editor', $item->id);
-            $item->delRoute = route('backstage.category.del', $item->id);
+            $item->editRoute = route($this->routeConf['edit'], $item->id);
+            $item->delRoute = route($this->routeConf['del'], $item->id);
         });
     }
 
     public function editor($id = null)
     {
         return view('backstage.editor', [
-            'formEvent' => 'categoryForm',
-            'editRoute' => route('backstage.category.edit'),
+            'editRoute' => route($this->routeConf['edit']),
             'formName' => $this->formServices . 'CategoryFormService',
-            'modelId' => $id
+            'modelId' => $id,
+            'formEvent' => $this->formEvent,
         ]);
     }
 
@@ -66,7 +71,7 @@ class CategoryController extends Controller
                 }
             }
             $request->session()->flash('msg', $msg);
-            return $this->successfulResponse([$msg, route('backstage.label.list')]);
+            return $this->successfulResponse([$msg, route($this->routeConf['list'])]);
         } catch (\Throwable $e) {
             $getError = env('APP_DEBUG') ? $e->getMessage() : '当前操作发生错误!';
             return $this->failedResponse([$getError]);
@@ -97,6 +102,6 @@ class CategoryController extends Controller
 
     public function delLabel($id)
     {
-        return parent::del(Category::class, $id, route('backstage.category.list'));
+        return parent::del(Category::class, $id, route($this->routeConf['list']));
     }
 }
