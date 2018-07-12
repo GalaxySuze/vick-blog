@@ -7,27 +7,33 @@ use App\Models\Category;
 use App\Models\Label;
 use App\Support\Helper;
 use App\Support\MarkdownSupport;
+use App\Support\SolarTermSupport;
 use App\Support\UploadSupport;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class HomePageController extends Controller
 {
     public $uploadSupport;
-    public $mdSupport;
+    public $MDSupport;
+    public $STSupport;
 
-    public function __construct(UploadSupport $uploadSupport, MarkdownSupport $markdownSupport)
+    public function __construct(
+        UploadSupport $uploadSupport,
+        MarkdownSupport $markdownSupport,
+        SolarTermSupport $solarTermSupport
+    )
     {
         $this->uploadSupport = $uploadSupport;
-        $this->mdSupport = $markdownSupport;
+        $this->MDSupport = $markdownSupport;
+        $this->STSupport = $solarTermSupport;
     }
 
     public function homePage()
     {
-        $article = Article::getArticleList()->groupBy('category')->toArray();
-        $articles = $this->handleDisplay($article);
         return view('home.home', [
-            'articles' => $articles
+            'articles' => $this->handleDisplay(
+                Article::getArticleList()->groupBy('category')->toArray()
+            )
         ]);
     }
 
@@ -36,10 +42,14 @@ class HomePageController extends Controller
         $categories = Helper::modelAll(Category::class);
         $tags = Helper::modelAll(Label::class);
         $uploadSupport = $this->uploadSupport;
+        $STSupport = $this->STSupport;
         foreach ($list as &$items) {
-            $items = collect($items)->map(function ($v, $k) use ($uploadSupport, $categories, $tags) {
+            $items = collect($items)->map(function ($v, $k) use (
+                $STSupport, $uploadSupport, $categories, $tags
+            ) {
                 $v['page_image'] = $uploadSupport->setFileUrl($v['page_image'], true);
                 $v['category'] = $categories[$v['category']];
+                $v['release_time'] = $STSupport->getSolarTerm($v['release_time']);
                 foreach ($v['label'] as $key => $label) {
                     $v['label'][$key] = $tags[$label];
                 }
