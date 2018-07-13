@@ -67,7 +67,7 @@
     <div class="navbar-fixed" id="navbar-div">
         <nav>
             <div class="nav-wrapper" style="background: #98A9F9">
-                <a href="{{ url('/home') }}" class="brand-logo center waves-effect">Vick ` Blog</a>
+                <a href="{{ url('/') }}" class="brand-logo center waves-effect">Vick ` Blog</a>
                 <a href="#" class="button-collapse" data-activates="mobile-menu" id="mobile-menu-btn">
                     <i class="material-icons">menu</i>
                 </a>
@@ -130,8 +130,8 @@
                 <li>
                     <img src="{{ asset('img/soul.jpg') }}">
                     <div class="caption left-align">
-                        <h3> 『 浮生若梦 』 </h3>
-                        <h5 class="light grey-text text-lighten-3">「 为欢几何 」</h5>
+                        <h3> 『 Kill Time 』 </h3>
+                        <h5 class="light grey-text text-lighten-3">「 Or Kiss Time 」</h5>
                     </div>
                 </li>
                 <li>
@@ -166,25 +166,26 @@
         <div class="row">
             <div class="col l6 s12">
                 <h5 class="white-text">
-                    <img src="{{ asset('logo.png') }}" alt="logo" width="80%" height="80%">
+                    <img src="{{ asset('logo.png') }}" alt="logo" width="50%" height="50%">
                 </h5>
-                <p class="grey-text text-lighten-4">你可以用行和列来组织你的页脚内容。</p>
+                <p class="grey-text text-lighten-4">网站图片均来自网络，如有侵权请联系ABOUT ME页面邮箱，立删。</p>
             </div>
             <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">链接</h5>
+                <h5 class="white-text">友情链接</h5>
                 <ul>
-                    <li><a class="grey-text text-lighten-3" href="#!">链接 1</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">链接 2</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">链接 3</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">链接 4</a></li>
+                    <li><a class="grey-text text-lighten-3" href="https://laravel-china.org">😉Laravel China</a></li>
+                    <li><a class="grey-text text-lighten-3" href="https://vuejscaff.com">😊Vuejs Caff</a></li>
+                    <li><a class="grey-text text-lighten-3" href="https://pythoncaff.com">☺️Python Caff</a></li>
+                    <li><a class="grey-text text-lighten-3" href="http://www.materializecss.cn">😘Materialize Css</a></li>
+                    <li><a class="grey-text text-lighten-3" href="http://www.layui.com/">😎Layui</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="footer-copyright">
         <div class="container">
-            © 2014 Copyright 文本
-            <a class="grey-text text-lighten-4 right" href="#!">更多链接</a>
+            © 2017 - {{ date('Y-m-d', time()) }} Copyright Vick`Blog. All rights reserved.
+            <a class="grey-text text-lighten-4 right" href="#!">😏彩蛋</a>
         </div>
     </div>
 </footer>

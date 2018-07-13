@@ -15,9 +15,9 @@ class MarkdownSupport
 {
     public $md;
 
-    public function __construct(Parsedown $parsedown)
+    public function __construct(Parsedown $parseDown)
     {
-        $this->md = $parsedown;
+        $this->md = $parseDown;
     }
 
     public function parse($content)

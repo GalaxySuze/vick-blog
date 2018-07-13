@@ -44,16 +44,19 @@ class Article extends Model
         $query = Article::leftJoin('users', 'users.id', '=', 'articles.user_id')
             ->orderBy('articles.updated_at', 'desc');
         if (!empty($conditions['title'])) {
-            $query->where('title', 'like', '%' . $conditions['title'] . '%');
+            $query->where('articles.title', 'like', '%' . $conditions['title'] . '%');
         }
         if (!empty($conditions['keyword'])) {
-            $query->where('keyword', 'like', '%' . $conditions['keyword'] . '%');
+            $query->where('articles.keyword', 'like', '%' . $conditions['keyword'] . '%');
         }
         if (!empty($conditions['category']) && $conditions['category'] != 0) {
-            $query->where('category', $conditions['category']);
+            $query->where('articles.category', $conditions['category']);
         }
         if (!empty($conditions['status'])) {
-            $query->whereIn('status', $conditions['status']);
+            $query->whereIn('articles.status', $conditions['status']);
+        }
+        if (!empty($conditions['id'])) {
+            $query->where('articles.id', $conditions['id']);
         }
         $data = $query->get(['articles.*', 'users.name as created_user']);
         return $data;

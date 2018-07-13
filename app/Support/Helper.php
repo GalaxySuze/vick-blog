@@ -31,8 +31,10 @@ class Helper
     public static function routeDefault($group)
     {
         return [
-            'add' => 'backstage.' . $group . '.editor',
-            'edit' => 'backstage.' . $group . '.editor',
+            'addPage' => 'backstage.' . $group . '.editor',
+            'editPage' => 'backstage.' . $group . '.editor',
+            'add' => 'backstage.' . $group . '.edit',
+            'edit' => 'backstage.' . $group . '.edit',
             'del' => 'backstage.' . $group . '.del',
             'data' => 'backstage.' . $group . '.list-data',
             'list' => 'backstage.' . $group . '.list',

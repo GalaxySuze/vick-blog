@@ -34,7 +34,7 @@ class UploadSupport
         $path = $file->getRealPath();    // 获得临时路径
         $filename = $this->setUploadFileName($ext); // 设置图片名
         $fileDir = Carbon::today()->toDateString(); // 设置保存目录
-        $fileSaved = $fileDir . '/' . $filename;  // 设置字段保存值
+        $fileSaved = $fileDir . '/' . $filename;  // 设置保存值
         Storage::disk($this->uploadDrive)->put(self::UPLOAD_TMP_DIR . $fileSaved, file_get_contents($path));
         return [
             'imgUrl' => $this->setFileUrl($fileSaved),
@@ -48,7 +48,7 @@ class UploadSupport
      */
     public function setUploadFileName($ext)
     {
-        return Carbon::today()->toDateString() . '_' . uniqid() . '.' . $ext;
+        return Carbon::now()->timestamp . '_' . uniqid() . '.' . $ext;
     }
 
     /**

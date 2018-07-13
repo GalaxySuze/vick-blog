@@ -20,12 +20,13 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
     Route::get('home-page', 'HomePageController@homePage')->name('home.home-page');
+    Route::get('detail/{id}', 'DetailController@detail')->name('home.detail');
 
     Route::get('metro', function () {
         return view('metro');
     });
 
-    Route::get('detail', function () {
+    Route::get('detailDemo', function () {
         return view('home.detail');
     });
 

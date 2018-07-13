@@ -31,7 +31,7 @@ class ArticleController extends Controller
         return view('backstage.list', [
             'tableName' => $this->tableServices . 'ArticleTableService',
             'searchBarName' => $this->searchServices . 'ArticleSearchService',
-            'addRoute' => route($this->routeConf['add']),
+            'addRoute' => route($this->routeConf['addPage']),
             'dataRoute' => route($this->routeConf['data']),
             'formEvent' => $this->formEvent,
         ]);
@@ -49,7 +49,7 @@ class ArticleController extends Controller
         $upload = new UploadSupport();
         $table = new ArticleFormService();
         $data->each(function ($item, $key) use ($upload, $table) {
-            $item->editRoute = route($this->routeConf['edit'], $item->id);
+            $item->editRoute = route($this->routeConf['editPage'], $item->id);
             $item->delRoute = route($this->routeConf['del'], $item->id);
             $item->status = Article::$statusConf[$item->status];
             $item->label = implode(', ', $table->setArticleLabels(

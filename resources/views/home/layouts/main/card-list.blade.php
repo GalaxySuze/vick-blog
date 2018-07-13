@@ -7,10 +7,10 @@
                         <div class="card z-depth-2 hoverable">
                             <div class="card-image">
                                 <img src="{{ $item['page_image'] }}">
-                                <span class="card-title">{{ $item['release_time'] }}</span>
+                                <span class="card-title"><b>{{ $item['release_time'] }}</b></span>
                             </div>
                             <div class="card-content waves-effect">
-                                <a href="{{ url('home/detail') }}">
+                                <a href="{{ url('home/detail', $item['id']) }}">
                                     {{ $item['desc'] }}
                                 </a>
                             </div>
