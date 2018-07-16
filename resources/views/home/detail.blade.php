@@ -2,17 +2,35 @@
 
 @section('content')
     <!-- 目录 -->
-    <div class="hide-on-med-and-down" id="catalog">
-        <ul class="section table-of-contents">
-            <li><a href="#a">介绍</a></li>
-            <li><a href="#b">结构</a></li>
-            <li><a href="#c">初始化</a></li>
-        </ul>
-    </div>
+    @section('outlineBar')
+        <div class="hide-on-med-and-down">
+            <ul id="outlineLi" class="dropdown-content">
+                @if(!empty($detail['outline']))
+                    @foreach($detail['outline'] as $outline)
+                        <li><a href="#{{ $outline['titleId'] }}">
+                                <b>{{ $outline['outlineTitle'] }}</b>
+                            </a></li>
+                    @endforeach
+                @endif
+            </ul>
+            <nav>
+                <div class="nav-wrapper theme-color-gradient">
+                    <ul class="right">
+                        <li>
+                            <a class="dropdown-button" href="#" data-activates="outlineLi" id="outlineBtn">
+                                目录<i class="material-icons right">arrow_drop_down</i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    @endsection
+
     <div class="section">
         <div class="row">
-            <div class="container center-align">
-                <div class="col s12 m12">
+            <div class="container">
+                <div class="col s12 m12 center-align">
                     <div class="section">
                         <!-- 分类 -->
                         @foreach($detail['label'] as $tag )
@@ -35,7 +53,7 @@
                 </div>
 
                 <!-- 文章信息 -->
-                <div class="col s12 m12">
+                <div class="col s12 m12 center-align">
                     <div class="valign-wrapper" style="color: #757575; font-size: 0.5rem; display: -webkit-inline-flex; display: inline-flex;">
                         <i class="material-icons red-text">assignment_ind</i>&nbsp; {{ $detail['created_user'] }} &nbsp;&nbsp;
                         <i class="material-icons yellow-text">visibility</i>&nbsp; {{ $detail['views'] }} &nbsp;&nbsp;
@@ -73,7 +91,7 @@
                 </div>
 
                 <!-- 评论功能 -->
-                <ul id="slide-comments" class="side-nav">
+                <ul id="slide-comments" class="side-nav center-align">
                     <li>
                         <div class="userView">
                             <span class="white-text email" style="padding-bottom: 8%; font-size: 24px;">评论区</span>

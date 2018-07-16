@@ -16,7 +16,13 @@ class Category extends Model
         'desc',
     ];
 
-    public static function getCategories($conditions = [])
+    /**
+     * @param array $conditions
+     * @param int $offset
+     * @param int $limit
+     * @return mixed
+     */
+    public static function getCategories($conditions = [], $offset = 1, $limit = 10)
     {
         $query = Category::orderBy('categories.updated_at', 'desc');
         if (!empty($conditions['name'])) {
@@ -25,7 +31,10 @@ class Category extends Model
         if (!empty($conditions['id'])) {
             return $query->find($conditions['id']);
         }
-        $data = $query->get();
+        $data = $query
+            ->offset(($offset - 1) * $limit)
+            ->limit($limit)
+            ->get();
         return $data;
     }
 }

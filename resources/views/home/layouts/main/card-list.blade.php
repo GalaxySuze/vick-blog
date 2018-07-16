@@ -9,11 +9,11 @@
                                 <img src="{{ $item['page_image'] }}">
                                 <span class="card-title"><b>{{ $item['release_time'] }}</b></span>
                             </div>
-                            <div class="card-content waves-effect">
-                                <a href="{{ url('home/detail', $item['id']) }}">
+                            <a href="{{ url('home/detail', $item['id']) }}">
+                                <div class="card-content waves-effect black-text">
                                     {{ $item['desc'] }}
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                             <div class="card-action flow-text">
                                 @foreach($item['label'] as $tags)
                                     <img src="{{ asset('img/icon/' . $tags['label_icon']) }}" class="responsive-img tooltipped" alt="{{ $tags['label'] }}" width="10%" height="10%" data-position="top" data-delay="50" data-tooltip="I am {{ $tags['label'] }}">

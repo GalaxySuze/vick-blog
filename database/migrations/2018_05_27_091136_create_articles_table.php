@@ -30,6 +30,7 @@ class CreateArticlesTable extends Migration
             $table->date('release_time')->nullable()->comment('发布时间');
             $table->unsignedInteger('share')->default(0)->comment('分享数');
             $table->string('keyword')->default('')->comment('文章关键词');
+            $table->json('outline')->nullable()->comment('文章大纲');
             $table->timestamps();
             $table->softDeletes();
         });

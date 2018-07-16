@@ -34,12 +34,20 @@ class Article extends Model
         'label',
         'release_time',
         'keyword',
+        'outline',
     ];
     protected $casts = [
         'label' => 'array',
+        'outline' => 'array',
     ];
 
-    public static function getArticles($conditions = [])
+    /**
+     * @param array $conditions
+     * @param int $offset
+     * @param int $limit
+     * @return mixed
+     */
+    public static function getArticles($conditions = [], $offset = 1, $limit = 10)
     {
         $query = Article::leftJoin('users', 'users.id', '=', 'articles.user_id')
             ->orderBy('articles.updated_at', 'desc');
@@ -58,7 +66,10 @@ class Article extends Model
         if (!empty($conditions['id'])) {
             $query->where('articles.id', $conditions['id']);
         }
-        $data = $query->get(['articles.*', 'users.name as created_user']);
+        $data = $query
+            ->offset(($offset - 1) * $limit)
+            ->limit($limit)
+            ->get(['articles.*', 'users.name as created_user']);
         return $data;
     }
 

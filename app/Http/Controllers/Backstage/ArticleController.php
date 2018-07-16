@@ -39,9 +39,11 @@ class ArticleController extends Controller
 
     public function listData(Request $request)
     {
-        $articlesList = Article::getArticles($request->conditions);
+        $articlesList = Article::getArticles(
+            $request->conditions, $request->page, $request->limit
+        );
         $this->handleDataDisplay($articlesList);
-        return $this->successfulResponse(['successful', $articlesList, $articlesList->count()]);
+        return $this->successfulResponse(['successful', $articlesList, Article::count()]);
     }
 
     public function handleDataDisplay(&$data)
@@ -144,10 +146,35 @@ class ArticleController extends Controller
     {
         list($mdSupport) = $support;
         $input['original_content'] = $input['content'];
-        $input['content'] = $mdSupport->parse($input['content']);
+        list($outline, $content) = $this->generatedOutline(
+            $mdSupport->parse($input['content'])
+        );
+        $input['outline'] = $outline;
+        $input['content'] = $content;
         $input['label'] = array_keys($input['label']);
         $input['user_id'] = 1; //TODO: 用户登录的id
         $input['is_original'] = empty($input['is_original']) ? 0 : 1;
+    }
+
+    public function generatedOutline(string $content, string $htmlTags = 'h2')
+    {
+        // 获取所有的标题数
+        $titleNumber = substr_count($content, "<$htmlTags>");
+        $titleReplace = $titleIdList = [];
+        // 循环标题数
+        for ($i = 0; $i < $titleNumber; $i++) {
+            $titleId = 'outline_' . str_random(5);  // 生成唯一标题id
+            $titleReplace[$i] = "<$htmlTags id='$titleId'>"; // 放入替换id数组
+            $titleIdList[$i]['titleId'] = $titleId; // 放入数据库保存值
+        }
+        // 增加文章标题id
+        $replaceContent = $replaceTmp = str_replace_array("<$htmlTags>", $titleReplace, $content);
+        foreach ($titleIdList as $k => $titleItem) {
+            $cutTitle = str_after($replaceTmp, $titleReplace[$k]);  // 截取到唯一id开始字符
+            $hTitle = mb_substr($cutTitle, 0, mb_strpos($cutTitle, "</$htmlTags>"));   //截取标题值
+            $titleIdList[$k]['outlineTitle'] = $hTitle;
+        }
+        return [$titleIdList, $replaceContent];
     }
 
     public function uploadImage(Request $request, UploadSupport $uploadSupport)

@@ -21,6 +21,10 @@
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('materialize/js/materialize.min.js') }}"></script>
 
+    <!-- highlight -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
     <style>
         html {
             height: 100%;
@@ -54,10 +58,22 @@
             padding: 0
         }
 
-        #catalog {
-            position: fixed;
-            right: 7%;
-            top: 25%;
+        .theme-color-gradient {
+            -webkit-animation: color-gradient 5s;
+            animation: color-gradient 5s;
+            background-color: #98A9F9
+        }
+
+        @-webkit-keyframes color-gradient {
+            0%   {background-color: #FFD3A5;}
+            50% {background-color: #FD6585;}
+            100% {background-color: #98A9F9;}
+        }
+
+        @keyframes color-gradient{
+            10%   {background-color: #FF8A80;}
+            50% {background-color: #FD6585;}
+            100% {background-color: #98A9F9;}
         }
     </style>
 </head>
@@ -66,7 +82,7 @@
     <!-- navigation bar -->
     <div class="navbar-fixed" id="navbar-div">
         <nav>
-            <div class="nav-wrapper" style="background: #98A9F9">
+            <div class="nav-wrapper" style="background: #98A9F9;">
                 <a href="{{ url('/') }}" class="brand-logo center waves-effect">Vick ` Blog</a>
                 <a href="#" class="button-collapse" data-activates="mobile-menu" id="mobile-menu-btn">
                     <i class="material-icons">menu</i>
@@ -117,6 +133,7 @@
                     <li><a href="{{ url('home/timeline') }}" class="waves-effect">归档</a></li>
                     <li><a href="{{ url('home/about') }}" class="waves-effect">关于</a></li>
                 </ul>
+                @yield('outlineBar')
             </div>
         </nav>
     </div>
@@ -191,6 +208,7 @@
 </footer>
 </body>
 <script>
+    hljs.initHighlightingOnLoad();
     $(document).ready(function () {
         // Materialize.fadeInImage('#cover');
         // $('.parallax').parallax();
@@ -204,12 +222,20 @@
             full_width: true
         });
 
+        $('#outlineBtn').dropdown({
+                constrain_width: false, // 自动宽度
+                belowOrigin: true // 下拉列表在触发的下方显示
+            }
+        );
+
+        // 侧边评论栏
         $(".slide-comments-btn").sideNav({
             menuWidth: '32%', // Default is 240
             edge: 'right', // Choose the horizontal origin
             draggable: true // Choose whether you can drag to open on touch screens
         });
 
+        // 小屏幕导航条
         $("#mobile-menu-btn").sideNav();
         $("#mobile-menu-btn").click(function () {
             $('#sidenav-overlay').remove();

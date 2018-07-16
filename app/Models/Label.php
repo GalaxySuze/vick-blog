@@ -17,7 +17,13 @@ class Label extends Model
         'label_icon'
     ];
 
-    public static function getLabels($conditions = [])
+    /**
+     * @param array $conditions
+     * @param int $offset
+     * @param int $limit
+     * @return mixed
+     */
+    public static function getLabels($conditions = [], $offset = 1, $limit = 10)
     {
         $query = Label::orderBy('labels.updated_at', 'desc');
         if (!empty($conditions['id'])) {
@@ -26,7 +32,9 @@ class Label extends Model
         if (!empty($conditions['label'])) {
             $query->where('label', 'like', '%' . $conditions['label'] . '%');
         }
-        $data = $query->get();
+        $data = $query
+            ->offset(($offset - 1) * $limit)
+            ->limit($limit)->get();
         return $data;
     }
 

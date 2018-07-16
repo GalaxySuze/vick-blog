@@ -23,7 +23,7 @@ class LabelController extends Controller
         return view('backstage.list', [
             'tableName' => $this->tableServices . 'LabelTableService',
             'searchBarName' => $this->searchServices . 'LabelSearchService',
-            'addRoute' => route($this->routeConf['add']),
+            'addRoute' => route($this->routeConf['addPage']),
             'dataRoute' => route($this->routeConf['data']),
             'formEvent' => $this->formEvent,
         ]);
@@ -31,15 +31,17 @@ class LabelController extends Controller
 
     public function listData(Request $request)
     {
-        $labelsList = Label::getLabels($request->conditions);
+        $labelsList = Label::getLabels(
+            $request->conditions, $request->page, $request->limit
+        );
         $this->handleDataDisplay($labelsList);
-        return $this->successfulResponse(['successful', $labelsList, $labelsList->count()]);
+        return $this->successfulResponse(['successful', $labelsList, Label::count()]);
     }
 
     public function handleDataDisplay(&$data)
     {
         $data->each(function ($item, $key) {
-            $item->editRoute = route($this->routeConf['edit'], $item->id);
+            $item->editRoute = route($this->routeConf['editPage'], $item->id);
             $item->delRoute = route($this->routeConf['del'], $item->id);
             $item->label_icon = app('url')->asset('img/icon/' . $item->label_icon);
         });
@@ -99,13 +101,13 @@ class LabelController extends Controller
         ];
     }
 
-    private function handleInput(&$input, ...$support)
-    {
-
-    }
-
     public function delLabel($id)
     {
         return parent::del(Label::class, $id, route($this->routeConf['list']));
+    }
+
+    private function handleInput(&$input, ...$support)
+    {
+
     }
 }

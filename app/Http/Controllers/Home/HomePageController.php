@@ -48,7 +48,8 @@ class HomePageController extends Controller
             $items = collect($items)->map(function ($v, $k) use (
                 $STSupport, $uploadSupport, $categories, $tags
             ) {
-                $v['page_image'] = $uploadSupport->setFileUrl($v['page_image'], true);
+                $v['page_image'] = $v['page_image'] ? $uploadSupport->setFileUrl($v['page_image'], true)
+                    : app('url')->asset('img/soul.jpg');
                 $v['category'] = $categories[$v['category']];
                 $v['release_time'] = $STSupport->getSolarTerm($v['release_time']);
                 foreach ($v['label'] as $key => $label) {

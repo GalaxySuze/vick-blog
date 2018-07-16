@@ -23,7 +23,7 @@ class CategoryController extends Controller
         return view('backstage.list', [
             'tableName' => $this->tableServices . 'CategoryTableService',
             'searchBarName' => $this->searchServices . 'CategorySearchService',
-            'addRoute' => route($this->routeConf['add']),
+            'addRoute' => route($this->routeConf['addPage']),
             'dataRoute' => route($this->routeConf['data']),
             'formEvent' => $this->formEvent,
         ]);
@@ -31,15 +31,17 @@ class CategoryController extends Controller
 
     public function listData(Request $request)
     {
-        $categoryList = Category::getCategories($request->conditions);
+        $categoryList = Category::getCategories(
+            $request->conditions, $request->page, $request->limit
+        );
         $this->handleDataDisplay($categoryList);
-        return $this->successfulResponse(['successful', $categoryList, $categoryList->count()]);
+        return $this->successfulResponse(['successful', $categoryList, Category::count()]);
     }
 
     public function handleDataDisplay(&$data)
     {
         $data->each(function ($item, $key) {
-            $item->editRoute = route($this->routeConf['edit'], $item->id);
+            $item->editRoute = route($this->routeConf['editPage'], $item->id);
             $item->delRoute = route($this->routeConf['del'], $item->id);
         });
     }

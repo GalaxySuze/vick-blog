@@ -9,6 +9,8 @@
 namespace App\Support;
 
 
+use Carbon\Carbon;
+
 class SolarTermSupport
 {
     private $coefficient = [
@@ -106,12 +108,13 @@ class SolarTermSupport
         if (isset($coefficient[$idx1 + 1][1]) && $coefficient[$idx1 + 1][1] == $_year) {
             $dayTwo += $coefficient[$idx1 + 1][2];
         }
+        $yearPrefix = $_year != date('Y', time()) ? '那年' : '今年';
         if ($day == $dayOne) {
-            return $termName[$idx1];
+            return $yearPrefix . $termName[$idx1];
         }
         if ($day == $dayTwo) {
-            return $termName[$idx1 + 1];
+            return $yearPrefix . $termName[$idx1 + 1];
         }
-        return $this->months[$month];
+        return $yearPrefix . $this->months[$month];
     }
 }

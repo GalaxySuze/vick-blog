@@ -67,13 +67,14 @@ class ArticleFormService
                             Carbon::parse($this->articelInfo->release_time)->toDateString() : Carbon::now()->toDateString(),
                     ],
                     [
-                        'inputName' => 'label',
-                        'inputType' => 'checkbox-input',
-                        'required' => true,
-                        'label' => '标签',
-                        'placeholder' => '请输入文章标签',
-                        'value' => optional($this->articelInfo)->label,
-                        'options' => $this->setArticleLabels(),
+                        'inputName' => 'page_image',
+                        'inputType' => 'upload-input',
+                        'required' => false,
+                        'label' => '封面',
+                        'placeholder' => '请上传文章封面',
+                        'value' => optional($this->articelInfo)->page_image,
+                        'rowId' => optional($this->articelInfo)->id,
+                        'route' => route('backstage.article.upload-image'),
                     ],
                 ]
             ],
@@ -118,15 +119,19 @@ class ArticleFormService
                         'placeholder' => '',
                         'value' => optional($this->articelInfo)->is_original,
                     ],
+                ]
+            ],
+            [
+                'colM' => 'layui-col-md12',
+                'formParts' => [
                     [
-                        'inputName' => 'page_image',
-                        'inputType' => 'upload-input',
-                        'required' => false,
-                        'label' => '封面',
-                        'placeholder' => '请上传文章封面',
-                        'value' => optional($this->articelInfo)->page_image,
-                        'rowId' => optional($this->articelInfo)->id,
-                        'route' => route('backstage.article.upload-image'),
+                        'inputName' => 'label',
+                        'inputType' => 'checkbox-input',
+                        'required' => true,
+                        'label' => '标签',
+                        'placeholder' => '请输入文章标签',
+                        'value' => optional($this->articelInfo)->label,
+                        'options' => $this->setArticleLabels(),
                     ],
                 ]
             ],
@@ -149,13 +154,15 @@ class ArticleFormService
 
     public function setArticleLabels($labelList = [])
     {
-        $labelData = empty($labelList) ? Label::getLabels() : $labelList;
+        $labelData = empty($labelList)
+            ? Label::getLabels([], 1, Label::count()) : $labelList;
         return $this->customKV($labelData, 'id', 'label');
     }
 
     public function setArticleCategories($categoryList = [])
     {
-        $categoryData = empty($categoryList) ? Category::getCategories() : $categoryList;
+        $categoryData = empty($categoryList)
+            ? Category::getCategories([], 1, Label::count()) : $categoryList;
         return $this->customKV($categoryData, 'id', 'name');
     }
 }
