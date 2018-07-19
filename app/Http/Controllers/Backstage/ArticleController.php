@@ -17,15 +17,26 @@ use Illuminate\Support\Carbon;
 
 class ArticleController extends Controller
 {
+    /**
+     * @var string
+     */
     private $formEvent = 'articleForm';
-
+    /**
+     * @var array
+     */
     private $routeConf;
 
+    /**
+     * ArticleController constructor.
+     */
     public function __construct()
     {
         $this->routeConf = Helper::routeDefault('article');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function list()
     {
         return view('backstage.list', [
@@ -37,6 +48,10 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function listData(Request $request)
     {
         $articlesList = Article::getArticles(
@@ -46,6 +61,9 @@ class ArticleController extends Controller
         return $this->successfulResponse(['successful', $articlesList, Article::count()]);
     }
 
+    /**
+     * @param $data
+     */
     public function handleDataDisplay(&$data)
     {
         $upload = new UploadSupport();
@@ -63,21 +81,36 @@ class ArticleController extends Controller
         });
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function delArticle($id)
     {
         return parent::del(Article::class, $id, route($this->routeConf['list']));
     }
 
+    /**
+     * @param null $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function editor($id = null)
     {
         return view('backstage.editor', [
             'editRoute' => route($this->routeConf['edit']),
+            'listRoute' => route($this->routeConf['list']),
             'formName' => $this->formServices . 'ArticleFormService',
             'modelId' => $id,
             'formEvent' => $this->formEvent
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param UploadSupport $uploadSupport
+     * @param MarkdownSupport $markdownSupport
+     * @return array
+     */
     public function edit(Request $request, UploadSupport $uploadSupport, MarkdownSupport $markdownSupport)
     {
         try {
@@ -111,6 +144,9 @@ class ArticleController extends Controller
         }
     }
 
+    /**
+     * @return array
+     */
     private function validateRules()
     {
         return [
@@ -128,6 +164,9 @@ class ArticleController extends Controller
         ];
     }
 
+    /**
+     * @return array
+     */
     private function validateMessages()
     {
         return [
@@ -142,6 +181,10 @@ class ArticleController extends Controller
         ];
     }
 
+    /**
+     * @param $input
+     * @param array ...$support
+     */
     private function handleInput(&$input, ...$support)
     {
         list($mdSupport) = $support;
@@ -156,6 +199,11 @@ class ArticleController extends Controller
         $input['is_original'] = empty($input['is_original']) ? 0 : 1;
     }
 
+    /**
+     * @param string $content
+     * @param string $htmlTags
+     * @return array
+     */
     public function generatedOutline(string $content, string $htmlTags = 'h2')
     {
         // 获取所有的标题数
@@ -177,6 +225,11 @@ class ArticleController extends Controller
         return [$titleIdList, $replaceContent];
     }
 
+    /**
+     * @param Request $request
+     * @param UploadSupport $uploadSupport
+     * @return array
+     */
     public function uploadImage(Request $request, UploadSupport $uploadSupport)
     {
         try {
@@ -191,6 +244,11 @@ class ArticleController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param UploadSupport $uploadSupport
+     * @return array
+     */
     public function delUploadImage(Request $request, UploadSupport $uploadSupport)
     {
         try {

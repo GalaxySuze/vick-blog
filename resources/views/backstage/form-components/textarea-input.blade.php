@@ -3,9 +3,9 @@
         {!! $required ? '<font color="#ff4500">*</font>' : '' !!}
         {{ $label }}
     </label>
-    <div class="layui-input-block">
+    <div class="layui-input-block" id="editormdBox">
         <textarea
-                style="height: 300px;"
+                style="height: 500px;"
                 name="{{ $inputName }}"
                 placeholder="{{ $placeholder }}"
                 class="layui-textarea"

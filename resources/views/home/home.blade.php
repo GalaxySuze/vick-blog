@@ -65,14 +65,14 @@
         }
 
         @-webkit-keyframes color-gradient {
-            0%   {background-color: #FFD3A5;}
-            50% {background-color: #FD6585;}
+            0%   {background-color: #bbdefb;}
+            50% {background-color: #82b1ff;}
             100% {background-color: #98A9F9;}
         }
 
         @keyframes color-gradient{
-            10%   {background-color: #FF8A80;}
-            50% {background-color: #FD6585;}
+            0%   {background-color: #bbdefb;}
+            50% {background-color: #82b1ff;}
             100% {background-color: #98A9F9;}
         }
     </style>
@@ -201,7 +201,7 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            © 2017 - {{ date('Y-m-d', time()) }} Copyright Vick`Blog. All rights reserved.
+            © 2017 - {{ date('Y', time()) }} Copyright Vick`Blog. All Rights Reserved.
             <a class="grey-text text-lighten-4 right" href="#!">😏彩蛋</a>
         </div>
     </div>

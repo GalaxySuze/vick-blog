@@ -13,6 +13,9 @@ use Carbon\Carbon;
 
 class SolarTermSupport
 {
+    /**
+     * @var array
+     */
     private $coefficient = [
         [5.4055, 2019, -1],//小寒
         [20.12, 2082, 1],//大寒
@@ -40,6 +43,9 @@ class SolarTermSupport
         [21.94, 2021, -1]//冬至
     ];
 
+    /**
+     * @var array
+     */
     private $termName = [
         "小寒",
         "大寒",
@@ -67,6 +73,9 @@ class SolarTermSupport
         "冬至"
     ];
 
+    /**
+     * @var array
+     */
     private $months = [
         '01' => '一月',
         '02' => '二月',
@@ -84,14 +93,25 @@ class SolarTermSupport
 
     public function __construct()
     {
+
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getSolarTerm($date)
     {
         list($year, $month, $day) = explode('-', $date);
         return $this->solarTermCalculation($year, $month, $day);
     }
 
+    /**
+     * @param $_year
+     * @param $month
+     * @param $day
+     * @return string
+     */
     private function solarTermCalculation($_year, $month, $day)
     {
         $coefficient = $this->coefficient;
@@ -108,7 +128,7 @@ class SolarTermSupport
         if (isset($coefficient[$idx1 + 1][1]) && $coefficient[$idx1 + 1][1] == $_year) {
             $dayTwo += $coefficient[$idx1 + 1][2];
         }
-        $yearPrefix = $_year != date('Y', time()) ? '那年' : '今年';
+        $yearPrefix = $this->setYearPrefix($_year);
         if ($day == $dayOne) {
             return $yearPrefix . $termName[$idx1];
         }
@@ -116,5 +136,23 @@ class SolarTermSupport
             return $yearPrefix . $termName[$idx1 + 1];
         }
         return $yearPrefix . $this->months[$month];
+    }
+
+    /**
+     * @param $year
+     * @return string
+     */
+    public function setYearPrefix($year)
+    {
+        switch ($year) {
+            case $year == date('Y', time()):
+                return '今年';
+                break;
+            case $year == date('Y', strtotime('-1 year')):
+                return '去年';
+                break;
+            default:
+                return '那年';
+        }
     }
 }

@@ -51,6 +51,7 @@ class LabelController extends Controller
     {
         return view('backstage.editor', [
             'editRoute' => route($this->routeConf['edit']),
+            'listRoute' => route($this->routeConf['list']),
             'formName' => $this->formServices . 'LabelFormService',
             'modelId' => $id,
             'formEvent' => $this->formEvent,

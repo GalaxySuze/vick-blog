@@ -16,11 +16,12 @@ class Helper
      * @param $model
      * @param string $keyBy
      * @param bool $toArray
+     * @param array $fields
      * @return mixed
      */
-    public static function modelAll($model, $keyBy = 'id', $toArray = true)
+    public static function modelAll($model, $keyBy = 'id', $toArray = true, $fields = ['*'])
     {
-        $dao = $model::all()->keyBy($keyBy);
+        $dao = $model::all($fields)->keyBy($keyBy);
         return $toArray ? $dao->toArray() : $dao;
     }
 

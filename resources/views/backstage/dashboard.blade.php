@@ -8,17 +8,21 @@
 
     <title>Vick`Blog @yield('title')</title>
     <link rel="stylesheet" href="{{ asset('layui/css/layui.css') }}">
+    <link rel="stylesheet" href="{{ asset('editormd/css/editormd.min.css') }}">
 
     <style>
         body {
-            background-color:#f5f8fa;
+            background-color: #f5f8fa;
         }
+
         .layui-table th {
             text-align: center;
         }
+
         .layui-laypage-limits select {
             color: #009688;
         }
+
         .layui-table thead tr {
             background: #393D49;
             color: #fff;
@@ -39,7 +43,8 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="#">
-                    <i class="layui-icon layui-icon-notice" style="font-size: 20px;"></i><span class="layui-badge-dot layui-bg-red"></span>
+                    <i class="layui-icon layui-icon-notice" style="font-size: 20px;"></i><span
+                            class="layui-badge-dot layui-bg-red"></span>
                 </a>
             </li>
             <li class="layui-nav-item">
@@ -80,7 +85,6 @@
         </div>
     </div>
 
-
     <div class="layui-body">
         <div class="layui-row layui-col-space15" style="padding: 20px;">
             <div class="layui-col-md12">
@@ -114,7 +118,8 @@
                         <div class="layui-col-md3">
                             <div class="layui-card layui-anim layui-anim-scale" style="text-align: center">
                                 <div class="layui-card-header">
-                                    <i class="layui-icon layui-icon-reply-fill" style="font-size: 42px;color: #FFB800"></i>
+                                    <i class="layui-icon layui-icon-reply-fill"
+                                       style="font-size: 42px;color: #FFB800"></i>
                                 </div>
                                 <div class="layui-card-body">
                                     <h4>这周新增评论数：10</h4>
@@ -184,7 +189,8 @@
                 <div class="layui-col-md3">
                     <div class="layui-collapse" lay-accordion>
                         <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><i class="layui-icon layui-icon-form" style="color: #FF5722"></i> ToDo List</h2>
+                            <h2 class="layui-colla-title"><i class="layui-icon layui-icon-form"
+                                                             style="color: #FF5722"></i> ToDo List</h2>
                             <div class="layui-colla-content layui-show">
                                 <ul>
                                     <li>*《登高》</li>
@@ -193,11 +199,13 @@
                             </div>
                         </div>
                         <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><i class="layui-icon layui-icon-survey" style="color: #FF5722"></i> 备忘录</h2>
+                            <h2 class="layui-colla-title"><i class="layui-icon layui-icon-survey"
+                                                             style="color: #FF5722"></i> 备忘录</h2>
                             <div class="layui-colla-content layui-show">内容区域</div>
                         </div>
                         <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><i class="layui-icon layui-icon-snowflake" style="color: #FF5722"></i> 今天天气</h2>
+                            <h2 class="layui-colla-title"><i class="layui-icon layui-icon-snowflake"
+                                                             style="color: #FF5722"></i> 今天天气</h2>
                             <div class="layui-colla-content layui-show">内容区域</div>
                         </div>
                     </div>
@@ -210,9 +218,12 @@
         <center>© Vick ` Blog - 「 指落惊风雨，码成泣鬼神 」</center>
     </div>
 </div>
+<!-- JS -->
 <script src="{{ asset('layui/layui.js') }}"></script>
-<script>
-    layui.use(['element', 'carousel', 'form', 'laydate', 'upload', 'jquery', 'table'], function(){
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="{{ asset('editormd/js/editormd.js') }}"></script>
+<script type="text/javascript">
+    layui.use(['element', 'carousel', 'form', 'laydate', 'upload', 'jquery', 'table'], function () {
         var element = layui.element,
             carousel = layui.carousel,
             form = layui.form,
@@ -221,12 +232,23 @@
             table = layui.table,
             $ = layui.$;
 
+        // 在线markdown编辑器
+        if ($('#editormdBox').length > 0) {
+            var editorBox = editormd("editormdBox", {
+                height: '500px',
+                syncScrolling: "single",
+                path: "{{ asset('editormd/lib/') }}/",
+                pluginPath: "{{ asset('editormd/pluginPath/') }}/"
+            });
+        }
+
         layuiDate.render({
             elem: '#release_time'
         });
 
         @if(!empty(session('msg')))
-            layer.msg('{{ session('msg') }}');
+        layer.msg('{{ session('msg') }}');
+
         @endif
 
         function submitAjax(type, url, data, tableRow) {
@@ -241,7 +263,7 @@
                 success: function (result) {
                     layer.closeAll('loading');
                     if (result.code !== 0) {
-                        var warning = result.msg ? result.msg : result ;
+                        var warning = result.msg ? result.msg : result;
                         layer.open({
                             content: warning
                         });
@@ -269,10 +291,10 @@
             });
             return false;
         }
-        
+
         function errMsg(ajaxErrResult) {
             var errMsgStr = '';
-            $.each(ajaxErrResult.responseJSON.errors, function(k, v){
+            $.each(ajaxErrResult.responseJSON.errors, function (k, v) {
                 for (var i = 0; i < v.length; i++) {
                     errMsgStr += v[i] + '<br/>';
                 }
@@ -289,18 +311,19 @@
                 anim: 5
             });
         }
+
         showUploadImgBox('.uploadImageAlbum');
 
         //监听工具条
-        table.on('tool(listTable)', function(obj){
+        table.on('tool(listTable)', function (obj) {
             var row = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 
-            if(layEvent === 'del'){
-                layer.confirm('是否确认删除!', function(index){
+            if (layEvent === 'del') {
+                layer.confirm('是否确认删除!', function (index) {
                     submitAjax('get', row.delRoute, row.id, obj);
                 });
-            } else if(layEvent === 'edit'){ //编辑
+            } else if (layEvent === 'edit') { //编辑
                 window.location.href = row.editRoute;
             }
 

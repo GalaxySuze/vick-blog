@@ -50,6 +50,7 @@ class CategoryController extends Controller
     {
         return view('backstage.editor', [
             'editRoute' => route($this->routeConf['edit']),
+            'listRoute' => route($this->routeConf['list']),
             'formName' => $this->formServices . 'CategoryFormService',
             'modelId' => $id,
             'formEvent' => $this->formEvent,
