@@ -76,19 +76,19 @@ class SolarTermSupport
     /**
      * @var array
      */
-    private $months = [
-        '01' => '一月',
-        '02' => '二月',
-        '03' => '三月',
-        '04' => '四月',
-        '05' => '五月',
-        '06' => '六月',
-        '07' => '七月',
-        '08' => '八月',
-        '09' => '九月',
-        '10' => '十月',
-        '11' => '十一月',
-        '12' => '十二月',
+    public $months = [
+        '01' => ['zh' => '一月', 'en' => 'January'],
+        '02' => ['zh' => '二月', 'en' => 'February'],
+        '03' => ['zh' => '三月', 'en' => 'March'],
+        '04' => ['zh' => '四月', 'en' => 'April'],
+        '05' => ['zh' => '五月', 'en' => 'May'],
+        '06' => ['zh' => '六月', 'en' => 'June'],
+        '07' => ['zh' => '七月', 'en' => 'July'],
+        '08' => ['zh' => '八月', 'en' => 'August'],
+        '09' => ['zh' => '九月', 'en' => 'September'],
+        '10' => ['zh' => '十月', 'en' => 'October'],
+        '11' => ['zh' => '十一月', 'en' => 'November'],
+        '12' => ['zh' => '十二月', 'en' => 'December'],
     ];
 
     public function __construct()
@@ -135,7 +135,7 @@ class SolarTermSupport
         if ($day == $dayTwo) {
             return $yearPrefix . $termName[$idx1 + 1];
         }
-        return $yearPrefix . $this->months[$month];
+        return $yearPrefix . $this->months[$month]['zh'];
     }
 
     /**

@@ -10,21 +10,29 @@ use App\Http\Controllers\Controller;
 
 class LabelController extends Controller
 {
-    public function __construct()
-    {
+    /**
+     * @var HomePageController
+     */
+    public $articleService;
 
+    public function __construct(HomePageController $homePageController)
+    {
+        $this->articleService = $homePageController;
     }
 
     public function labelPage()
     {
-//        dd($this->handleDisplay(
-//            Helper::modelAll(Label::class)
-//        ));
         return view('home.label', [
-            'labelList' => $this->handleDisplay(
-                Helper::modelAll(Label::class)
-            )
+            'labelList' => $this->getLabelList(),
+            'articleList' => $this->articleService->getArticleList(),
         ]);
+    }
+
+    public function getLabelList()
+    {
+        return $this->handleDisplay(
+            Helper::modelAll(Label::class)
+        );
     }
 
     public function handleDisplay($list)

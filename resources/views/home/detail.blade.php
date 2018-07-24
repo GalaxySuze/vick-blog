@@ -59,7 +59,7 @@
                         <i class="material-icons yellow-text">visibility</i>&nbsp; {{ $detail['views'] }} &nbsp;&nbsp;
                         <i class="material-icons green-text">thumb_up</i>&nbsp; 66 &nbsp;&nbsp;
                         <i class="material-icons blue-text slide-comments-btn tooltipped" data-activates="slide-comments" data-position="bottom" data-delay="50" data-tooltip="点击查看评论区">textsms</i>&nbsp; 22 &nbsp;&nbsp;
-                        <i class="material-icons pink-text">schedule</i>&nbsp; {{ $detail['release_time'] }}
+                        <i class="material-icons pink-text">schedule</i>&nbsp; {{ $detail['release_time_str'] }}
                     </div>
                 </div>
 

@@ -60,7 +60,7 @@ class ArticleFormService
                     [
                         'inputName' => 'release_time',
                         'inputType' => 'date-input',
-                        'required' => false,
+                        'required' => true,
                         'label' => '发布时间',
                         'placeholder' => '请输入发布时间',
                         'value' => optional($this->articelInfo)->release_time ?
@@ -96,11 +96,7 @@ class ArticleFormService
                         'label' => '状态',
                         'placeholder' => '',
                         'value' => optional($this->articelInfo)->status,
-                        'options' => [
-                            0 => '草稿',
-                            1 => '正常',
-                            2 => '置顶',
-                        ],
+                        'options' => Article::$statusConf,
                     ],
                     [
                         'inputName' => 'category',
@@ -162,7 +158,7 @@ class ArticleFormService
     public function setArticleCategories($categoryList = [])
     {
         $categoryData = empty($categoryList)
-            ? Category::getCategories([], 1, Label::count()) : $categoryList;
+            ? Category::getCategories([], 1, Category::count()) : $categoryList;
         return $this->customKV($categoryData, 'id', 'name');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Label extends Model
+class Label extends BaseModel
 {
     use SoftDeletes;
 

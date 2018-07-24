@@ -22,22 +22,16 @@ Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
     Route::get('home-page', 'HomePageController@homePage')->name('home.home-page');
     Route::get('detail/{id}', 'DetailController@detail')->name('home.detail');
     Route::get('label', 'LabelController@labelPage')->name('home.label-page');
-
-    Route::get('metro', function () {
-        return view('metro');
-    });
-
-    Route::get('detailDemo', function () {
-        return view('home.detail');
-    });
+    Route::get('time-line', 'TimeLineController@timeLinePage')->name('home.time-line-page');
+    Route::get('time-line/articles', 'TimeLineController@timeLineArticles')->name('home.time-line.articles');
 
 //    Route::get('label', function () {
 //        return view('home.label');
 //    });
 
-    Route::get('timeline', function () {
-        return view('home.timeline');
-    });
+//    Route::get('timeline', function () {
+//        return view('home.timeline');
+//    });
 
     Route::get('about', function () {
         return view('home.about');
@@ -45,6 +39,10 @@ Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
 
     Route::get('bookcase', function () {
         return view('home.bookcase');
+    });
+
+    Route::get('metro', function () {
+        return view('metro');
     });
 });
 

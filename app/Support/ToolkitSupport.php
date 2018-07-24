@@ -38,4 +38,19 @@ trait ToolkitSupport
             $arr[$item[$key]][] = $item;
         }
     }
+
+    /**
+     * @param $array
+     * @param $size
+     * @return array
+     */
+    public function sliceArray($array, $size)
+    {
+        $resultArray = [];
+        for ($i = 0; $i < count($array); $i++) {
+            $group = $i % $size;
+            $resultArray[$group][] = $array[$i];
+        }
+        return $resultArray;
+    }
 }

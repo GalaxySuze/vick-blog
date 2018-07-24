@@ -12,10 +12,13 @@
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-md6">
                             <input type="hidden" name="id" value="{{ $modelId }}" id="modelId">
-                            <button class="layui-btn layui-bg-cyan layui-btn-fluid" lay-submit lay-filter="{{ $formEvent }}"><i class="layui-icon">&#xe609;</i>&nbsp;提交</button>
+                            <button class="layui-btn layui-bg-cyan layui-btn-fluid" lay-submit
+                                    lay-filter="{{ $formEvent }}"><i class="layui-icon">&#xe609;</i>&nbsp;提交
+                            </button>
                         </div>
                         <div class="layui-col-md6">
-                            <a style="background-color: #f5f5f5" href="{{ $listRoute }}" class="layui-btn layui-btn-primary layui-btn-fluid"><i class="layui-icon">&#xe623;</i>&nbsp;返回</a>
+                            <a style="background-color: #f5f5f5" href="{{ $listRoute }}"
+                               class="layui-btn layui-btn-primary layui-btn-fluid"><i class="layui-icon">&#xe623;</i>&nbsp;返回</a>
                         </div>
                     </div>
                 </div>
@@ -24,8 +27,7 @@
                 @foreach($BuildForm->buildForm($formName, $modelId) as $formParts)
                     <div class="{{ $formParts['colM'] }}">
                         @foreach($formParts['formParts'] as $part)
-                            @component("backstage.form-components.{$part['inputType']}", $part)
-                            @endcomponent
+                            @component("backstage.form-components.{$part['inputType']}", $part)@endcomponent
                         @endforeach
                     </div>
                 @endforeach
@@ -38,7 +40,7 @@
 <script>
     @section('scriptMain')
 
-    form.on('submit({{ $formEvent }})', function(data){
+    form.on('submit({{ $formEvent }})', function (data) {
         submitAjax('post', '{{ $editRoute }}', data.field);
         return false;
     });
@@ -58,24 +60,24 @@
                 layer.msg(result.msg);
                 showUploadImgBox('#uploadImgBox');
             } else {
-                layer.msg('接口请求异常，请打开debug，通过浏览器调试工具查看错误信息!');
+                layer.msg(interfaceEXMsg);
             }
-            layer.closeAll('loading');
+            layer.closeAll(loadingMask);
         },
         error: function () {
-            layer.closeAll('loading');
-            layer.msg('接口请求异常，请打开debug，通过浏览器调试工具查看错误信息!');
+            layer.closeAll(loadingMask);
+            layer.msg(interfaceEXMsg);
         }
     });
 
     $('#delUploadImg').click(function () {
-        layer.confirm('是否确认删除!', function(index){
+        layer.confirm('是否确认删除!', function (index) {
             var img = $('#page_image').val();
             var imgRowId = $('#modelId').val();
             submitAjax('post', '{{ url('backstage/article/del-upload-image') }}', {'img': img, 'id': imgRowId});
         });
     });
-    
+
     function delImgDone() {
         $('#page_image').val('');
         $('#uploadBar').show(100);
@@ -94,5 +96,5 @@
         layer.closeAll('tips');
     });
 
-@endsection
+    @endsection
 </script>

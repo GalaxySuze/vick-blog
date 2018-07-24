@@ -2,24 +2,30 @@
 
 namespace App\Models;
 
-use App\Services\SearchServices\BaseBuildSearchService;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Article extends Model
+class Article extends BaseModel
 {
     use SoftDeletes;
 
-    const ARTICLE_STATUS_DRAFT = 0;
-    const ARTICLE_STATUS_NORMAL = 1;
-    const ARTICLE_STATUS_TOP = 2;
-
+    const ARTICLE_STATUS_DRAFT = 1;
+    const ARTICLE_STATUS_NORMAL = 2;
+    const ARTICLE_STATUS_TOP = 3;
+    /**
+     * @var array
+     */
     public static $statusConf = [
         self::ARTICLE_STATUS_DRAFT => '草稿',
         self::ARTICLE_STATUS_NORMAL => '正常',
         self::ARTICLE_STATUS_TOP => '置顶',
     ];
+    /**
+     * @var string
+     */
     protected $table = 'articles';
+    /**
+     * @var array
+     */
     protected $fillable = [
         'title',
         'content',
@@ -36,10 +42,33 @@ class Article extends Model
         'keyword',
         'outline',
     ];
+    /**
+     * @var array
+     */
     protected $casts = [
         'label' => 'array',
         'outline' => 'array',
     ];
+
+    /**
+     * @return mixed
+     */
+    public static function getReleaseArticles()
+    {
+        return Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)
+            ->orderBy('release_time', 'desc')
+            ->get();
+    }
+
+    /**
+     * @param $fields
+     * @param string $orderBy
+     * @return mixed
+     */
+    public static function getOrderByFields($fields, $orderBy = 'asc')
+    {
+        return Article::orderBy($fields, $orderBy)->first([$fields]);
+    }
 
     /**
      * @param array $conditions
@@ -47,36 +76,59 @@ class Article extends Model
      * @param int $limit
      * @return mixed
      */
-    public static function getArticles($conditions = [], $offset = 1, $limit = 10)
+    public function getArticles($conditions = [], $offset = 1, $limit = 10)
     {
-        $query = Article::leftJoin('users', 'users.id', '=', 'articles.user_id')
+        $this->query = Article::leftJoin('users', 'users.id', '=', 'articles.user_id')
             ->orderBy('articles.updated_at', 'desc');
-        if (!empty($conditions['title'])) {
-            $query->where('articles.title', 'like', '%' . $conditions['title'] . '%');
-        }
-        if (!empty($conditions['keyword'])) {
-            $query->where('articles.keyword', 'like', '%' . $conditions['keyword'] . '%');
-        }
-        if (!empty($conditions['category']) && $conditions['category'] != 0) {
-            $query->where('articles.category', $conditions['category']);
-        }
-        if (!empty($conditions['status'])) {
-            $query->whereIn('articles.status', $conditions['status']);
-        }
-        if (!empty($conditions['id'])) {
-            $query->where('articles.id', $conditions['id']);
-        }
-        $data = $query
-            ->offset(($offset - 1) * $limit)
-            ->limit($limit)
-            ->get(['articles.*', 'users.name as created_user']);
-        return $data;
+        $this->withFilter($conditions)->pagination($offset, $limit);
+        return $this->query->get(['articles.*', 'users.name as created_user']);
     }
 
-    public static function getArticleList()
+    /**
+     * @param $value
+     */
+    public function titleFilter($value)
     {
-        return Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)
-            ->orderBy('release_time', 'desc')
-            ->get();
+        $this->query->where('articles.title', 'like', '%' . $value . '%');
+    }
+
+    /**
+     * @param $value
+     */
+    public function keywordFilter($value)
+    {
+        $this->query->where('articles.keyword', 'like', '%' . $value . '%');
+    }
+
+    /**
+     * @param $value
+     */
+    public function categoryFilter($value)
+    {
+        $this->query->where('articles.category', $value);
+    }
+
+    /**
+     * @param $value
+     */
+    public function statusFilter($value)
+    {
+        $this->query->where('articles.status', $value);
+    }
+
+    /**
+     * @param $value
+     */
+    public function labelFilter($value)
+    {
+        $this->query->where('articles.label', 'like', '%' . $value . '%');
+    }
+
+    /**
+     * @param $value
+     */
+    public function idFilter($value)
+    {
+        $this->query->where('articles.id', $value);
     }
 }

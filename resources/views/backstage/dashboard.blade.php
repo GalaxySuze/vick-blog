@@ -232,6 +232,9 @@
             table = layui.table,
             $ = layui.$;
 
+        var interfaceEXMsg = '接口请求异常，请打开debug，通过浏览器调试工具查看错误信息!';
+        var loadingMask = 'loading';
+
         // 在线markdown编辑器
         if ($('#editormdBox').length > 0) {
             var editorBox = editormd("editormdBox", {
@@ -247,8 +250,7 @@
         });
 
         @if(!empty(session('msg')))
-        layer.msg('{{ session('msg') }}');
-
+            layer.msg('{{ session('msg') }}');
         @endif
 
         function submitAjax(type, url, data, tableRow) {
@@ -261,7 +263,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (result) {
-                    layer.closeAll('loading');
+                    layer.closeAll(loadingMask);
                     if (result.code !== 0) {
                         var warning = result.msg ? result.msg : result;
                         layer.open({
@@ -280,7 +282,7 @@
                     }
                 },
                 error: function (e) {
-                    layer.closeAll('loading');
+                    layer.closeAll(loadingMask);
                     layer.alert(errMsg(e), {
                         icon: 2,
                         skin: 'layui-layer-lan',
@@ -300,7 +302,7 @@
                 }
             });
             if (!errMsgStr) {
-                return errMsgStr = '接口请求异常，请打开debug，通过浏览器调试工具查看错误信息.';
+                return interfaceEXMsg;
             }
             return errMsgStr;
         }
@@ -311,7 +313,6 @@
                 anim: 5
             });
         }
-
         showUploadImgBox('.uploadImageAlbum');
 
         //监听工具条

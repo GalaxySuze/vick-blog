@@ -9,7 +9,9 @@
 namespace App\Services\SearchServices;
 
 
+use App\Models\Article;
 use App\Models\Category;
+use App\Models\Label;
 use App\Support\ToolkitSupport;
 
 class ArticleSearchService
@@ -60,7 +62,35 @@ class ArticleSearchService
                         'label' => '分类',
                         'placeholder' => '',
                         'value' => null,
-                        'options' => [0 => '请选择...'] + $this->setArticleCategories(),
+                        'options' => ['' => '请选择...'] + $this->setArticleCategories(),
+                    ],
+                ]
+            ],
+            [
+                'colM' => 'layui-col-md3',
+                'formParts' => [
+                    [
+                        'inputName' => 'status',
+                        'inputType' => 'select-input',
+                        'required' => false,
+                        'label' => '状态',
+                        'placeholder' => '',
+                        'value' => null,
+                        'options' => ['' => '请选择...'] + $this->setArticleStatus(),
+                    ],
+                ]
+            ],
+            [
+                'colM' => 'layui-col-md3',
+                'formParts' => [
+                    [
+                        'inputName' => 'label',
+                        'inputType' => 'select-input',
+                        'required' => false,
+                        'label' => '标签',
+                        'placeholder' => '',
+                        'value' => null,
+                        'options' => ['' => '请选择...'] + $this->setArticleLabels(),
                     ],
                 ]
             ],
@@ -68,9 +98,31 @@ class ArticleSearchService
         return $searchBar;
     }
 
+    /**
+     * @param array $categoryList
+     * @return array
+     */
     public function setArticleCategories($categoryList = [])
     {
-        $categoryData = empty($categoryList) ? Category::getCategories() : $categoryList;
+        $categoryData = empty($categoryList) ? Category::getCategories([], 1, Category::count()) : $categoryList;
         return $this->customKV($categoryData, 'id', 'name');
+    }
+
+    /**
+     * @param array $labelList
+     * @return array
+     */
+    public function setArticleLabels($labelList = [])
+    {
+        $labelData = empty($labelList) ? Label::getLabels([], 1, Label::count()) : $labelList;
+        return $this->customKV($labelData, 'id', 'label');
+    }
+
+    /**
+     * @return array
+     */
+    public function setArticleStatus()
+    {
+        return Article::$statusConf;
     }
 }

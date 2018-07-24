@@ -50,11 +50,12 @@ class ArticleController extends Controller
 
     /**
      * @param Request $request
+     * @param Article $article
      * @return array
      */
-    public function listData(Request $request)
+    public function listData(Request $request, Article $article)
     {
-        $articlesList = Article::getArticles(
+        $articlesList = $article->getArticles(
             $request->conditions, $request->page, $request->limit
         );
         $this->handleDataDisplay($articlesList);
@@ -153,7 +154,7 @@ class ArticleController extends Controller
             'title' => 'required|max:80',
             'desc' => 'required|max:255',
             'keyword' => 'required|max:255',
-            'release_time' => 'nullable',
+            'release_time' => 'required',
             'link' => 'nullable|max:255',
             'status' => 'required',
             'category' => 'required',
@@ -176,6 +177,7 @@ class ArticleController extends Controller
             'desc.max' => '「描述」最大长度为255个字符.',
             'keyword.required' => '请输入「关键词」.',
             'keyword.max' => '「关键词」最大长度为255个字符.',
+            'release_time.required' => '请输入「发布时间」.',
             'link.max' => '「链接」最大长度为255个字符.',
             'label.required' => '请最少选择一个「标签」.',
         ];
@@ -189,11 +191,9 @@ class ArticleController extends Controller
     {
         list($mdSupport) = $support;
         $input['original_content'] = $input['content'];
-        list($outline, $content) = $this->generatedOutline(
+        list($input['outline'], $input['content']) = $this->generatedOutline(
             $mdSupport->parse($input['content'])
         );
-        $input['outline'] = $outline;
-        $input['content'] = $content;
         $input['label'] = array_keys($input['label']);
         $input['user_id'] = 1; //TODO: 用户登录的id
         $input['is_original'] = empty($input['is_original']) ? 0 : 1;

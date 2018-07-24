@@ -65,15 +65,39 @@
         }
 
         @-webkit-keyframes color-gradient {
-            0%   {background-color: #bbdefb;}
-            50% {background-color: #82b1ff;}
-            100% {background-color: #98A9F9;}
+            0% {
+                background-color: #bbdefb;
+            }
+            50% {
+                background-color: #82b1ff;
+            }
+            100% {
+                background-color: #98A9F9;
+            }
         }
 
-        @keyframes color-gradient{
-            0%   {background-color: #bbdefb;}
-            50% {background-color: #82b1ff;}
-            100% {background-color: #98A9F9;}
+        @keyframes color-gradient {
+            0% {
+                background-color: #bbdefb;
+            }
+            50% {
+                background-color: #82b1ff;
+            }
+            100% {
+                background-color: #98A9F9;
+            }
+        }
+
+        #vicky:hover {
+            /*background-position: 2% 78%;*/
+            background-position: 55% 19%;
+        }
+
+        #vicky {
+            display: block;
+            background: url('{{ asset('img/mascot-vicky.gif') }}') no-repeat 1% 57%;
+            width: 160px;
+            height: 180px;
         }
     </style>
 </head>
@@ -105,7 +129,7 @@
                     <li><a href="#" class="waves-effect">求知</a></li>
                     <li><a href="#" class="waves-effect">生活</a></li>
                     <li><a href="{{ url('home/label') }}" class="waves-effect">标签</a></li>
-                    <li><a href="{{ url('home/timeline') }}" class="waves-effect">归档</a></li>
+                    <li><a href="{{ url('home/time-line') }}" class="waves-effect">归档</a></li>
                     <li><a href="{{ url('home/about') }}" class="waves-effect">关于</a></li>
                     <li>
                         <div class="divider"></div>
@@ -130,7 +154,7 @@
                     <li><a href="#" class="waves-effect">求知</a></li>
                     <li><a href="#" class="waves-effect">生活</a></li>
                     <li><a href="{{ url('home/label') }}" class="waves-effect">标签</a></li>
-                    <li><a href="{{ url('home/timeline') }}" class="waves-effect">归档</a></li>
+                    <li><a href="{{ url('home/time-line') }}" class="waves-effect">归档</a></li>
                     <li><a href="{{ url('home/about') }}" class="waves-effect">关于</a></li>
                 </ul>
                 @yield('outlineBar')
@@ -141,7 +165,7 @@
 
 <main>
 @section('content')
-    <!-- scrolling banner -->
+        <!-- scrolling banner -->
         <div class="slider">
             <ul class="slides" style="background: #98A9F9">
                 <li>
@@ -193,7 +217,8 @@
                     <li><a class="grey-text text-lighten-3" href="https://laravel-china.org">😉Laravel China</a></li>
                     <li><a class="grey-text text-lighten-3" href="https://vuejscaff.com">😊Vuejs Caff</a></li>
                     <li><a class="grey-text text-lighten-3" href="https://pythoncaff.com">☺️Python Caff</a></li>
-                    <li><a class="grey-text text-lighten-3" href="http://www.materializecss.cn">😘Materialize Css</a></li>
+                    <li><a class="grey-text text-lighten-3" href="http://www.materializecss.cn">😘Materialize Css</a>
+                    </li>
                     <li><a class="grey-text text-lighten-3" href="http://www.layui.com/">😎Layui</a></li>
                 </ul>
             </div>
@@ -202,14 +227,15 @@
     <div class="footer-copyright">
         <div class="container">
             © 2017 - {{ date('Y', time()) }} Copyright Vick`Blog. All Rights Reserved.
-            <a class="grey-text text-lighten-4 right" href="#!">😏彩蛋</a>
+            <a class="grey-text text-lighten-4 right" href="#">😏Vicky</a>
         </div>
     </div>
 </footer>
 </body>
 <script>
-    hljs.initHighlightingOnLoad();
     $(document).ready(function () {
+        // 代码高亮
+        hljs.initHighlightingOnLoad();
         // Materialize.fadeInImage('#cover');
         // $('.parallax').parallax();
         $('.scrollspy').scrollSpy();
@@ -223,10 +249,9 @@
         });
 
         $('#outlineBtn').dropdown({
-                constrain_width: false, // 自动宽度
-                belowOrigin: true // 下拉列表在触发的下方显示
-            }
-        );
+            constrain_width: false, // 自动宽度
+            belowOrigin: true // 下拉列表在触发的下方显示
+        });
 
         // 侧边评论栏
         $(".slide-comments-btn").sideNav({
@@ -251,6 +276,15 @@
             }
         });
         @endif
+
+        $(".month-li").click(function () {
+            var monthVal = $(this).find('a').attr('href');
+            var yearVal = $('.year-tab-bar').children('.active').text();
+            $.get("{{ url('home/time-line/articles') }}", {'month': monthVal, 'year': yearVal}, function (result) {
+                $('#time-line-article').html(result);
+            })
+        });
+        $("[href='#January_01']").trigger('click');
     });
 </script>
 
