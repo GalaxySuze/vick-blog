@@ -11,6 +11,7 @@ namespace App\Services\FormServices;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Label;
+use App\Support\Helper;
 use App\Support\ToolkitSupport;
 use Carbon\Carbon;
 
@@ -151,14 +152,16 @@ class ArticleFormService
     public function setArticleLabels($labelList = [])
     {
         $labelData = empty($labelList)
-            ? Label::getLabels([], 1, Label::count()) : $labelList;
+            ? Label::getModelData()
+            : $labelList;
         return $this->customKV($labelData, 'id', 'label');
     }
 
     public function setArticleCategories($categoryList = [])
     {
         $categoryData = empty($categoryList)
-            ? Category::getCategories([], 1, Category::count()) : $categoryList;
+            ? Category::getModelData()
+            : $categoryList;
         return $this->customKV($categoryData, 'id', 'name');
     }
 }

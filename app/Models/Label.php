@@ -18,24 +18,40 @@ class Label extends BaseModel
     ];
 
     /**
-     * @param array $conditions
-     * @param int $offset
-     * @param int $limit
+     * @param array ...$arguments
      * @return mixed
      */
-    public static function getLabels($conditions = [], $offset = 1, $limit = 10)
+    public static function getModelData(...$arguments)
     {
-        $query = Label::orderBy('labels.updated_at', 'desc');
-        if (!empty($conditions['id'])) {
-            $query->whereIn('id', $conditions['id']);
-        }
-        if (!empty($conditions['label'])) {
-            $query->where('label', 'like', '%' . $conditions['label'] . '%');
-        }
-        $data = $query
-            ->offset(($offset - 1) * $limit)
-            ->limit($limit)->get();
-        return $data;
+        self::modelBuild(Label::class);
+        self::$instance->argumentParse($arguments);
+        return self::$instance->modelProcess();
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function modelProcess()
+    {
+        self::$instance->query = Label::orderBy('labels.updated_at', 'desc');
+        self::$instance->filterAndPagination();
+        return self::$instance->query->get();
+    }
+
+    /**
+     * @param $value
+     */
+    public function labelFilter($value)
+    {
+        $this->query->where('label', 'like', '%' . $value . '%');
+    }
+
+    /**
+     * @param $value
+     */
+    public function idFilter($value)
+    {
+        $this->query->whereIn('id', $value);
     }
 
 }

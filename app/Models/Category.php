@@ -17,24 +17,39 @@ class Category extends BaseModel
     ];
 
     /**
-     * @param array $conditions
-     * @param int $offset
-     * @param int $limit
+     * @param array ...$arguments
      * @return mixed
      */
-    public static function getCategories($conditions = [], $offset = 1, $limit = 10)
+    public static function getModelData(...$arguments)
     {
-        $query = Category::orderBy('categories.updated_at', 'desc');
-        if (!empty($conditions['name'])) {
-            $query->where('name', 'like', '%' . $conditions['name'] . '%');
-        }
-        if (!empty($conditions['id'])) {
-            return $query->find($conditions['id']);
-        }
-        $data = $query
-            ->offset(($offset - 1) * $limit)
-            ->limit($limit)
-            ->get();
-        return $data;
+        self::modelBuild(Category::class);
+        self::$instance->argumentParse($arguments);
+        return self::$instance->modelProcess();
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function modelProcess()
+    {
+        self::$instance->query = Category::orderBy('categories.updated_at', 'desc');
+        self::$instance->filterAndPagination();
+        return self::$instance->query->get();
+    }
+
+    /**
+     * @param $value
+     */
+    public function nameFilter($value)
+    {
+        $this->query->where('name', 'like', '%' . $value . '%');
+    }
+
+    /**
+     * @param $value
+     */
+    public function idFilter($value)
+    {
+        $this->query->find($value);
     }
 }

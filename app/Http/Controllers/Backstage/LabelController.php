@@ -31,7 +31,7 @@ class LabelController extends Controller
 
     public function listData(Request $request)
     {
-        $labelsList = Label::getLabels(
+        $labelsList = Label::getModelData(
             $request->conditions, $request->page, $request->limit
         );
         $this->handleDataDisplay($labelsList);

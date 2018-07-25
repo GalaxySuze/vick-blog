@@ -14,8 +14,35 @@ use Illuminate\Database\Eloquent\Model;
 class BaseModel extends Model
 {
     const FILTER_NAME = 'Filter';
-
+    /**
+     * @var
+     */
+    public static $instance;
+    /**
+     * @var
+     */
     public $query;
+    /**
+     * @var
+     */
+    public $where;
+    /**
+     * @var
+     */
+    public $offset;
+    /**
+     * @var
+     */
+    public $limit;
+
+    /**
+     * @param string $model
+     * @return object
+     */
+    public static function modelBuild(string $model)
+    {
+        return self::$instance = (new $model);
+    }
 
     /**
      * @param array $conditions
@@ -31,6 +58,43 @@ class BaseModel extends Model
             }
         }
         return $this;
+    }
+
+    /**
+     * 过滤器/起始分页数/查询条数
+     * @param $arguments
+     */
+    public function argumentParse($arguments = null)
+    {
+        $offset = 1;
+        switch (count($arguments)) {
+            case 1:
+            case 2:
+                $where = $arguments[0];
+                $limit = self::$instance::count();
+                break;
+            case 3:
+                list($where, $offset, $limit) = $arguments;
+                break;
+            default:
+                $where = [];
+                $limit = self::$instance::count();
+        }
+        $this->where = $where;
+        $this->offset = $offset;
+        $this->limit = $limit;
+    }
+
+    /**
+     * 组装过滤和分页
+     */
+    public function filterAndPagination()
+    {
+        self::$instance->withFilter(self::$instance->where)
+            ->pagination(
+                self::$instance->offset,
+                self::$instance->limit
+            );
     }
 
     /**

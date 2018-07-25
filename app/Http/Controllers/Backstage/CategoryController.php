@@ -31,7 +31,7 @@ class CategoryController extends Controller
 
     public function listData(Request $request)
     {
-        $categoryList = Category::getCategories(
+        $categoryList = Category::getModelData(
             $request->conditions, $request->page, $request->limit
         );
         $this->handleDataDisplay($categoryList);

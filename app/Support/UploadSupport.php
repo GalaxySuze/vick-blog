@@ -16,12 +16,16 @@ class UploadSupport
 {
     const UPLOAD_TMP_DIR = 'tmp/';
     const UPLOAD_USED_DIR = 'used/';
-
+    /**
+     * @var array
+     */
     public static $uploadDirs = [
         self::UPLOAD_TMP_DIR,
         self::UPLOAD_USED_DIR,
     ];
-
+    /**
+     * @var string
+     */
     private $uploadDrive = 'upload';
 
     /**
@@ -66,10 +70,13 @@ class UploadSupport
      * @param $file
      * @throws \Throwable
      */
-    public function delFile($file)
+    public function delAllFile($file)
     {
-        throw_if(!$this->existsFile($file), \Throwable::class, '删除文件不存在!');
-        Storage::disk($this->uploadDrive)->delete($file);
+        foreach (self::$uploadDirs as $dir) {
+            if ($this->existsFile($dir . $file)) {
+                $this->delFile($dir . $file);
+            }
+        }
     }
 
     /**
@@ -85,13 +92,10 @@ class UploadSupport
      * @param $file
      * @throws \Throwable
      */
-    public function delAllFile($file)
+    public function delFile($file)
     {
-        foreach (self::$uploadDirs as $dir) {
-            if ($this->existsFile($dir . $file)) {
-                $this->delFile($dir . $file);
-            }
-        }
+        throw_if(!$this->existsFile($file), \Throwable::class, '删除文件不存在!');
+        Storage::disk($this->uploadDrive)->delete($file);
     }
 
     /**

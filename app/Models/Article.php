@@ -71,17 +71,25 @@ class Article extends BaseModel
     }
 
     /**
-     * @param array $conditions
-     * @param int $offset
-     * @param int $limit
+     * @param array ...$arguments
      * @return mixed
      */
-    public function getArticles($conditions = [], $offset = 1, $limit = 10)
+    public static function getModelData(...$arguments)
     {
-        $this->query = Article::leftJoin('users', 'users.id', '=', 'articles.user_id')
+        self::modelBuild(Article::class);
+        self::$instance->argumentParse($arguments);
+        return self::$instance->modelProcess();
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function modelProcess()
+    {
+        self::$instance->query = Article::leftJoin('users', 'users.id', '=', 'articles.user_id')
             ->orderBy('articles.updated_at', 'desc');
-        $this->withFilter($conditions)->pagination($offset, $limit);
-        return $this->query->get(['articles.*', 'users.name as created_user']);
+        self::$instance->filterAndPagination();
+        return self::$instance->query->get(['articles.*', 'users.name as created_user']);
     }
 
     /**

@@ -12,6 +12,7 @@ namespace App\Services\SearchServices;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Label;
+use App\Support\Helper;
 use App\Support\ToolkitSupport;
 
 class ArticleSearchService
@@ -104,7 +105,9 @@ class ArticleSearchService
      */
     public function setArticleCategories($categoryList = [])
     {
-        $categoryData = empty($categoryList) ? Category::getCategories([], 1, Category::count()) : $categoryList;
+        $categoryData = empty($categoryList)
+            ? Category::getModelData()
+            : $categoryList;
         return $this->customKV($categoryData, 'id', 'name');
     }
 
@@ -114,7 +117,9 @@ class ArticleSearchService
      */
     public function setArticleLabels($labelList = [])
     {
-        $labelData = empty($labelList) ? Label::getLabels([], 1, Label::count()) : $labelList;
+        $labelData = empty($labelList)
+            ? Label::getModelData()
+            : $labelList;
         return $this->customKV($labelData, 'id', 'label');
     }
 

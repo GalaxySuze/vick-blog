@@ -50,12 +50,11 @@ class ArticleController extends Controller
 
     /**
      * @param Request $request
-     * @param Article $article
      * @return array
      */
-    public function listData(Request $request, Article $article)
+    public function listData(Request $request)
     {
-        $articlesList = $article->getArticles(
+        $articlesList = Article::getModelData(
             $request->conditions, $request->page, $request->limit
         );
         $this->handleDataDisplay($articlesList);
@@ -74,9 +73,9 @@ class ArticleController extends Controller
             $item->delRoute = route($this->routeConf['del'], $item->id);
             $item->status = Article::$statusConf[$item->status];
             $item->label = implode(', ', $table->setArticleLabels(
-                Label::getLabels(['id' => $item->label])
+                Label::getModelData(['id' => $item->label])
             ));
-            $item->category = optional(Category::getCategories(['id' => $item->category]))->name;
+            $item->category = optional(Category::find($item->category))->name;
             $item->is_original = $item->is_original ? '是' : '否';
             $item->page_image = !empty($item->page_image) ? $upload->setFileUrl($item->page_image, true) : null;
         });
