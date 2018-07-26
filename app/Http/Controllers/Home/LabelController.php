@@ -15,11 +15,18 @@ class LabelController extends Controller
      */
     public $articleService;
 
+    /**
+     * LabelController constructor.
+     * @param HomePageController $homePageController
+     */
     public function __construct(HomePageController $homePageController)
     {
         $this->articleService = $homePageController;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function labelPage()
     {
         return view('home.label', [
@@ -28,6 +35,9 @@ class LabelController extends Controller
         ]);
     }
 
+    /**
+     * @return mixed
+     */
     public function getLabelList()
     {
         return $this->handleDisplay(
@@ -35,6 +45,10 @@ class LabelController extends Controller
         );
     }
 
+    /**
+     * @param $list
+     * @return mixed
+     */
     public function handleDisplay($list)
     {
         $articlesCount = [];

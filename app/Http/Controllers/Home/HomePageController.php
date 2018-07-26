@@ -49,7 +49,6 @@ class HomePageController extends Controller
      */
     public function homePage()
     {
-//        dd($this->getArticleList());
         return view('home.home', [
             'articles' => $this->getArticleList()
         ]);
@@ -87,10 +86,9 @@ class HomePageController extends Controller
         $tags = Helper::modelAll(Label::class);
         $uploadSupport = $this->uploadSupport;
         $STSupport = $this->STSupport;
-        return collect($item)->map(function ($v, $k) use (
-            $STSupport, $uploadSupport, $categories, $tags
-        ) {
-            $v['page_image'] = $v['page_image'] ? $uploadSupport->setFileUrl($v['page_image'], true)
+        return collect($item)->map(function ($v, $k) use ($STSupport, $uploadSupport, $categories, $tags) {
+            $v['page_image'] = $v['page_image']
+                ? $uploadSupport->setFileUrl($v['page_image'], true)
                 : app('url')->asset(self::DEFAULT_COVER);
             $v['category'] = $categories[$v['category']];
             $v['release_time'] = $STSupport->getSolarTerm($v['release_time']);

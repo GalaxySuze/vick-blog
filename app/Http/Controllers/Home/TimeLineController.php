@@ -10,7 +10,13 @@ use App\Http\Controllers\Controller;
 
 class TimeLineController extends Controller
 {
+    /**
+     * @var SolarTermSupport
+     */
     public $solarTerm;
+    /**
+     * @var HomePageController
+     */
     public $articleService;
 
     /**
@@ -82,8 +88,8 @@ class TimeLineController extends Controller
         $year = $request->year;
         $monthTmp = explode('_', $request->month);
         $month = end($monthTmp);
-        $articleList = Article::where('release_time', 'like', "{$year}-{$month}%")->get()->toArray();
-        $articles = $this->articleService->displayProcess($articleList);
-        return view('home.layouts.main.across-card-list', ['articles' => $articles]);
+        $articleList = Article::getTimeLineArticles("{$year}-{$month}")->toArray();
+        $articleList['data'] = $this->articleService->displayProcess($articleList['data']);
+        return view('home.layouts.main.across-card-list', ['articles' => $articleList]);
     }
 }

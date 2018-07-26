@@ -51,13 +51,25 @@ class Article extends BaseModel
     ];
 
     /**
+     * @param int $page
      * @return mixed
      */
-    public static function getReleaseArticles()
+    public static function getReleaseArticles($page = 4)
     {
         return Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)
             ->orderBy('release_time', 'desc')
-            ->paginate(4);
+            ->paginate($page);
+    }
+
+    /**
+     * @param $releaseTime
+     * @param int $page
+     * @return mixed
+     */
+    public static function getTimeLineArticles($releaseTime, $page = 2)
+    {
+        return Article::where('release_time', 'like', "$releaseTime%")
+            ->paginate($page);
     }
 
     /**

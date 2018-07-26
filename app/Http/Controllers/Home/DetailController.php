@@ -12,13 +12,24 @@ use App\Http\Controllers\Controller;
 
 class DetailController extends Controller
 {
+    /**
+     * @var Article
+     */
     public $model;
 
+    /**
+     * DetailController constructor.
+     * @param Article $article
+     */
     public function __construct(Article $article)
     {
         $this->model = $article;
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function detail($id)
     {
         $categories = Helper::modelAll(Category::class);
