@@ -26,9 +26,7 @@
 
     <div class="container">
         <!-- card list -->
-        @component('home.layouts.main.card-list', ['articles' => $articleList]) @endcomponent
+        @component('home.layouts.main.card-list', ['articles' => $articles ?? []]) @endcomponent
     </div>
-
-
 
 @endsection

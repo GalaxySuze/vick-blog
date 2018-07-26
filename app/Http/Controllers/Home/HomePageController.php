@@ -37,11 +37,7 @@ class HomePageController extends Controller
      * @param MarkdownSupport $markdownSupport
      * @param SolarTermSupport $solarTermSupport
      */
-    public function __construct(
-        UploadSupport $uploadSupport,
-        MarkdownSupport $markdownSupport,
-        SolarTermSupport $solarTermSupport
-    )
+    public function __construct(UploadSupport $uploadSupport, MarkdownSupport $markdownSupport, SolarTermSupport $solarTermSupport)
     {
         $this->uploadSupport = $uploadSupport;
         $this->MDSupport = $markdownSupport;
@@ -53,19 +49,20 @@ class HomePageController extends Controller
      */
     public function homePage()
     {
+//        dd($this->getArticleList());
         return view('home.home', [
             'articles' => $this->getArticleList()
         ]);
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getArticleList()
     {
-        return $this->handleDisplay(
-            Article::getReleaseArticles()->toArray()
-        );
+        $articleModel = Article::getReleaseArticles()->toArray();
+        $articleModel['data'] = $this->handleDisplay($articleModel['data']);
+        return $articleModel;
     }
 
     /**

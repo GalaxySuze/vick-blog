@@ -13,12 +13,20 @@ class TimeLineController extends Controller
     public $solarTerm;
     public $articleService;
 
+    /**
+     * TimeLineController constructor.
+     * @param SolarTermSupport $solarTermSupport
+     * @param HomePageController $homePageController
+     */
     public function __construct(SolarTermSupport $solarTermSupport, HomePageController $homePageController)
     {
         $this->solarTerm = $solarTermSupport;
         $this->articleService = $homePageController;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function timeLinePage()
     {
         return view('home.time-line', [
@@ -65,6 +73,10 @@ class TimeLineController extends Controller
         return $monthList;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function timeLineArticles(Request $request)
     {
         $year = $request->year;

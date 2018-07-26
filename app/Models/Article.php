@@ -57,7 +57,7 @@ class Article extends BaseModel
     {
         return Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)
             ->orderBy('release_time', 'desc')
-            ->get();
+            ->paginate(4);
     }
 
     /**

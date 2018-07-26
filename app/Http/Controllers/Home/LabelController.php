@@ -24,7 +24,7 @@ class LabelController extends Controller
     {
         return view('home.label', [
             'labelList' => $this->getLabelList(),
-            'articleList' => $this->articleService->getArticleList(),
+            'articles' => $this->articleService->getArticleList(),
         ]);
     }
 

@@ -23,7 +23,7 @@ class DetailController extends Controller
     {
         $categories = Helper::modelAll(Category::class);
         $tags = Helper::modelAll(Label::class);
-        list($post) = $this->model::getArticles(['id' => $id])->toArray();
+        list($post) = $this->model::getModelData(['id' => $id])->toArray();
         $post['category'] = $categories[$post['category']];
         $post['release_time_str'] = Carbon::parse($post['release_time'])->diffForHumans();
         foreach ($post['label'] as $key => $label) {
