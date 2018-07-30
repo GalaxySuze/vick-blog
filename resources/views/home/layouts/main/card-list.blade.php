@@ -31,25 +31,6 @@
     </div>
 
     <!-- pagination -->
-    <div class="section center-align">
-        <div class="row">
-            <div class="col s12 m12">
-                @if(isset($articles['current_page']))
-                    <ul class="pagination">
-                        <li class="{{ $articles['current_page'] == 1 ? 'disabled' : 'waves-effect' }}">
-                            <a href="{{ $articles['prev_page_url'] }}"><i class="material-icons">chevron_left</i></a>
-                        </li>
-                        @for($page = $articles['from']; $page <= $articles['to']; $page++)
-                            <li class="{{ $page == $articles['current_page'] ? 'active' : 'waves-effect' }}">
-                                <a href="{{ $page == $articles['current_page'] ? '#!' : $articles['path'] . '?page=' . $page }}">{{ $page }}</a>
-                            </li>
-                        @endfor
-                        <li class="{{ $articles['current_page'] == $articles['last_page'] ? 'disabled' : 'waves-effect' }}">
-                            <a href="{{ $articles['next_page_url'] }}"><i class="material-icons">chevron_right</i></a>
-                        </li>
-                    </ul>
-                @endif
-            </div>
-        </div>
-    </div>
+    @component('home.layouts.main.pagination-list', ['pagination' => $articles])@endcomponent
+
 </div>
