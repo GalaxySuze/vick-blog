@@ -66,8 +66,10 @@ class Article extends BaseModel
      * @param int $page
      * @return mixed
      */
-    public static function getTimeLineArticles($releaseTime, $page = 2)
+    public static function getTimeLineArticles($releaseTime, $page = 10)
     {
+        //TODO: 时间轴分页
+        $page = Article::count();
         return Article::where('release_time', 'like', "$releaseTime%")
             ->paginate($page);
     }

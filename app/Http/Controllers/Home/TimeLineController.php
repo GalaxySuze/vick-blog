@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 class TimeLineController extends Controller
 {
+    const DATA_SEPARATOR = '-';
     /**
      * @var SolarTermSupport
      */
@@ -74,7 +75,7 @@ class TimeLineController extends Controller
     {
         $monthList = $this->solarTerm->months;
         foreach ($monthList as $monthNo => &$monthStr) {
-            $monthStr['en'] = $monthStr['en'] . '_' . $monthNo;
+            $monthStr['en'] = $monthStr['en'] . self::DATA_SEPARATOR . $monthNo;
         }
         return $monthList;
     }
@@ -85,9 +86,9 @@ class TimeLineController extends Controller
      */
     public function timeLineArticles(Request $request)
     {
-        dump($request->all());
+        sleep(3);
         $year = $request->year;
-        $monthTmp = explode('_', $request->month);
+        $monthTmp = explode(self::DATA_SEPARATOR, $request->month);
         $month = end($monthTmp);
         $articleList = Article::getTimeLineArticles("{$year}-{$month}")->toArray();
         $articleList['data'] = $this->articleService->displayProcess($articleList['data']);

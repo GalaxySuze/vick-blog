@@ -49,7 +49,15 @@ class HomePageController extends Controller
      */
     public function homePage()
     {
-        return view('home.home', [
+        return view('home.home');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function articlesList()
+    {
+        return view('home.layouts.main.card-list', [
             'articles' => $this->getArticleList()
         ]);
     }

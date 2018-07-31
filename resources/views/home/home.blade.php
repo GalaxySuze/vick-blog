@@ -196,7 +196,13 @@
         @component('home.layouts.main.search-bar') @endcomponent
 
         <!-- card list -->
-        @component('home.layouts.main.card-list', [ 'articles' => $articles ?? []]) @endcomponent
+        <div class="section card-list-box">
+            <div class="section center-align">
+                <div class="progress">
+                    <div class="indeterminate red accent-1"></div>
+                </div>
+            </div>
+        </div>
 
     @show
 </main>
@@ -244,9 +250,7 @@
 
         $('.collapsible').collapsible();
 
-        $('.carousel, .carousel-slider').carousel({
-            full_width: true
-        });
+        $('.carousel, .carousel-slider').carousel({full_width: true});
 
         $('#outlineBtn').dropdown({
             constrain_width: false, // 自动宽度
@@ -277,14 +281,30 @@
         });
         @endif
 
+        function cardListData(pageHref) {
+            $.get(pageHref, {}, function (listView) {
+                $('.card-list-box').html(listView);
+            });
+        }
+
+        $("body").on('click', '.pagination-href', function () {
+            var pageHref = $(this).attr('href');
+            cardListData(pageHref);
+            return false;
+        });
+
+        if ($('.card-list-box').length > 0) {
+            cardListData('{{ url('home/articles-list') }}');
+        }
+
         $(".month-li").click(function () {
             var monthVal = $(this).find('a').attr('href');
             var yearVal = $('.year-tab-bar').children('.active').text();
-            $.get("{{ url('home/time-line/articles') }}", {'month': monthVal, 'year': yearVal}, function (result) {
-                $('#time-line-article').html(result);
-            })
+            $.get("{{ url('home/time-line/articles') }}", {'month': monthVal, 'year': yearVal}, function (listView) {
+                $('#time-line-article').html(listView);
+            });
         });
-        $("[href='#January_01']").trigger('click');
+        $("[href='#2017-January-01']").trigger('click');
     });
 </script>
 
