@@ -26,11 +26,7 @@
                 @endforeach
             </div>
             <!-- articles -->
-            <div id="time-line-article" class="col s12 m12">
-                <div class="progress">
-                    <div class="indeterminate red accent-1"></div>
-                </div>
-            </div>
+            <div id="time-line-article" class="col s12 m12"></div>
         </div>
     </div>
 @endsection

@@ -26,13 +26,7 @@
 
     <div class="container">
         <!-- card list -->
-        <div class="section card-list-box">
-            <div class="section center-align">
-                <div class="progress">
-                    <div class="indeterminate red accent-1"></div>
-                </div>
-            </div>
-        </div>
+        <div class="section card-list-box"></div>
     </div>
 
 @endsection

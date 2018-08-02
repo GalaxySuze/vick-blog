@@ -37,6 +37,10 @@
             background-color: #f5f8fa;
         }
 
+        ::-webkit-scrollbar{
+            display:none;
+        }
+
         main {
             flex: 1 0 auto;
         }
@@ -196,15 +200,11 @@
         @component('home.layouts.main.search-bar') @endcomponent
 
         <!-- card list -->
-        <div class="section card-list-box">
-            <div class="section center-align">
-                <div class="progress">
-                    <div class="indeterminate red accent-1"></div>
-                </div>
-            </div>
-        </div>
+        <div class="section card-list-box"></div>
+@show
 
-    @show
+    <!-- loading bar -->
+    @include('home.layouts.main.loading-bar')
 </main>
 
 <!-- footer -->
@@ -246,7 +246,6 @@
         // $('.parallax').parallax();
         $('.scrollspy').scrollSpy();
         $('.slider').slider({full_width: true});
-        $('ul.tabs').tabs('select_tab', 'month-tab-2016');
 
         $('.collapsible').collapsible();
 
@@ -281,30 +280,43 @@
         });
         @endif
 
+        // 初始化模态层
+        $('.modal').modal({
+            dismissible: false,
+            opacity: .1
+        });
         function cardListData(pageHref) {
+            $("#loading-bar").modal('open');
             $.get(pageHref, {}, function (listView) {
-                $('.card-list-box').html(listView);
+                $(".card-list-box").html(listView);
+                $("#loading-bar").modal('close');
+                return false;
             });
         }
-
         $("body").on('click', '.pagination-href', function () {
             var pageHref = $(this).attr('href');
-            cardListData(pageHref);
+            if (pageHref !== 'javascript:;') {
+                cardListData(pageHref);
+            }
+            // 阻止a链接跳转
             return false;
         });
-
-        if ($('.card-list-box').length > 0) {
+        if ($(".card-list-box").length > 0) {
             cardListData('{{ url('home/articles-list') }}');
         }
 
         $(".month-li").click(function () {
             var monthVal = $(this).find('a').attr('href');
             var yearVal = $('.year-tab-bar').children('.active').text();
+            $("#loading-bar").modal('open');
             $.get("{{ url('home/time-line/articles') }}", {'month': monthVal, 'year': yearVal}, function (listView) {
                 $('#time-line-article').html(listView);
+                $("#loading-bar").modal('close');
             });
         });
-        $("[href='#2017-January-01']").trigger('click');
+        if ($("[href='#2017-January-01']").length > 0) {
+            $("[href='#2017-January-01']").trigger('click');
+        }
     });
 </script>
 

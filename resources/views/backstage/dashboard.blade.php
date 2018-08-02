@@ -245,6 +245,7 @@
             });
         }
 
+        // 时间插件
         layuiDate.render({
             elem: '#release_time'
         });
@@ -327,7 +328,6 @@
             } else if (layEvent === 'edit') { //编辑
                 window.location.href = row.editRoute;
             }
-
         });
 
         @yield('scriptMain')

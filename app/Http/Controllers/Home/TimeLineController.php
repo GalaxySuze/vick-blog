@@ -86,7 +86,6 @@ class TimeLineController extends Controller
      */
     public function timeLineArticles(Request $request)
     {
-        sleep(3);
         $year = $request->year;
         $monthTmp = explode(self::DATA_SEPARATOR, $request->month);
         $month = end($monthTmp);
