@@ -19,11 +19,17 @@ Route::get('/', function () {
 })->name('home.index');
 
 Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
+    // 主页
     Route::get('home-page', 'HomePageController@homePage')->name('home.home-page');
+    // 文章列表
     Route::get('articles-list', 'HomePageController@articlesList')->name('home.articles-list');
+    // 文章详情
     Route::get('detail/{id}', 'DetailController@detail')->name('home.detail');
+    // 标签页
     Route::get('label', 'LabelController@labelPage')->name('home.label-page');
+    // 时间轴
     Route::get('time-line', 'TimeLineController@timeLinePage')->name('home.time-line-page');
+    // 时间轴文章列表
     Route::get('time-line/articles', 'TimeLineController@timeLineArticles')->name('home.time-line.articles');
 
     Route::get('about', function () {

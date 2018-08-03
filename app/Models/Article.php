@@ -51,14 +51,17 @@ class Article extends BaseModel
     ];
 
     /**
+     * @param array $where
      * @param int $page
      * @return mixed
      */
-    public static function getReleaseArticles($page = 4)
+    public static function getReleaseArticles($where = [], $page = 4)
     {
-        return Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)
-            ->orderBy('release_time', 'desc')
-            ->paginate($page);
+        $query = Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)->orderBy('release_time', 'desc');
+        if (!empty($where['label'])) {
+            $query->whereRaw("FIND_IN_SET({$where['label']}, 'labelx')");
+        }
+        return $query->paginate($page);
     }
 
     /**
@@ -70,8 +73,7 @@ class Article extends BaseModel
     {
         //TODO: 时间轴分页
         $page = Article::count();
-        return Article::where('release_time', 'like', "$releaseTime%")
-            ->paginate($page);
+        return Article::where('release_time', 'like', "$releaseTime%")->paginate($page);
     }
 
     /**
@@ -143,7 +145,7 @@ class Article extends BaseModel
      */
     public function labelFilter($value)
     {
-        $this->query->where('articles.label', 'like', '%' . $value . '%');
+        $this->query->where('articles.label', 'like', "%, $value,%");
     }
 
     /**

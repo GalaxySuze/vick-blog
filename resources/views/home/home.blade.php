@@ -285,6 +285,7 @@
             dismissible: false,
             opacity: .1
         });
+        // 文章数据ajax
         function cardListData(pageHref) {
             $("#loading-bar").modal('open');
             $.get(pageHref, {}, function (listView) {
@@ -293,18 +294,25 @@
                 return false;
             });
         }
+        // 分页请求
         $("body").on('click', '.pagination-href', function () {
             var pageHref = $(this).attr('href');
             if (pageHref !== 'javascript:;') {
                 cardListData(pageHref);
             }
-            // 阻止a链接跳转
+            return false; // 阻止a链接跳转
+        });
+        // 标签搜索
+        $(".label-btn").click(function () {
+            var labelHref = $(this).attr('href');
+            cardListData(labelHref);
             return false;
         });
+        // 页面文章列表初始化
         if ($(".card-list-box").length > 0) {
             cardListData('{{ url('home/articles-list') }}');
         }
-
+        // 时间轴文章ajax
         $(".month-li").click(function () {
             var monthVal = $(this).find('a').attr('href');
             var yearVal = $('.year-tab-bar').children('.active').text();
@@ -314,6 +322,7 @@
                 $("#loading-bar").modal('close');
             });
         });
+        // 时间轴页面文章初始化
         if ($("[href='#2017-January-01']").length > 0) {
             $("[href='#2017-January-01']").trigger('click');
         }

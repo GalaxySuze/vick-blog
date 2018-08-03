@@ -193,7 +193,7 @@ class ArticleController extends Controller
         list($input['outline'], $input['content']) = $this->generatedOutline(
             $mdSupport->parse($input['content'])
         );
-        $input['label'] = array_keys($input['label']);
+        $input['label'] = ['label' => array_keys($input['label'])];
         $input['user_id'] = 1; //TODO: 用户登录的id
         $input['is_original'] = empty($input['is_original']) ? 0 : 1;
     }

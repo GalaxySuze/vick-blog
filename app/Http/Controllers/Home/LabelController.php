@@ -52,15 +52,18 @@ class LabelController extends Controller
     public function handleDisplay($list)
     {
         $articlesCount = [];
-        foreach (Article::all(['label'])->toArray() as $item) {
+        $articles = Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)->get(['id', 'status','label'])->toArray();
+        foreach ($articles as $item) {
             foreach (array_get($item, 'label') as $labelTime) {
                 if (array_key_exists($labelTime, $articlesCount)) {
+//                    if ($labelTime == 5) dump($item);
                     $articlesCount[$labelTime]['count'] ++;
                 } else {
                     $articlesCount[$labelTime]['count'] = 1;
                 }
             }
         }
+//        dd($articlesCount);
         foreach ($list as $labelId => &$labelItem) {
             $labelItem['articleTotal'] = $articlesCount[$labelId]['count'] ?? 0;
         }

@@ -12,6 +12,7 @@ use App\Support\ToolkitSupport;
 use App\Support\UploadSupport;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {
@@ -53,21 +54,23 @@ class HomePageController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function articlesList()
+    public function articlesList(Request $request)
     {
         return view('home.layouts.main.card-list', [
-            'articles' => $this->getArticleList()
+            'articles' => $this->getArticleList($request->all())
         ]);
     }
 
     /**
+     * @param array $where
      * @return mixed
      */
-    public function getArticleList()
+    public function getArticleList($where = [])
     {
-        $articleModel = Article::getReleaseArticles()->toArray();
+        $articleModel = Article::getReleaseArticles($where)->toArray();
         $articleModel['data'] = $this->handleDisplay($articleModel['data']);
         return $articleModel;
     }
