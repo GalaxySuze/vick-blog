@@ -55,7 +55,7 @@ class Article extends BaseModel
      * @param int $page
      * @return mixed
      */
-    public static function getReleaseArticles($where = [], $page = 4)
+    public static function getReleaseArticles($where = [], $page = 16)
     {
         $query = Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)->orderBy('release_time', 'desc');
         if (!empty($where['label'])) {

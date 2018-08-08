@@ -36,12 +36,11 @@ class BaseModel extends Model
     public $limit;
 
     /**
-     * @param string $model
-     * @return mixed
+     * @return object
      */
-    public static function modelBuild(string $model): object
+    public static function modelBuild(): object
     {
-        return self::$instance = (new $model);
+        return self::$instance = new static();
     }
 
     /**

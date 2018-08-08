@@ -1,10 +1,10 @@
-<div class="row">
+<div class="row" id="normal-card">
     <!-- articles -->
     @if(isset($articles['data']))
         @foreach($articles['data'] as $articleList)
             <div class="col s12 m3">
                 @foreach($articleList as $item)
-                    <div class="card z-depth-2 hoverable">
+                    <div class="card z-depth-2 hoverable hover-link">
                         <div class="card-image">
                             <img src="{{ $item['page_image'] }}">
                             <span class="card-title">{{ $item['release_time'] }}</span>

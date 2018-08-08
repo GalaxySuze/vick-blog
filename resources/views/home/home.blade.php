@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
+    <!-- 滑动过渡动画 -->
+    {{--<script src="https://unpkg.com/scrollreveal"></script>--}}
+
     <style>
         html {
             height: 100%;
@@ -37,8 +40,8 @@
             background-color: #f5f8fa;
         }
 
-        ::-webkit-scrollbar{
-            display:none;
+        ::-webkit-scrollbar {
+            display: none;
         }
 
         main {
@@ -90,6 +93,28 @@
             100% {
                 background-color: #98A9F9;
             }
+        }
+
+        #normal-card > .card {
+            visibility: hidden;
+        }
+
+        #loading-bar {
+            /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/
+            border-radius:50%;
+            background-image: url("{{ asset('img/mascot-vicky.gif') }}");
+            /*开车送花*/
+            width: 205px;
+            height: 205px;
+            background-position: 53% 58%;
+            /*奔奔跳跳*/
+            /*width: 175px;*/
+            /*height: 175px;*/
+            /*background-position: 106% 18%;*/
+            /*洗澡*/
+            /*width: 195px;*/
+            /*height: 195px;*/
+            /*background-position: 54% 18%;*/
         }
 
         #vicky:hover {
@@ -239,6 +264,7 @@
 </footer>
 </body>
 <script>
+    // ScrollReveal({ reset: true });
     $(document).ready(function () {
         // 代码高亮
         hljs.initHighlightingOnLoad();
@@ -283,17 +309,22 @@
         // 初始化模态层
         $('.modal').modal({
             dismissible: false,
-            opacity: .1
+            opacity: .1,
+            starting_top: '30%',
+            ending_top: '30%'
         });
+
         // 文章数据ajax
         function cardListData(pageHref) {
             $("#loading-bar").modal('open');
             $.get(pageHref, {}, function (listView) {
                 $(".card-list-box").html(listView);
+                // ScrollReveal().reveal('.card');
                 $("#loading-bar").modal('close');
                 return false;
             });
         }
+
         // 分页请求
         $("body").on('click', '.pagination-href', function () {
             var pageHref = $(this).attr('href');

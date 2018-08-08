@@ -46,6 +46,9 @@ Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
 });
 
 Route::group(['prefix' => 'backstage', 'namespace' => '\Backstage'], function () {
+    // 登录页
+    Route::get('login', 'LoginController@login')->name('backstage.login');
+
     // 后台首页
     Route::get('dashboard', 'DashboardController@index')->name('backstage.dashboard');
 

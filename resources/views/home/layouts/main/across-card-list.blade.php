@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section" id="across-card">
     <div class="row">
         <!-- articles -->
         @if(isset($articles['data']))
