@@ -103,9 +103,11 @@ class HomePageController extends Controller
                 : app('url')->asset(self::DEFAULT_COVER);
             $v['category'] = $categories[$v['category']];
             $v['release_time'] = $STSupport->getSolarTerm($v['release_time']);
-            foreach ($v['label'] as $key => $label) {
-                $v['label'][$key] = $tags[$label];
+            $labels = $v['label']['labels'];
+            foreach ($labels as $key => $label) {
+                $labels[$key] = $tags[$label];
             }
+            $v['label'] = $labels;
             return $v;
         })->toArray();
     }

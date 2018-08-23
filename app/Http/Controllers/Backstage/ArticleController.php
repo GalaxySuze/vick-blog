@@ -17,6 +17,8 @@ use Illuminate\Support\Carbon;
 
 class ArticleController extends Controller
 {
+    const OUTLINE_TAGS = 'h4';
+
     /**
      * @var string
      */
@@ -73,7 +75,7 @@ class ArticleController extends Controller
             $item->delRoute = route($this->routeConf['del'], $item->id);
             $item->status = Article::$statusConf[$item->status];
             $item->label = implode(', ', $table->setArticleLabels(
-                Label::getModelData(['id' => $item->label])
+                Label::getModelData(['id' => $item->label['labels']])
             ));
             $item->category = optional(Category::find($item->category))->name;
             $item->is_original = $item->is_original ? '是' : '否';
@@ -193,7 +195,7 @@ class ArticleController extends Controller
         list($input['outline'], $input['content']) = $this->generatedOutline(
             $mdSupport->parse($input['content'])
         );
-        $input['label'] = ['label' => array_keys($input['label'])];
+        $input['label'] = ['labels' => array_keys($input['label'])];
         $input['user_id'] = 1; //TODO: 用户登录的id
         $input['is_original'] = empty($input['is_original']) ? 0 : 1;
     }
@@ -203,7 +205,7 @@ class ArticleController extends Controller
      * @param string $htmlTags
      * @return array
      */
-    public function generatedOutline(string $content, string $htmlTags = 'h2')
+    public function generatedOutline(string $content, string $htmlTags = self::OUTLINE_TAGS)
     {
         // 获取所有的标题数
         $titleNumber = substr_count($content, "<$htmlTags>");

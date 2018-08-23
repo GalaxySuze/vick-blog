@@ -14,23 +14,27 @@
 
     <!-- font -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Let browser know website is optimized for mobile-->
+    <!-- Let browser know website is optimized for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <!-- js -->
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('materialize/js/materialize.min.js') }}"></script>
 
-    <!-- highlight -->
+    <!-- highlight - 代码高亮 -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
     <!-- 滑动过渡动画 -->
     {{--<script src="https://unpkg.com/scrollreveal"></script>--}}
 
+    <!-- 网页内容排版 -->
+    {{--<link rel="stylesheet" href="{{ asset('typo/content-typo.css') }}">--}}
+
     <style>
         html {
             height: 100%;
+            font-family: "Helvetica Neue", NotoSansHans-Regular,AvenirNext-Regular,arial,Hiragino Sans GB,"Microsoft Yahei","Hiragino Sans GB","WenQuanYi Micro Hei",sans-serif;
         }
 
         body {
@@ -98,6 +102,35 @@
         #normal-card > .card {
             visibility: hidden;
         }
+
+        .content-typo > p {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .content-typo > blockquote {
+            margin: 20px 0;
+            padding: 1.5rem;
+            border-left: 6px solid #ee6e73;
+            color: #8796A8;
+            word-break: break-all;
+
+            position: relative;
+            background: #f5f8fc;
+            background: linear-gradient(-150deg, transparent 1.5em, #ffffff 0);
+        }
+
+        .content-typo > blockquote::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            background: linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.2) 0, rgba(0,0,0,.4)) 100% 0 no-repeat;
+            width: 1.73em;
+            height: 3em;
+            transform: translateY(-1.3em) rotate(-30deg);
+            transform-origin: bottom right;
+            border-bottom-left-radius: inherit;
+            box-shadow: -.2em .2em .3em -.1em rgba(0,0,0,.15);
+        }
+
 
         #loading-bar {
             /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/

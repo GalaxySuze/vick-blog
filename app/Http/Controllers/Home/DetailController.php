@@ -37,9 +37,11 @@ class DetailController extends Controller
         list($post) = $this->model::getModelData(['id' => $id])->toArray();
         $post['category'] = $categories[$post['category']];
         $post['release_time_str'] = Carbon::parse($post['release_time'])->diffForHumans();
-        foreach ($post['label'] as $key => $label) {
-            $post['label'][$key] = $tags[$label];
+        $labels = $post['label']['labels'];
+        foreach ($labels as $key => $label) {
+            $labels[$key] = $tags[$label];
         }
+        $post['label'] = $labels;
         return view('home.detail', ['detail' => $post]);
     }
 }

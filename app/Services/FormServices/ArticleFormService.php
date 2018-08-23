@@ -105,7 +105,7 @@ class ArticleFormService
                         'required' => true,
                         'label' => '分类',
                         'placeholder' => '',
-                        'value' => optional($this->articelInfo)->category,
+                        'value' => optional($this->articelInfo)->category ?? [],
                         'options' => $this->setArticleCategories(),
                     ],
                     [
@@ -127,7 +127,7 @@ class ArticleFormService
                         'required' => true,
                         'label' => '标签',
                         'placeholder' => '请输入文章标签',
-                        'value' => optional($this->articelInfo)->label,
+                        'value' => $this->getArticleLabels($this->articelInfo),
                         'options' => $this->setArticleLabels(),
                     ],
                 ]
@@ -149,6 +149,20 @@ class ArticleFormService
         return $form;
     }
 
+    /**
+     * @param $labelData
+     * @return array
+     */
+    public function getArticleLabels($labelData)
+    {
+        $label = optional($labelData)->label;
+        return $label ? $label['labels'] : [];
+    }
+
+    /**
+     * @param array $labelList
+     * @return array
+     */
     public function setArticleLabels($labelList = [])
     {
         $labelData = empty($labelList)
@@ -157,6 +171,10 @@ class ArticleFormService
         return $this->customKV($labelData, 'id', 'label');
     }
 
+    /**
+     * @param array $categoryList
+     * @return array
+     */
     public function setArticleCategories($categoryList = [])
     {
         $categoryData = empty($categoryList)
