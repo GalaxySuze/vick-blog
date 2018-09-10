@@ -50,7 +50,7 @@ class HomePageController extends Controller
      */
     public function homePage()
     {
-        return view('home.home');
+        return view('home.home', ['index' => true]);
     }
 
     /**

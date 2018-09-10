@@ -3,28 +3,20 @@
 @section('content')
     <!-- 目录 -->
     @section('outlineBar')
-        <div class="hide-on-med-and-down">
-            <ul id="outlineLi" class="dropdown-content">
-                @if(!empty($detail['outline']))
-                    @foreach($detail['outline'] as $outline)
-                        <li><a href="#{{ $outline['titleId'] }}">
-                                <b>{{ $outline['outlineTitle'] }}</b>
-                            </a></li>
-                    @endforeach
-                @endif
-            </ul>
-            <nav>
-                <div class="nav-wrapper theme-color-gradient">
-                    <ul class="right">
-                        <li>
-                            <a class="dropdown-button" href="#" data-activates="outlineLi" id="outlineBtn">
-                                目录<i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+        <li>
+            <a class="dropdown-button" href="#" data-activates="outlineLi" id="outlineBtn">
+                目录<i class="material-icons right">arrow_drop_down</i>
+            </a>
+        </li>
+        <ul id="outlineLi" class="dropdown-content">
+            @if(!empty($detail['outline']))
+                @foreach($detail['outline'] as $outline)
+                    <li><a href="#{{ $outline['titleId'] }}">
+                            <b>{{ $outline['outlineTitle'] }}</b>
+                        </a></li>
+                @endforeach
+            @endif
+        </ul>
     @endsection
 
     <div class="section">
@@ -70,23 +62,6 @@
             <!-- 文章内容 -->
             <div class="col s12 m12 content-typo">
                 {!! $detail['content'] !!}
-            </div>
-
-            <!-- 图钉 -->
-            <div class="fixed-action-btn horizontal left">
-                <a class="btn-floating btn-large grey">
-                    <i class="large material-icons">menu</i>
-                </a>
-                <ul>
-                    <li>
-                        <a href="#" class="btn-floating red slide-comments-btn" data-activates="slide-comments">
-                            <i class="material-icons">textsms</i>
-                        </a>
-                    </li>
-                    <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-                    <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-                    <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-                </ul>
             </div>
 
             <!-- 评论功能 -->

@@ -12,13 +12,14 @@
 */
 
 use App\Support\Helper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect(route('home.home-page'));
 })->name('home.index');
 
-Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
+Route::group(['prefix' => 'home', 'namespace' => '\Home', 'middleware' => 'auth'], function () {
     // 主页
     Route::get('home-page', 'HomePageController@homePage')->name('home.home-page');
     // 文章列表
@@ -78,3 +79,6 @@ Route::group(['prefix' => 'backstage', 'namespace' => '\Backstage'], function ()
 //    Route::post('category/edit', 'CategoryController@edit')->name('backstage.category.edit');
 //    Route::get('category/del/{id}', 'CategoryController@delCategory')->name('backstage.category.del');
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
