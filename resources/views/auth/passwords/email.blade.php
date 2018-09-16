@@ -1,40 +1,45 @@
-@extends('layouts.app')
+@extends('home.home')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+@section('body')
+    <div class="container">
+        <div class="row" style="margin: 5% auto;">
+            <div class="col s12 m12 l12 center">
+                <div class="col s12 m12 l6 push-l3">
+                    <div class="card-panel blue-grey lighten-5 z-depth-1">
+                        <div class="section valign-wrapper">
+                            <div class="col s2">
+                                <img src="{{ asset('img/cat.jpg') }}" alt="" class="circle responsive-img">
+                            </div>
+                            <div class="col s10">
+                              <span class="black-text">
+                                  @if ($errors->has('email'))
+                                      <blockquote>
+                                          <strong class="red-text">{{ $errors->first('email') }}</strong>
+                                      </blockquote>
+                                  @else
+                                      「 微云谈河汉，疏雨滴梧桐。 」
+                                  @endif
+                              </span>
                             </div>
                         </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l6 push-l3" style="margin-top: 16px;">
+                <div class="row">
+                    <form class="col s12" action="{{ route('password.email') }}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input id="email" name="email" type="email" class="validate" autocomplete="off" value="{{ old('email') }}">
+                                <label for="email">邮箱</label>
+                            </div>
+                        </div>
+                        <div class="row center">
+                            <div class="input-field col s12">
+                                <button class="btn waves-effect blue accent-1" type="submit" name="action">
+                                    <i class="material-icons right">send</i>发送密码重置链接
                                 </button>
                             </div>
                         </div>
@@ -43,5 +48,11 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
+
+@section('scriptContent')
+    @if (session('status'))
+        Materialize.toast('{{ session('status') }}', 3000)
+    @endif
+@endsection
+

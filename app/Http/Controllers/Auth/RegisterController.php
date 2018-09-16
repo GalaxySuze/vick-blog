@@ -49,10 +49,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:20|min:2',
+            'email' => 'required|email|max:50|unique:users',
             'password' => 'required|string|min:6|confirmed',
-        ]);
+            'captcha' => 'required|captcha',
+        ], $this->validateMessages());
     }
 
     /**
@@ -68,5 +69,16 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function validateMessages()
+    {
+        return [
+            'captcha.required' => '请输入验证码。',
+            'captcha.captcha' => '验证码不匹配。',
+        ];
     }
 }

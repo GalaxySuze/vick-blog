@@ -41,6 +41,9 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+// 自定义多语言包
+$app->register(Overtrue\LaravelLang\TranslationServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

@@ -20,6 +20,10 @@
                                       <blockquote>
                                           <strong class="red-text">{{ $errors->first('password') }}</strong>
                                       </blockquote>
+                                  @elseif ($errors->has('captcha'))
+                                      <blockquote>
+                                          <strong class="red-text">{{ $errors->first('captcha') }}</strong>
+                                      </blockquote>
                                   @else
                                       「 闭门即是深山，读书随处净土。 」
                                   @endif
@@ -43,18 +47,18 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">vpn_key</i>
-                                <input id="password" name="password" type="text" class="validate" autocomplete="off">
+                                <input id="password" name="password" type="password" class="validate" autocomplete="off">
                                 <label for="password">密码</label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s12 m9 l9">
+                            <div class="input-field col s12 m8 l8">
                                 <i class="material-icons prefix">lock_open</i>
-                                <input id="auth_code" type="text" class="validate" autocomplete="off">
-                                <label for="auth_code">验证码</label>
+                                <input id="captcha" name="captcha" type="text" class="validate" autocomplete="off">
+                                <label for="captcha">验证码</label>
                             </div>
-                            <div class="input-field col s12 m3 l3">
-                                <div style="width: 150px; height: 50px; border: 1px black solid; text-align: center; font-size: 30px;">7UOX</div>
+                            <div class="input-field col s12 m4 l4 center">
+                                <img src="{{ captcha_src('flat') }}" class="z-depth-2" alt="验证码" onclick="this.src='/captcha/flat?'+Math.random()">
                             </div>
                         </div>
                         <div class="row center">
@@ -78,4 +82,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scriptContent')
+    Materialize.toast('欢迎登录 Vick ` Blog', 3000)
 @endsection

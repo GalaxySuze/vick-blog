@@ -40,6 +40,8 @@ class HomePageController extends Controller
      */
     public function __construct(UploadSupport $uploadSupport, MarkdownSupport $markdownSupport, SolarTermSupport $solarTermSupport)
     {
+        $this->middleware('auth');
+
         $this->uploadSupport = $uploadSupport;
         $this->MDSupport = $markdownSupport;
         $this->STSupport = $solarTermSupport;

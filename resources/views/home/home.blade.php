@@ -227,10 +227,10 @@
                     <ul class="right">
                         @guest
                             <li>
-                                <a href="#" class="waves-effect">登录</a>
+                                <a href="{{ route('login') }}" class="waves-effect">登录</a>
                             </li>
                             <li>
-                                <a href="#" class="waves-effect">注册</a>
+                                <a href="{{ route('register') }}" class="waves-effect">注册</a>
                             </li>
                         @else
                             <li class="hide-on-med-and-down">
@@ -454,6 +454,8 @@
         if ($("[href='#2017-January-01']").length > 0) {
             $("[href='#2017-January-01']").trigger('click');
         }
+
+        @yield('scriptContent')
     });
 </script>
 
