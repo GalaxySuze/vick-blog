@@ -64,7 +64,7 @@
         }
 
         .card-content > a {
-            color: #09003f
+            color: #09003f;
         }
 
         .comments-href {
@@ -135,6 +135,16 @@
             transform-origin: bottom right;
             border-bottom-left-radius: inherit;
             box-shadow: -.2em .2em .3em -.1em rgba(0, 0, 0, .15);
+        }
+
+        .content-typo > img {
+            margin-left: auto;
+            margin-right:auto;
+            display:block;
+        }
+
+        .anchor-top {
+            top:50%;
         }
 
         #loading-bar {
@@ -338,9 +348,7 @@
     $(document).ready(function () {
         // 代码高亮
         hljs.initHighlightingOnLoad();
-        // Materialize.fadeInImage('#cover');
-        // $('.parallax').parallax();
-        $('.scrollspy').scrollSpy();
+
         $('.slider').slider({full_width: true});
 
         $('.collapsible').collapsible();
@@ -352,17 +360,10 @@
             belowOrigin: true // 下拉列表在触发的下方显示
         });
 
-        // 登录
-        $("#email").focus(function () {
-            $("#login-cover").removeClass('login-cover-img-1 login-cover-img-3').addClass('login-cover-img-2');
-        }).blur(function () {
-            $("#login-cover").removeClass('login-cover-img-2 login-cover-img-3').addClass('login-cover-img-1');
-        });
-
-        $("#password").focus(function () {
-            $("#login-cover").removeClass('login-cover-img-1 login-cover-img-2').addClass('login-cover-img-3');
-        }).blur(function () {
-            $("#login-cover").removeClass('login-cover-img-2 login-cover-img-3').addClass('login-cover-img-1');
+        $('#outlineLi > li > a').click(function () {
+            $('html,body').animate({
+                scrollTop: $(this.hash).offset().top - 80
+            }, 1000);
         });
 
         // card-container 改变文章排版

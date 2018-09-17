@@ -59,7 +59,7 @@ class Article extends BaseModel
     {
         $query = Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)->orderBy('release_time', 'desc');
         if (!empty($where['label'])) {
-            $query->whereRaw("FIND_IN_SET({$where['label']}, 'labelx')");
+            $query->whereRaw('json_contains(label, ?, "$.labels")', $where['label']);
         }
         return $query->paginate($page);
     }

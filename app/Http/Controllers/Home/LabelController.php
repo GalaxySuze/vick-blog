@@ -54,16 +54,14 @@ class LabelController extends Controller
         $articlesCount = [];
         $articles = Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)->get(['id', 'status','label'])->toArray();
         foreach ($articles as $item) {
-            foreach (array_get($item, 'label') as $labelTime) {
+            foreach (array_get($item, 'label.labels') as $labelTime) {
                 if (array_key_exists($labelTime, $articlesCount)) {
-//                    if ($labelTime == 5) dump($item);
                     $articlesCount[$labelTime]['count'] ++;
                 } else {
                     $articlesCount[$labelTime]['count'] = 1;
                 }
             }
         }
-//        dd($articlesCount);
         foreach ($list as $labelId => &$labelItem) {
             $labelItem['articleTotal'] = $articlesCount[$labelId]['count'] ?? 0;
         }

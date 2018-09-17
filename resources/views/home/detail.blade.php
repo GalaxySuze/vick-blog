@@ -11,9 +11,11 @@
         <ul id="outlineLi" class="dropdown-content">
             @if(!empty($detail['outline']))
                 @foreach($detail['outline'] as $outline)
-                    <li><a href="#{{ $outline['titleId'] }}">
+                    <li>
+                        <a href="#{{ $outline['titleId'] }}">
                             <b>{{ $outline['outlineTitle'] }}</b>
-                        </a></li>
+                        </a>
+                    </li>
                 @endforeach
             @endif
         </ul>
@@ -38,7 +40,7 @@
                 {{--</div>--}}
                 <!-- 标题 -->
                     <div class="flow-text">
-                        <h4>{{ $detail['title'] }}</h4>
+                        <h3>{{ $detail['title'] }}</h3>
                     </div>
                 </div>
             </div>
