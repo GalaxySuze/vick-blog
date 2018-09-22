@@ -28,16 +28,12 @@
                     <!-- 分类 -->
                     @foreach($detail['label'] as $tag )
                         <div class="chip tooltipped" data-position="top" data-delay="50" data-tooltip="点击查看标签">
-                            <img src="{{ asset('img/icon/' . $tag['label_icon']) }}" class="responsive-img" alt="{{ $tag['desc'] }}" >{{ $tag['label'] }}
+                            <a href="{{ route('home.label-page', ['label' => $tag['id']]) }}" style="color: #0C0C0C;">
+                                <img src="{{ asset('img/icon/' . $tag['label_icon']) }}" class="responsive-img" alt="{{ $tag['desc'] }}">
+                                {{ $tag['label'] }}
+                            </a>
                         </div>
                 @endforeach
-
-                {{--<div class="chip tooltipped" data-position="top" data-delay="50" data-tooltip="点击查看标签">--}}
-                {{--<img src="{{ asset('img/icon/laravel.png') }}" class="responsive-img" alt="PHP" >Laravel--}}
-                {{--</div>--}}
-                {{--<div class="chip tooltipped" data-position="top" data-delay="50" data-tooltip="点击查看标签">--}}
-                {{--<img src="{{ asset('img/icon/nginx.png') }}" class="responsive-img" alt="PHP" >Nginx--}}
-                {{--</div>--}}
                 <!-- 标题 -->
                     <div class="flow-text">
                         <h3>{{ $detail['title'] }}</h3>
@@ -66,76 +62,95 @@
                 {!! $detail['content'] !!}
             </div>
 
-            <!-- 评论功能 -->
-            <ul id="slide-comments" class="side-nav center-align">
-                <li>
-                    <div class="userView">
-                        <span class="white-text email" style="padding-bottom: 8%; font-size: 24px;">评论区</span>
-                        <div class="background">
-                            <img src="{{ asset('img/c5.jpg') }}">
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="container">
-                        <div class="row">
-                            <form class="col s12 m12" action="" method="post">
-                                <input placeholder="昵称(必填)" id="name" type="text">
-                                <input placeholder="邮箱(必填,不会被公开)" id="email" type="email" class="validate">
-                                <textarea placeholder="评论" id="textarea" class="materialize-textarea"></textarea>
-                                <button type="button" class="red accent-1 waves-effect waves-light btn">提交</button>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-                <li><div class="divider"></div></li>
-                <li>
-                    <b>评论总数：12</b>
-                </li>
-                <li>
-                    <div class="card lighten-4 hoverable">
-                        <div class="card-content grey lighten-5">
-                            <span class="card-title"><b>Jack</b></span>
-                            <p>我是一个很简单的卡片。我很擅长于包含少量的信息。我很方便，因为我只需要一个小标记就可以有效地使用。</p>
-                        </div>
-                        <div class="card-action" style="padding: 0;">
-                            #1 · 一周前 · <a href="#" style="display: inline;padding: 0">回复</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="card lighten-4 hoverable">
-                        <div class="card-content grey lighten-5">
-                            <span class="card-title"><b>Rose</b></span>
-                            <p>
-                                <a href="#" style="display: inline;padding: 0">@Jack</a>
-                                这个评论功能将呈现十分美妙的效果。敬请期待哟~
-                            </p>
-                        </div>
-                        <div class="card-action" style="padding: 0;">
-                            #1 · 一周前 · <a href="#" style="display: inline;padding: 0">回复</a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-
             <!-- 分割线 -->
             <div class="col s12 m12">
                 <hr class="grey darken-1" style="height: 2px; border: none;">
             </div>
 
-            <!-- 分享和附言 -->
+            <!-- 社交分享 -->
+            <div class="col s12 m12 center-align" style="padding: 16px;">
+                <div class="social-share"></div>
+            </div>
+
+            <!-- 评论功能 -->
             <div class="col s12 m12">
-                <blockquote class="valign-wrapper">
-                    <i class="large material-icons" style="font-size: 25px;">info_outline</i>
-                    <i class="large material-icons" style="font-size: 25px;">language</i>
-                    <i class="large material-icons" style="font-size: 25px;">query_builder</i>
-                    <i class="large material-icons" style="font-size: 25px;">settings_input_svideo</i>
-                    <i class="large material-icons" style="font-size: 25px;">swap_vertical_circle</i>
-                    <i class="large material-icons" style="font-size: 25px;">offline_pin</i>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="#navbar-div">P.S 点击标题下面的留言图标打开评论区~</a>
-                </blockquote>
+                <div class="row">
+                    <div class="section">
+                        <div class="col s12 m12 center-align">
+                            <div style="width: auto; height: 80px;background: url('{{ asset('img/c5.jpg') }}');background-size: cover;position: center; line-height: 80px;font-size: large;color: #EEEEEE;margin-bottom: 16px;" class="z-depth-2">
+                                评论区
+                            </div>
+                        </div>
+                        <form class="col s12 m12" action="{{ route('home.discuss-article') }}" method="post">
+                            @csrf
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">person_pin</i>
+                                <input id="nickname" type="text" class="validate" name="nickname">
+                                <label for="nickname">昵称(必填)</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">email</i>
+                                <input id="email" type="email" class="validate" name="email">
+                                <label for="email">邮箱(必填,不会公开)</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">mode_edit</i>
+                                <textarea id="content" class="materialize-textarea" name="content" length="420"></textarea>
+                                <label for="content">评论</label>
+                            </div>
+                            <div class="input-field col s12 center-align" style="padding: 16px;">
+                                <button type="submit" class="red accent-1 waves-effect waves-light btn">
+                                    <i class="material-icons right">send</i>发表
+                                </button>
+                            </div>
+                        </form>
+                        <!-- 评论 -->
+                        <div class="row" style="padding: 16px;">
+                            <div class="col s6">
+                                <b>评论列表</b> <font color="#9e9e9e">(已有13条评论)</font>
+                            </div>
+                            <div class="col s6 right-align">
+                                <input name="content-sort" type="radio" id="sort-time" class="with-gap" />
+                                <label for="sort-time">时间</label>
+                                <input name="content-sort" type="radio" id="sort-thumb" class="with-gap" />
+                                <label for="sort-thumb">点赞</label>
+                            </div>
+                        </div>
+                        <div class="section center-align">
+                            <div class="col s12">
+                                <div class="card lighten-4 hoverable">
+                                    <div class="card-content">
+                                        <div class="card-title center-align">
+                                            <b>Jack</b>
+                                        </div>
+                                        <p>「
+                                            曾经我也这样去想，从头到尾自己去搭建一个只属于自己都屌炸天的博客网站，但是后面感觉想要的功能太多了，而且自适应的样式修改也复杂，简直没时间去做呀。于是开始找各种开源框架去做，什么wordpress，z-blog，帝国等等，发现并不是自己想要的那种。直到后面遇到了Hexo，各种功能样式，完全符合自己的预期要求，于是就暂时搁浅了自己开发博客网站的计划
+                                            」</p>
+                                    </div>
+                                    <div class="card-action grey lighten-5" style="padding: 16px;">
+                                        #1 · 一周前 · <a href="#" style="display: inline;padding: 0">回复</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12">
+                                <div class="card lighten-4 hoverable">
+                                    <div class="card-content">
+                                        <div class="card-title">
+                                            <b>Rose</b>
+                                        </div>
+                                        <p>「
+                                            <a href="#" style="display: inline;padding: 0">@Jack</a>
+                                            这个评论功能将呈现十分美妙的效果。敬请期待哟~
+                                            」</p>
+                                    </div>
+                                    <div class="card-action grey lighten-5" style="padding: 16px;">
+                                        #2 · 一个月前 · <a href="#" style="display: inline;padding: 0">回复</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

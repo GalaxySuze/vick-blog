@@ -28,6 +28,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
     <!-- 滑动过渡动画 -->
     {{--<script src="https://unpkg.com/scrollreveal"></script>--}}
 
@@ -250,8 +253,11 @@
                             </li>
                             <ul id="loggedUser" class="dropdown-content">
                                 <li>
+                                    <a href="#">个人中心</a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        登出
                                     </a>
                                 </li>
                             </ul>
@@ -268,7 +274,7 @@
     @section('body')
     <main>
     @section('content')
-        <!-- scrolling banner -->
+            <!-- scrolling banner -->
             <div class="slider">
                 <ul class="slides" style="background: #98A9F9">
                     <li>
@@ -296,16 +302,16 @@
             </div>
 
             <!-- search bar -->
-        @component('home.layouts.main.search-bar') @endcomponent
+            @component('home.layouts.main.search-bar') @endcomponent
 
-        <!-- card list -->
+            <!-- card list -->
             <div class="section card-list-box"></div>
     @show
 
-    <!-- loading bar -->
-    @include('home.layouts.main.loading-bar')
+        <!-- loading bar -->
+        @include('home.layouts.main.loading-bar')
 
-    <!-- 图钉 -->
+        <!-- 图钉 -->
         @includeWhen($index ?? false, 'home.layouts.footer.pushpin')
 
     </main>
@@ -316,7 +322,7 @@
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
-                    <h5 class="white-text">
+                    <h5>
                         <img src="{{ asset('logo.png') }}" alt="logo" width="50%" height="50%">
                     </h5>
                     <p class="grey-text text-lighten-4">网站图片均来自网络，如有侵权请联系ABOUT ME页面邮箱，立删。</p>
@@ -360,6 +366,7 @@
             belowOrigin: true // 下拉列表在触发的下方显示
         });
 
+        // 目录滚定定位
         $('#outlineLi > li > a').click(function () {
             $('html,body').animate({
                 scrollTop: $(this.hash).offset().top - 80
@@ -381,11 +388,11 @@
         });
 
         // 侧边评论栏
-        $(".slide-comments-btn").sideNav({
-            menuWidth: '32%', // Default is 240
-            edge: 'right', // Choose the horizontal origin
-            draggable: true // Choose whether you can drag to open on touch screens
-        });
+        // $(".slide-comments-btn").sideNav({
+        //     menuWidth: '32%', // Default is 240
+        //     edge: 'right', // Choose the horizontal origin
+        //     draggable: true // Choose whether you can drag to open on touch screens
+        // });
 
         // 小屏幕导航条
         $("#mobile-menu-btn").sideNav();
@@ -419,6 +426,7 @@
                 $(".card-list-box").html(listView);
                 // ScrollReveal().reveal('.card');
                 $("#loading-bar").modal('close');
+                $('.tooltipped').tooltip();
                 return false;
             });
         }
@@ -435,11 +443,18 @@
         $(".label-btn").click(function () {
             var labelHref = $(this).attr('href');
             cardListData(labelHref);
+            $('.selected-label').text('');
+            $(this).find('.selected-label').text('🌈');
             return false;
         });
         // 页面文章列表初始化
         if ($(".card-list-box").length > 0) {
-            cardListData('{{ url('home/articles-list') }}');
+            var listUrl = "{{ url('home/articles-list') }}";
+            var selectedLabel = "{{ isset($selectedLabel) && !empty($selectedLabel) ? $selectedLabel : '' }}";
+            if (selectedLabel.length > 0) {
+                listUrl = listUrl + '/?label=' + selectedLabel
+            }
+            cardListData(listUrl);
         }
         // 时间轴文章ajax
         $(".month-li").click(function () {

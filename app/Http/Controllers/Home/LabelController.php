@@ -25,13 +25,14 @@ class LabelController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function labelPage()
+    public function labelPage(Request $request)
     {
         return view('home.label', [
             'labelList' => $this->getLabelList(),
-            'articles' => $this->articleService->getArticleList(),
+            'selectedLabel' => $request->label ?? null,
         ]);
     }
 

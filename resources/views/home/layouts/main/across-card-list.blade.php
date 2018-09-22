@@ -1,7 +1,7 @@
 <div class="section" id="across-card">
     <div class="row">
         <!-- articles -->
-        @if(isset($articles['data']))
+        @if(isset($articles['data']) && !empty($articles['data']))
             @foreach($articles['data'] as $item)
                 <div class="col s12 m12">
                     <div class="card small horizontal hoverable">
@@ -33,6 +33,10 @@
                     </div>
                 </div>
             @endforeach
+        @else
+            <div class="col s12 m12 center-align" style="margin-top: 26px;">
+                <h5>😅 这个月偷懒了,没有发布文章~</h5>
+            </div>
         @endif
     </div>
 
