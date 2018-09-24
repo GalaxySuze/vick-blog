@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Label;
 use App\Support\Helper;
 use Carbon\Carbon;
@@ -32,9 +33,24 @@ class DetailController extends Controller
      */
     public function detail($id)
     {
+        return view('home.detail', [
+            'detail' => $this->handlePostView($id)
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function handlePostView($id)
+    {
         $categories = Helper::modelAll(Category::class);
         $tags = Helper::modelAll(Label::class);
-        list($post) = $this->model::getModelData(['id' => $id])->toArray();
+        $postModel = $this->model::getModelData(['id' => $id])->toArray();
+        if (!$postModel) {
+            abort(404);
+        }
+        list($post) = $postModel;
         $post['category'] = $categories[$post['category']];
         $post['release_time_str'] = Carbon::parse($post['release_time'])->diffForHumans();
         $labels = $post['label']['labels'];
@@ -42,6 +58,7 @@ class DetailController extends Controller
             $labels[$key] = $tags[$label];
         }
         $post['label'] = $labels;
-        return view('home.detail', ['detail' => $post]);
+        $post['comments'] = (new CommentController())->getComments($id);
+        return $post;
     }
 }

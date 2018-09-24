@@ -8,7 +8,7 @@ class Comment extends BaseModel
 {
     use SoftDeletes;
 
-    protected $table = 'labels';
+    protected $table = 'comments';
 
     protected $fillable = [
         'nickname',

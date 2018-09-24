@@ -81,7 +81,7 @@
                                 评论区
                             </div>
                         </div>
-                        <form class="col s12 m12" action="{{ route('home.discuss-article') }}" method="post">
+                        <form class="col s12 m12" action="#" method="post" id="discuss-form">
                             @csrf
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">person_pin</i>
@@ -96,11 +96,15 @@
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">mode_edit</i>
                                 <textarea id="content" class="materialize-textarea" name="content" length="420"></textarea>
-                                <label for="content">评论</label>
+                                <label for="content">评论内容</label>
                             </div>
-                            <div class="input-field col s12 center-align" style="padding: 16px;">
-                                <button type="submit" class="red accent-1 waves-effect waves-light btn">
+                            <div class="input-field col s12 center-align" style="padding: 12px;">
+                                <input type="hidden" name="target" value="{{ $detail['id'] }}">
+                                <button type="submit" class="blue accent-1 waves-effect waves-light btn">
                                     <i class="material-icons right">send</i>发表
+                                </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="reset" class="red accent-1 waves-effect waves-light btn">
+                                    <i class="material-icons right">restore</i>重置
                                 </button>
                             </div>
                         </form>
@@ -117,37 +121,21 @@
                             </div>
                         </div>
                         <div class="section center-align">
-                            <div class="col s12">
-                                <div class="card lighten-4 hoverable">
-                                    <div class="card-content">
-                                        <div class="card-title center-align">
-                                            <b>Jack</b>
+                            @foreach($detail['comments'] as $comment)
+                                <div class="col s12">
+                                    <div class="card lighten-4 hoverable">
+                                        <div class="card-content">
+                                            <div class="card-title center-align">
+                                                <b>{{ $comment['nickname'] }}</b>
+                                            </div>
+                                            <p>「 {{ $comment['content'] }} 」</p>
                                         </div>
-                                        <p>「
-                                            曾经我也这样去想，从头到尾自己去搭建一个只属于自己都屌炸天的博客网站，但是后面感觉想要的功能太多了，而且自适应的样式修改也复杂，简直没时间去做呀。于是开始找各种开源框架去做，什么wordpress，z-blog，帝国等等，发现并不是自己想要的那种。直到后面遇到了Hexo，各种功能样式，完全符合自己的预期要求，于是就暂时搁浅了自己开发博客网站的计划
-                                            」</p>
-                                    </div>
-                                    <div class="card-action grey lighten-5" style="padding: 16px;">
-                                        #1 · 一周前 · <a href="#" style="display: inline;padding: 0">回复</a>
+                                        <div class="card-action grey lighten-5" style="padding: 16px;">
+                                            #{{ $comment['id'] }} · {{ $comment['comment_time'] }} · <a href="#!" id="reply-comment" style="display: inline;padding: 0">回复</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col s12">
-                                <div class="card lighten-4 hoverable">
-                                    <div class="card-content">
-                                        <div class="card-title">
-                                            <b>Rose</b>
-                                        </div>
-                                        <p>「
-                                            <a href="#" style="display: inline;padding: 0">@Jack</a>
-                                            这个评论功能将呈现十分美妙的效果。敬请期待哟~
-                                            」</p>
-                                    </div>
-                                    <div class="card-action grey lighten-5" style="padding: 16px;">
-                                        #2 · 一个月前 · <a href="#" style="display: inline;padding: 0">回复</a>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

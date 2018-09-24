@@ -340,12 +340,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright">
-            <div class="container">
-                © 2017 - {{ date('Y', time()) }} Copyright Vick`Blog. All Rights Reserved.
-                <a class="grey-text text-lighten-4 right" href="#">😏Vicky</a>
-            </div>
-        </div>
+        @include('home.layouts.footer.footer-copyright')
     </footer>
 
 </body>
@@ -469,6 +464,40 @@
         // 时间轴页面文章初始化
         if ($("[href='#2017-January-01']").length > 0) {
             $("[href='#2017-January-01']").trigger('click');
+        }
+        // 提交评论
+        $("#discuss-form").submit(function () {
+            $.ajax({
+                type: 'post',
+                url: "{{ route('home.discuss-article') }}",
+                data: $("#discuss-form").serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (result) {
+                    Materialize.toast(result.msg, 4000);
+                    $("#discuss-form")[0].reset();
+                },
+                error: function (e) {
+                    var eContent = errMsg(e);
+                    Materialize.toast(eContent, 5000);
+                    console.log('error', eContent);
+                }
+            });
+            return false;
+        });
+
+        function errMsg(ajaxErrResult) {
+            var errMsgStr = '';
+            $.each(ajaxErrResult.responseJSON.errors, function (k, v) {
+                for (var i = 0; i < v.length; i++) {
+                    errMsgStr += v[i] + '<br/>';
+                }
+            });
+            if (!errMsgStr) {
+                return interfaceEXMsg;
+            }
+            return errMsgStr;
         }
 
         @yield('scriptContent')

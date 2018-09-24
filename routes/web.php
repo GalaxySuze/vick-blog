@@ -28,7 +28,7 @@ Route::group(['prefix' => 'home', 'namespace' => '\Home', 'middleware' => 'auth'
     Route::get('time-line', 'TimeLineController@timeLinePage')->name('home.time-line-page');
     // 时间轴文章列表
     Route::get('time-line/articles', 'TimeLineController@timeLineArticles')->name('home.time-line.articles');
-
+    // 发表评论
     Route::post('discuss-article', 'CommentController@discussArticle')->name('home.discuss-article');
 
     Route::get('about', function () {
