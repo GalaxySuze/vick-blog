@@ -19,14 +19,16 @@
                             </div>
                             <div class="card-action">
                                 @foreach($item['label'] as $tags)
-                                    <img src="{{ asset('img/icon/' . $tags['label_icon']) }}"
-                                         class="responsive-img tooltipped"
-                                         alt="{{ $tags['label'] }}"
-                                         width="10%"
-                                         height="10%"
-                                         data-position="top"
-                                         data-delay="50"
-                                         data-tooltip="I am {{ $tags['label'] }}">
+                                    <a href="{{ route('home.label-page', ['label' => $tags['id']]) }}" class="card-label-btn">
+                                        <img src="{{ asset('img/icon/' . $tags['label_icon']) }}"
+                                             class="circle responsive-img tooltipped hoverable"
+                                             alt="{{ $tags['label'] }}"
+                                             width="8%"
+                                             height="8%"
+                                             data-position="bottom"
+                                             data-delay="50"
+                                             data-tooltip="I am {{ $tags['label'] }}">
+                                    </a>
                                 @endforeach
                             </div>
                         </div>
@@ -35,7 +37,7 @@
             @endforeach
         @else
             <div class="col s12 m12 center-align" style="margin-top: 26px;">
-                <h5>😅 这个月偷懒了,没有发布文章~</h5>
+                <h5>😅 没有相关文章~</h5>
             </div>
         @endif
     </div>

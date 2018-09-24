@@ -51,14 +51,18 @@ class DetailController extends Controller
             abort(404);
         }
         list($post) = $postModel;
+        $post['created_user'] = empty($post['created_user']) ? '用户已注销' : $post['created_user'];
         $post['category'] = $categories[$post['category']];
-        $post['release_time_str'] = Carbon::parse($post['release_time'])->diffForHumans();
+        $post['release_time_pop'] = Carbon::parse($post['release_time'])->diffForHumans();
         $labels = $post['label']['labels'];
         foreach ($labels as $key => $label) {
             $labels[$key] = $tags[$label];
         }
         $post['label'] = $labels;
-        $post['comments'] = (new CommentController())->getComments($id);
+        $commentService = new CommentController();
+        list($commentsCount, $articleComments) = $commentService->getComments($id);
+        $post['comments_count'] = $commentsCount;
+        $post['comments'] = $articleComments;
         return $post;
     }
 }

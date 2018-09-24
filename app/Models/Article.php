@@ -11,6 +11,8 @@ class Article extends BaseModel
     const ARTICLE_STATUS_DRAFT = 1;
     const ARTICLE_STATUS_NORMAL = 2;
     const ARTICLE_STATUS_TOP = 3;
+
+    const PAGE_NUMBER = 12;
     /**
      * @var array
      */
@@ -55,11 +57,17 @@ class Article extends BaseModel
      * @param int $page
      * @return mixed
      */
-    public static function getReleaseArticles($where = [], $page = 16)
+    public static function getReleaseArticles($where = [], $page = self::PAGE_NUMBER)
     {
         $query = Article::where('status', '<>', Article::ARTICLE_STATUS_DRAFT)->orderBy('release_time', 'desc');
         if (!empty($where['label'])) {
             $query->whereRaw('json_contains(label, ?, "$.labels")', $where['label']);
+        }
+        if (!empty($where['desc'])) {
+            $searchContent = $where['desc'];
+            $query->where(function ($orQuery) use ($searchContent) {
+                $orQuery->where('desc', 'like', "%$searchContent%")->orWhere('title', 'like', "%$searchContent%");
+            });
         }
         return $query->paginate($page);
     }

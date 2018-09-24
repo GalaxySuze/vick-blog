@@ -33,7 +33,11 @@ Route::group(['prefix' => 'home', 'namespace' => '\Home', 'middleware' => 'auth'
 
     Route::get('about', function () {
         return view('home.about');
-    });
+    })->name('home.about');
+
+    Route::get('not-open', function () {
+        abort('404');
+    })->name('home.not-open');
 
     Route::get('bookcase', function () {
         return view('home.bookcase');

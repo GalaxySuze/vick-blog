@@ -31,23 +31,6 @@ class CommentController extends Controller
     }
 
     /**
-     * @param $articleId
-     * @return array
-     */
-    public function getComments($articleId): array
-    {
-        $articleComments = [];
-        $comments = Comment::where('target', $articleId)->get();
-        if (!$comments->isEmpty()) {
-            $articleComments = $comments->each(function ($v, $k) {
-                $v['comment_time'] = Carbon::parse($v['created_at'])->diffForHumans();
-                return $v;
-            })->toArray();
-        }
-        return $articleComments;
-    }
-
-    /**
      * @return array
      */
     protected function validateRule()
@@ -70,5 +53,24 @@ class CommentController extends Controller
             'content.required' => '评论内容 不能为空。',
             'content.max' => '评论内容 不能大于 420 个字符。',
         ];
+    }
+
+    /**
+     * @param $articleId
+     * @return array
+     */
+    public function getComments($articleId): array
+    {
+        $commentsCount = 0;
+        $articleComments = [];
+        $comments = Comment::where('target', $articleId)->get();
+        if (!$comments->isEmpty()) {
+            $articleComments = $comments->each(function ($v, $k) {
+                $v['comment_time'] = Carbon::parse($v['created_at'])->diffForHumans();
+                return $v;
+            })->toArray();
+            $commentsCount = $comments->count();
+        }
+        return [$commentsCount, $articleComments];
     }
 }

@@ -22,7 +22,7 @@
     @endsection
 
     <div class="section">
-        <div class="row container" style="width: 55%">
+        <div class="row container" style="width: 50%">
             <div class="col s12 m12 center-align">
                 <div class="section">
                     <!-- 分类 -->
@@ -33,8 +33,8 @@
                                 {{ $tag['label'] }}
                             </a>
                         </div>
-                @endforeach
-                <!-- 标题 -->
+                    @endforeach
+                    <!-- 标题 -->
                     <div class="flow-text">
                         <h3>{{ $detail['title'] }}</h3>
                     </div>
@@ -45,10 +45,10 @@
             <div class="col s12 m12 center-align">
                 <div class="valign-wrapper" style="color: #757575; font-size: 0.5rem; display: -webkit-inline-flex; display: inline-flex;">
                     <i class="material-icons red-text">assignment_ind</i>&nbsp; {{ $detail['created_user'] }} &nbsp;&nbsp;
-                    <i class="material-icons yellow-text">visibility</i>&nbsp; {{ $detail['views'] }} &nbsp;&nbsp;
-                    <i class="material-icons green-text">thumb_up</i>&nbsp; 66 &nbsp;&nbsp;
-                    <i class="material-icons blue-text slide-comments-btn tooltipped" data-activates="slide-comments" data-position="bottom" data-delay="50" data-tooltip="点击查看评论区">textsms</i>&nbsp; 22 &nbsp;&nbsp;
-                    <i class="material-icons pink-text">schedule</i>&nbsp; {{ $detail['release_time_str'] }}
+                    <i class="material-icons orange-text">visibility</i>&nbsp; {{ $detail['views'] }} &nbsp;&nbsp;
+                    <i class="material-icons green-text">reply</i>&nbsp; {{ $detail['share'] }} &nbsp;&nbsp;
+                    <i class="material-icons blue-text">textsms</i>&nbsp; {{ $detail['comments_count'] }} &nbsp;&nbsp;
+                    <i class="material-icons pink-text">schedule</i>&nbsp; {{ $detail['release_time_pop'] }}
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
                 <div class="social-share"></div>
             </div>
 
-            <!-- 评论功能 -->
+            <!-- 评论区 -->
             <div class="col s12 m12">
                 <div class="row">
                     <div class="section">
@@ -104,14 +104,14 @@
                                     <i class="material-icons right">send</i>发表
                                 </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <button type="reset" class="red accent-1 waves-effect waves-light btn">
-                                    <i class="material-icons right">restore</i>重置
+                                    <i class="material-icons right">undo</i>重置
                                 </button>
                             </div>
                         </form>
                         <!-- 评论 -->
                         <div class="row" style="padding: 16px;">
                             <div class="col s6">
-                                <b>评论列表</b> <font color="#9e9e9e">(已有13条评论)</font>
+                                <b>评论列表</b> <font color="#9e9e9e">(已有{{ $detail['comments_count'] }}条评论)</font>
                             </div>
                             <div class="col s6 right-align">
                                 <input name="content-sort" type="radio" id="sort-time" class="with-gap" />
@@ -142,4 +142,7 @@
             </div>
         </div>
     </div>
+
+    <!-- 返回顶部 -->
+    @includeWhen(isset($detail), 'home.layouts.footer.back-top')
 @endsection

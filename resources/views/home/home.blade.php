@@ -11,16 +11,15 @@
 
     <title>Hello World {{ config('app.name', 'Vick`Blog') }}</title>
 
-    <!-- css -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('materialize/css/materialize.min.css') }}"
-          media="screen,projection"/>
+    <!-- master css -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('materialize/css/materialize.min.css') }}" media="screen,projection"/>
 
     <!-- font -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Let browser know website is optimized for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <!-- js -->
+    <!-- master js -->
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('materialize/js/materialize.min.js') }}"></script>
 
@@ -28,14 +27,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
+    <!-- 分享功能 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
-
-    <!-- 滑动过渡动画 -->
-    {{--<script src="https://unpkg.com/scrollreveal"></script>--}}
-
-    <!-- 网页内容排版 -->
-    {{--<link rel="stylesheet" href="{{ asset('typo/content-typo.css') }}">--}}
 
     <style>
         html {
@@ -182,12 +176,12 @@
     </style>
 </head>
 <body>
-    <header>
+    <header id="header-top">
         <!-- navigation bar -->
         <div class="navbar-fixed" id="navbar-div">
             <nav>
                 <div class="nav-wrapper" style="background: #98A9F9;">
-                    <a href="{{ url('/') }}" class="brand-logo center waves-effect">Vick ` Blog</a>
+                    <a href="{{ route('home.index') }}" class="brand-logo center waves-effect">Vick ` Blog</a>
                     <a href="#" class="button-collapse" data-activates="mobile-menu" id="mobile-menu-btn">
                         <i class="material-icons">menu</i>
                     </a>
@@ -206,11 +200,10 @@
                         <li>
                             <div class="divider"></div>
                         </li>
-                        <li><a href="#" class="waves-effect">求知</a></li>
-                        <li><a href="#" class="waves-effect">生活</a></li>
-                        <li><a href="{{ url('home/label') }}" class="waves-effect">标签</a></li>
-                        <li><a href="{{ url('home/time-line') }}" class="waves-effect">归档</a></li>
-                        <li><a href="{{ url('home/about') }}" class="waves-effect">关于</a></li>
+                        <li><a href="{{ route('home.index') }}" class="waves-effect">首页</a></li>
+                        <li><a href="{{ route('home.label-page') }}" class="waves-effect">标签</a></li>
+                        <li><a href="{{ route('home.time-line-page') }}" class="waves-effect">归档</a></li>
+                        <li><a href="{{ route('home.about') }}" class="waves-effect">关于</a></li>
                         <li>
                             <div class="divider"></div>
                         </li>
@@ -231,11 +224,10 @@
                     </ul>
                     <!-- normal menu -->
                     <ul class="left hide-on-med-and-down">
-                        <li><a href="#" class="waves-effect">求知</a></li>
-                        <li><a href="#" class="waves-effect">生活</a></li>
-                        <li><a href="{{ url('home/label') }}" class="waves-effect">标签</a></li>
-                        <li><a href="{{ url('home/time-line') }}" class="waves-effect">归档</a></li>
-                        <li><a href="{{ url('home/about') }}" class="waves-effect">关于</a></li>
+                        <li><a href="{{ route('home.index') }}" class="waves-effect">首页</a></li>
+                        <li><a href="{{ route('home.label-page') }}" class="waves-effect">标签</a></li>
+                        <li><a href="{{ route('home.time-line-page') }}" class="waves-effect">归档</a></li>
+                        <li><a href="{{ route('home.about') }}" class="waves-effect">关于</a></li>
                     </ul>
                     <ul class="right">
                         @guest
@@ -253,7 +245,7 @@
                             </li>
                             <ul id="loggedUser" class="dropdown-content">
                                 <li>
-                                    <a href="#">个人中心</a>
+                                    <a href="{{ route('home.not-open') }}">个人中心</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -325,7 +317,7 @@
                     <h5>
                         <img src="{{ asset('logo.png') }}" alt="logo" width="50%" height="50%">
                     </h5>
-                    <p class="grey-text text-lighten-4">网站图片均来自网络，如有侵权请联系ABOUT ME页面邮箱，立删。</p>
+                    <p class="grey-text text-lighten-4">网站图片均来自网络，如有侵权请联系「 关于 」页面邮箱，立删。</p>
                 </div>
                 <div class="col l4 offset-l2 s12">
                     <h5 class="white-text">友情链接</h5>
@@ -345,7 +337,6 @@
 
 </body>
 <script>
-    // ScrollReveal({ reset: true });
     $(document).ready(function () {
         // 代码高亮
         hljs.initHighlightingOnLoad();
@@ -382,13 +373,6 @@
             return false;
         });
 
-        // 侧边评论栏
-        // $(".slide-comments-btn").sideNav({
-        //     menuWidth: '32%', // Default is 240
-        //     edge: 'right', // Choose the horizontal origin
-        //     draggable: true // Choose whether you can drag to open on touch screens
-        // });
-
         // 小屏幕导航条
         $("#mobile-menu-btn").sideNav();
         $("#mobile-menu-btn").click(function () {
@@ -415,41 +399,39 @@
         });
 
         // 文章数据ajax
-        function cardListData(pageHref) {
+        function cardListData(pageHref, data) {
+            if (typeof data === 'undefined') {
+                data = {};
+            }
             $("#loading-bar").modal('open');
-            $.get(pageHref, {}, function (listView) {
+            $.get(pageHref, data, function (listView) {
                 $(".card-list-box").html(listView);
-                // ScrollReveal().reveal('.card');
                 $("#loading-bar").modal('close');
                 $('.tooltipped').tooltip();
                 return false;
             });
         }
 
+        function cardListQuery() {
+            var selectedLabel = "{{ isset($selectedLabel) && !empty($selectedLabel) ? $selectedLabel : '' }}";
+            var searchText = $("#search-content").val();
+            return {
+                'label': selectedLabel,
+                'desc': searchText
+            };
+        }
+
         // 分页请求
         $("body").on('click', '.pagination-href', function () {
             var pageHref = $(this).attr('href');
             if (pageHref !== 'javascript:;') {
-                cardListData(pageHref);
+                cardListData(pageHref, cardListQuery());
             }
             return false; // 阻止a链接跳转
         });
-        // 标签搜索
-        $(".label-btn").click(function () {
-            var labelHref = $(this).attr('href');
-            cardListData(labelHref);
-            $('.selected-label').text('');
-            $(this).find('.selected-label').text('🌈');
-            return false;
-        });
         // 页面文章列表初始化
         if ($(".card-list-box").length > 0) {
-            var listUrl = "{{ url('home/articles-list') }}";
-            var selectedLabel = "{{ isset($selectedLabel) && !empty($selectedLabel) ? $selectedLabel : '' }}";
-            if (selectedLabel.length > 0) {
-                listUrl = listUrl + '/?label=' + selectedLabel
-            }
-            cardListData(listUrl);
+            cardListData("{{ url('home/articles-list') }}", cardListQuery());
         }
         // 时间轴文章ajax
         $(".month-li").click(function () {
@@ -458,6 +440,7 @@
             $("#loading-bar").modal('open');
             $.get("{{ url('home/time-line/articles') }}", {'month': monthVal, 'year': yearVal}, function (listView) {
                 $('#time-line-article').html(listView);
+                $('.tooltipped').tooltip();
                 $("#loading-bar").modal('close');
             });
         });
@@ -465,6 +448,15 @@
         if ($("[href='#2017-January-01']").length > 0) {
             $("[href='#2017-January-01']").trigger('click');
         }
+        // 搜索文章
+        $("#search-form").submit(function () {
+            if ($("#search-content").val().length <= 0) {
+                Materialize.toast('请输入搜索内容!', 5000);
+                return false;
+            }
+            cardListData("{{ url('home/articles-list') }}", cardListQuery());
+            return false;
+        });
         // 提交评论
         $("#discuss-form").submit(function () {
             $.ajax({
@@ -486,7 +478,7 @@
             });
             return false;
         });
-
+        // ajax错误信息处理
         function errMsg(ajaxErrResult) {
             var errMsgStr = '';
             $.each(ajaxErrResult.responseJSON.errors, function (k, v) {
