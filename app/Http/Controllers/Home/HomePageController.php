@@ -8,15 +8,14 @@ use App\Models\Label;
 use App\Support\Helper;
 use App\Support\MarkdownSupport;
 use App\Support\SolarTermSupport;
-use App\Support\ToolkitSupport;
+use App\Traits\Toolkit;
 use App\Support\UploadSupport;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {
-    use ToolkitSupport;
+    use Toolkit;
     const CHUNK_NUMBER = 4;
     const DEFAULT_COVER = 'img/soul.jpg';
     /**

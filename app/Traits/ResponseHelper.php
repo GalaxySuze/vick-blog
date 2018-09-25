@@ -6,10 +6,10 @@
  * Time: 16:43
  */
 
-namespace App\Support;
+namespace App\Traits;
 
 
-trait ResponseSupport
+trait ResponseHelper
 {
     private $successCode = 0;
     private $failureCode = 1;

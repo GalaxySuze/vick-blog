@@ -6,10 +6,10 @@
  * Time: 17:22
  */
 
-namespace App\Support;
+namespace App\Traits;
 
 
-trait ToolkitSupport
+trait Toolkit
 {
     /**
      * 自定义数组key value

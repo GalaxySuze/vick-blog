@@ -9,7 +9,7 @@ use App\Services\FormServices\ArticleFormService;
 use App\Services\TableServices\ArticleTableService;
 use App\Support\Helper;
 use App\Support\MarkdownSupport;
-use App\Support\ResponseSupport;
+use App\Traits\ResponseHelper;
 use App\Support\UploadSupport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

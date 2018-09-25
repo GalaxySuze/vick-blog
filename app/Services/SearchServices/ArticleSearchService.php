@@ -13,11 +13,11 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Label;
 use App\Support\Helper;
-use App\Support\ToolkitSupport;
+use App\Traits\Toolkit;
 
 class ArticleSearchService
 {
-    use ToolkitSupport;
+    use Toolkit;
 
     public function __construct()
     {

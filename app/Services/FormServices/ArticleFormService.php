@@ -11,13 +11,12 @@ namespace App\Services\FormServices;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Label;
-use App\Support\Helper;
-use App\Support\ToolkitSupport;
+use App\Traits\Toolkit;
 use Carbon\Carbon;
 
 class ArticleFormService
 {
-    use ToolkitSupport;
+    use Toolkit;
 
     private $articelInfo = null;
 
