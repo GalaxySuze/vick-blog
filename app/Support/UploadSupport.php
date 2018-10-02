@@ -25,7 +25,7 @@ class UploadSupport
     /**
      * @var string
      */
-    private $uploadDrive = 'upload';
+    public $uploadDrive = 'upload';
 
     /**
      * @param $file
@@ -106,6 +106,17 @@ class UploadSupport
     public function moveFile($file, $from = self::UPLOAD_TMP_DIR, $to = self::UPLOAD_USED_DIR)
     {
         return Storage::disk($this->uploadDrive)->move($from . $file, $to . $file);
+    }
+
+    /**
+     * @param $fileInfo
+     * @param string $dirSymbol
+     * @return mixed
+     */
+    public function getFileName($fileInfo, $dirSymbol = '/')
+    {
+        $file = explode($dirSymbol, $fileInfo);
+        return end($file);
     }
 
 }

@@ -48,7 +48,7 @@ Route::group(['prefix' => 'home', 'namespace' => '\Home', 'middleware' => 'auth'
     });
 });
 
-Route::group(['prefix' => 'backstage', 'namespace' => '\Backstage'], function () {
+Route::group(['prefix' => 'backstage', 'namespace' => '\Backstage', 'middleware' => 'auth'], function () {
     // 登录页
     Route::get('login', 'LoginController@login')->name('backstage.login');
 

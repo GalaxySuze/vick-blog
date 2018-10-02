@@ -9,35 +9,35 @@ use App\Http\Controllers\Controller;
 
 class LabelController extends Controller
 {
-    private $formEvent = 'labelForm';
+    protected $master = 'label';
+    protected $formEvent = 'labelForm';
+    protected $tableName = 'LabelTableService';
+    protected $searchBarName = 'LabelSearchService';
+    protected $formName = 'LabelFormService';
+    protected $model = Label::class;
 
-    private $routeConf;
-
-    public function __construct()
-    {
-        $this->routeConf = Helper::routeDefault('label');
-    }
-
-    public function list()
-    {
-        return view('backstage.list', [
-            'tableName' => $this->tableServices . 'LabelTableService',
-            'searchBarName' => $this->searchServices . 'LabelSearchService',
-            'addRoute' => route($this->routeConf['addPage']),
-            'dataRoute' => route($this->routeConf['data']),
-            'formEvent' => $this->formEvent,
-        ]);
-    }
-
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function listData(Request $request)
     {
         $labelsList = Label::getModelData(
-            $request->conditions, $request->page, $request->limit
+            $request->conditions,
+            $request->page,
+            $request->limit
         );
         $this->handleDataDisplay($labelsList);
-        return $this->successfulResponse(['successful', $labelsList, Label::count()]);
+        return $this->successfulResponse([
+            'successful',
+            $labelsList,
+            Label::count()
+        ]);
     }
 
+    /**
+     * @param $data
+     */
     public function handleDataDisplay(&$data)
     {
         $data->each(function ($item, $key) {
@@ -47,41 +47,32 @@ class LabelController extends Controller
         });
     }
 
-    public function editor($id = null)
-    {
-        return view('backstage.editor', [
-            'editRoute' => route($this->routeConf['edit']),
-            'listRoute' => route($this->routeConf['list']),
-            'formName' => $this->formServices . 'LabelFormService',
-            'modelId' => $id,
-            'formEvent' => $this->formEvent,
-        ]);
-    }
-
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function edit(Request $request)
     {
+        $this->validate($request, $this->validateRules(), $this->validateMessages());
+        $input = $request->all();
         try {
-            $this->validate($request, $this->validateRules(), $this->validateMessages());
-            $input = $request->all();
-            $msg = '操作异常!';
             if (!empty($input['id'])) {
-                $label = Label::find($input['id']);
-                if ($label->update($input)) {
-                    $msg = '更新成功!';
-                }
+                Label::find($input['id'])->update($input);
+                $msg = '更新成功!';
             } else {
-                if (Label::create($input)) {
-                    $msg = '新增成功!';
-                }
+                Label::create($input);
+                $msg = '新增成功!';
             }
             $request->session()->flash('msg', $msg);
             return $this->successfulResponse([$msg, route($this->routeConf['list'])]);
         } catch (\Throwable $e) {
-            $getError = env('APP_DEBUG') ? $e->getMessage() : '当前操作发生错误!';
-            return $this->failedResponse([$getError]);
+            return $this->failedResponse([$this->exceptionMsg($e)]);
         }
     }
 
+    /**
+     * @return array
+     */
     private function validateRules()
     {
         return [
@@ -91,6 +82,9 @@ class LabelController extends Controller
         ];
     }
 
+    /**
+     * @return array
+     */
     private function validateMessages()
     {
         return [
@@ -102,13 +96,12 @@ class LabelController extends Controller
         ];
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function delLabel($id)
     {
-        return parent::del(Label::class, $id, route($this->routeConf['list']));
-    }
-
-    private function handleInput(&$input, ...$support)
-    {
-
+        return parent::del($id, route($this->routeConf['list']));
     }
 }

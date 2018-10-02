@@ -1,7 +1,7 @@
 <form class="layui-form layui-form-pane" method="get" action="" id="searchForm">
     <div class="layui-row layui-col-space5" style="text-align: center;">
         <div class="layui-col-md2">
-            <a href="{{ $addRoute }}" class="layui-btn layui-btn-warm">
+            <a href="{{ $addPageRoute }}" class="layui-btn layui-btn-warm">
                 <i class="layui-icon layui-icon-add-1"></i>新增
             </a>
             <button type="button" lay-submit lay-filter="{{ $submitForm }}" class="layui-btn layui-btn-normal">

@@ -8,7 +8,7 @@
         @component('backstage.layouts.search-bar', [
             'searchBar' => $BuildSearch->buildSearch($searchBarName),
             'dataRoute' => $dataRoute,
-            'addRoute' => $addRoute,
+            'addPageRoute' => $addPageRoute,
             'submitForm' => $formEvent,
         ])
         @endcomponent

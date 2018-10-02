@@ -32,13 +32,13 @@ class Helper
     public static function routeDefault($group)
     {
         return [
-            'addPage' => 'backstage.' . $group . '.editor',
-            'editPage' => 'backstage.' . $group . '.editor',
-            'add' => 'backstage.' . $group . '.edit',
-            'edit' => 'backstage.' . $group . '.edit',
-            'del' => 'backstage.' . $group . '.del',
-            'data' => 'backstage.' . $group . '.list-data',
-            'list' => 'backstage.' . $group . '.list',
+            'addPage' => 'backstage.' . $group . '.editor', //新增页
+            'editPage' => 'backstage.' . $group . '.editor',    //编辑页
+            'add' => 'backstage.' . $group . '.edit', //新增操作
+            'edit' => 'backstage.' . $group . '.edit',  //编辑操作
+            'del' => 'backstage.' . $group . '.del',    //删除操作
+            'data' => 'backstage.' . $group . '.list-data', //列表数据
+            'list' => 'backstage.' . $group . '.list', //列表页
         ];
     }
 

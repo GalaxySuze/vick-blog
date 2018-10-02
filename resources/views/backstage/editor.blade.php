@@ -27,7 +27,9 @@
                 @foreach($BuildForm->buildForm($formName, $modelId) as $formParts)
                     <div class="{{ $formParts['colM'] }}">
                         @foreach($formParts['formParts'] as $part)
-                            @component("backstage.form-components.{$part['inputType']}", $part)@endcomponent
+                            @if(!isset($part['hidden']) || $part['hidden'] != false)
+                                @component("backstage.form-components.{$part['inputType']}", $part)@endcomponent
+                            @endif
                         @endforeach
                     </div>
                 @endforeach
@@ -70,6 +72,7 @@
         }
     });
 
+    //删除文件
     $('#delUploadImg').click(function () {
         layer.confirm('是否确认删除!', function (index) {
             var img = $('#page_image').val();

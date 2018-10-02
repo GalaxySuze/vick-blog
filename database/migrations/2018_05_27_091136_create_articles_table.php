@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
             $table->string('title', 80)->index()->comment('文章标题');
             $table->text('content')->nullable()->comment('文章内容');
             $table->text('original_content')->nullable()->comment('原始文章内容');
-            $table->text('page_image')->nullable()->comment('图片');
+            $table->text('page_image')->nullable()->comment('封面');
             $table->string('desc')->default('')->comment('文章描述');
             $table->string('link')->nullable()->comment('链接');
             $table->tinyInteger('status')->default(0)->comment('文章状态：0 草稿 1 正常 2 置顶');

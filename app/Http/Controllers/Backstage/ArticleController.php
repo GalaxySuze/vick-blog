@@ -6,108 +6,83 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Label;
 use App\Services\FormServices\ArticleFormService;
-use App\Services\TableServices\ArticleTableService;
-use App\Support\Helper;
 use App\Support\MarkdownSupport;
-use App\Traits\ResponseHelper;
+use App\Traits\ArticleIMGOperation;
 use App\Support\UploadSupport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Carbon;
 
 class ArticleController extends Controller
 {
+    use ArticleIMGOperation;
+
     const OUTLINE_TAGS = 'h4';
 
-    /**
-     * @var string
-     */
-    private $formEvent = 'articleForm';
-    /**
-     * @var array
-     */
-    private $routeConf;
+    protected $master = 'article';
+    protected $formEvent = 'articleForm';
+    protected $tableName = 'ArticleTableService';
+    protected $searchBarName = 'ArticleSearchService';
+    protected $formName = 'ArticleFormService';
+    protected $model = Article::class;
 
     /**
-     * ArticleController constructor.
-     */
-    public function __construct()
-    {
-        $this->routeConf = Helper::routeDefault('article');
-    }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function list()
-    {
-        return view('backstage.list', [
-            'tableName' => $this->tableServices . 'ArticleTableService',
-            'searchBarName' => $this->searchServices . 'ArticleSearchService',
-            'addRoute' => route($this->routeConf['addPage']),
-            'dataRoute' => route($this->routeConf['data']),
-            'formEvent' => $this->formEvent,
-        ]);
-    }
-
-    /**
+     * 获取模型数据
      * @param Request $request
      * @return array
      */
     public function listData(Request $request)
     {
         $articlesList = Article::getModelData(
-            $request->conditions, $request->page, $request->limit
+            $request->conditions,
+            $request->page,
+            $request->limit
         );
         $this->handleDataDisplay($articlesList);
-        return $this->successfulResponse(['successful', $articlesList, Article::count()]);
+        return $this->successfulResponse([
+            'successful',
+            $articlesList,
+            Article::count()
+        ]);
     }
 
     /**
+     * 处理数据显示
      * @param $data
      */
     public function handleDataDisplay(&$data)
     {
-        $upload = new UploadSupport();
-        $table = new ArticleFormService();
+        $upload = $this->setSupport(UploadSupport::class);
+        $table = $this->setSupport(ArticleFormService::class);
         $data->each(function ($item, $key) use ($upload, $table) {
             $item->editRoute = route($this->routeConf['editPage'], $item->id);
             $item->delRoute = route($this->routeConf['del'], $item->id);
             $item->status = Article::$statusConf[$item->status];
-            $item->label = implode(', ', $table->setArticleLabels(
+            $labelData = $table->setArticleLabels(
                 Label::getModelData(['id' => $item->label['labels']])
-            ));
+            );
+            $item->label = implode(', ', $labelData);
             $item->category = optional(Category::find($item->category))->name;
             $item->is_original = $item->is_original ? '是' : '否';
-            $item->page_image = !empty($item->page_image) ? $upload->setFileUrl($item->page_image, true) : null;
+            $pageImg = $item->page_image ?? null;
+            if (Article::IMG_SAVE_LOCAL) {
+                $pageImg = $pageImg ? $upload->setFileUrl($item->page_image, true) : null;
+            }
+            $item->page_image = $pageImg;
         });
     }
 
     /**
+     * 删除记录
      * @param $id
      * @return array
      */
     public function delArticle($id)
     {
-        return parent::del(Article::class, $id, route($this->routeConf['list']));
+        return parent::del($id, route($this->routeConf['list']));
     }
 
     /**
-     * @param null $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function editor($id = null)
-    {
-        return view('backstage.editor', [
-            'editRoute' => route($this->routeConf['edit']),
-            'listRoute' => route($this->routeConf['list']),
-            'formName' => $this->formServices . 'ArticleFormService',
-            'modelId' => $id,
-            'formEvent' => $this->formEvent
-        ]);
-    }
-
-    /**
+     * 新增/修改 操作
      * @param Request $request
      * @param UploadSupport $uploadSupport
      * @param MarkdownSupport $markdownSupport
@@ -115,34 +90,28 @@ class ArticleController extends Controller
      */
     public function edit(Request $request, UploadSupport $uploadSupport, MarkdownSupport $markdownSupport)
     {
+        $this->validate($request, $this->validateRules(), $this->validateMessages());
+        $input = $request->all();
+        $pageImg = $input['page_image'];
         try {
-            $this->validate($request, $this->validateRules(), $this->validateMessages());
-            $input = $request->all();
             $this->handleInput($input, $markdownSupport);
-            $pageImg = $input['page_image'];
-            $msg = '操作异常!';
             if (!empty($input['id'])) {
-                $article = Article::find($input['id']);
-                if ($article->update($input)) {
-                    $msg = '更新成功!';
-                    if (!empty($pageImg) && !$uploadSupport->existsFile(UploadSupport::UPLOAD_USED_DIR . $pageImg)) {
-                        // 如果有上传img,但是在used目录没有,那就是新上传的
-                        $uploadSupport->moveFile($pageImg);
-                    }
+                Article::find($input['id'])->update($input);
+                $msg = '更新成功!';
+                if (Article::IMG_SAVE_LOCAL) {
+                    $this->updateUpload($input, $uploadSupport);
                 }
             } else {
-                if (Article::create($input)) {
-                    $msg = '新增成功!';
-                    if (!empty($pageImg)) {
-                        $uploadSupport->moveFile($pageImg);
-                    }
+                Article::create($input);
+                $msg = '新增成功!';
+                if (Article::IMG_SAVE_LOCAL && !empty($pageImg)) {
+                    $uploadSupport->moveFile($pageImg);
                 }
             }
             $request->session()->flash('msg', $msg);
             return $this->successfulResponse([$msg, route($this->routeConf['list'])]);
         } catch (\Throwable $e) {
-            $getError = env('APP_DEBUG') ? $e->getMessage() : '当前操作发生错误!';
-            return $this->failedResponse([$getError]);
+            return $this->failedResponse([$this->exceptionMsg($e)]);
         }
     }
 
@@ -185,6 +154,7 @@ class ArticleController extends Controller
     }
 
     /**
+     * 处理输入数据
      * @param $input
      * @param array ...$support
      */
@@ -201,6 +171,7 @@ class ArticleController extends Controller
     }
 
     /**
+     * 生成文章目录
      * @param string $content
      * @param string $htmlTags
      * @return array
@@ -224,49 +195,5 @@ class ArticleController extends Controller
             $titleIdList[$k]['outlineTitle'] = $hTitle;
         }
         return [$titleIdList, $replaceContent];
-    }
-
-    /**
-     * @param Request $request
-     * @param UploadSupport $uploadSupport
-     * @return array
-     */
-    public function uploadImage(Request $request, UploadSupport $uploadSupport)
-    {
-        try {
-            $file = $request->file('file');
-            if ($file->isValid()) {
-                $uploadRel = $uploadSupport->uploadFile($file);
-                return $this->successfulResponse(['上传封面成功!', $uploadRel]);
-            }
-        } catch (\Throwable $e) {
-            $getError = env('APP_DEBUG') ? $e->getMessage() : '上传封面发生错误!';
-            return $this->failedResponse([$getError]);
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param UploadSupport $uploadSupport
-     * @return array
-     */
-    public function delUploadImage(Request $request, UploadSupport $uploadSupport)
-    {
-        try {
-            $file = $request->img;
-            if (!empty($request->id)) {
-                $article = Article::find($request->id);
-                $article->page_image = null;
-                if ($article->save()) {
-                    $uploadSupport->delAllFile($file);
-                }
-            } else {
-                $uploadSupport->delAllFile($file);
-            }
-            return $this->successfulResponse(['删除图片成功!']); //<删除图片成功!> 字符与前端ajax处理绑定
-        } catch (\Throwable $e) {
-            $getError = env('APP_DEBUG') ? $e->getMessage() : '删除图片发生错误!';
-            return $this->failedResponse([$getError]);
-        }
     }
 }

@@ -8,11 +8,17 @@ class Article extends BaseModel
 {
     use SoftDeletes;
 
+    //文章状态
     const ARTICLE_STATUS_DRAFT = 1;
     const ARTICLE_STATUS_NORMAL = 2;
     const ARTICLE_STATUS_TOP = 3;
-
+    //分页数
     const PAGE_NUMBER = 12;
+    /**
+     * 是否支持封面本地上传下载驱动
+     * false = 使用图床外链
+     */
+    const IMG_SAVE_LOCAL = false;
     /**
      * @var array
      */

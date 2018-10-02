@@ -17,7 +17,7 @@ class HomePageController extends Controller
 {
     use Toolkit;
     const CHUNK_NUMBER = 4;
-    const DEFAULT_COVER = 'img/soul.jpg';
+    const DEFAULT_COVER = 'http://pfkea6mu4.bkt.clouddn.com/soul_20181001_master_01.jpg';
     /**
      * @var UploadSupport
      */
@@ -99,9 +99,11 @@ class HomePageController extends Controller
         $uploadSupport = $this->uploadSupport;
         $STSupport = $this->STSupport;
         return collect($item)->map(function ($v, $k) use ($STSupport, $uploadSupport, $categories, $tags) {
-            $v['page_image'] = $v['page_image']
-                ? $uploadSupport->setFileUrl($v['page_image'], true)
-                : app('url')->asset(self::DEFAULT_COVER);
+            $pageImg = $v['page_image'] ? $v['page_image'] : self::DEFAULT_COVER;
+            if (Article::IMG_SAVE_LOCAL) {
+                $pageImg = $v['page_image'] ? $v->setFileUrl($v['page_image'], true) : self::DEFAULT_COVER;
+            }
+            $v['page_image'] = $pageImg;
             $v['category'] = $categories[$v['category']];
             $v['release_time'] = $STSupport->getSolarTerm($v['release_time']);
             $labels = $v['label']['labels'];

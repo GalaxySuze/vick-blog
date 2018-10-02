@@ -17,9 +17,15 @@ use Carbon\Carbon;
 class ArticleFormService
 {
     use Toolkit;
-
+    /**
+     * @var null
+     */
     private $articelInfo = null;
 
+    /**
+     * ArticleFormService constructor.
+     * @param null $modelId
+     */
     public function __construct($modelId = null)
     {
         if ($modelId) {
@@ -27,6 +33,9 @@ class ArticleFormService
         }
     }
 
+    /**
+     * @return array
+     */
     public function setForm()
     {
         $form = [
@@ -66,15 +75,27 @@ class ArticleFormService
                         'value' => optional($this->articelInfo)->release_time ?
                             Carbon::parse($this->articelInfo->release_time)->toDateString() : Carbon::now()->toDateString(),
                     ],
+                    // 文章封面
                     [
                         'inputName' => 'page_image',
                         'inputType' => 'upload-input',
                         'required' => false,
                         'label' => '封面',
-                        'placeholder' => '请上传文章封面',
+                        'placeholder' => '请上传文章封面图片',
                         'value' => optional($this->articelInfo)->page_image,
                         'rowId' => optional($this->articelInfo)->id,
                         'route' => route('backstage.article.upload-image'),
+                        'hidden' => Article::IMG_SAVE_LOCAL,
+                    ],
+                    [
+                        'inputName' => 'page_image',
+                        'inputType' => 'text-input',
+                        'required' => false,
+                        'label' => '封面',
+                        'placeholder' => '请输入文章封面图片外链',
+                        'value' => optional($this->articelInfo)->page_image,
+                        'rowId' => optional($this->articelInfo)->id,
+                        'hidden' => !Article::IMG_SAVE_LOCAL,
                     ],
                 ]
             ],

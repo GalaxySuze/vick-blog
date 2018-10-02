@@ -30,7 +30,7 @@
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">微博</div>
-                                        <a href="https://weibo.com/p/1005053213010731/home?from=page_100505&mod=TAB&is_all=1#place">个人首页</a>
+                                        <a href="https://weibo.com/helloworldvick">个人首页</a>
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">Github</div>

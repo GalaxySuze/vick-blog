@@ -9,35 +9,35 @@ use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
-    private $formEvent = 'categoryForm';
+    protected $master = 'category';
+    protected $formEvent = 'categoryForm';
+    protected $tableName = 'CategoryTableService';
+    protected $searchBarName = 'CategorySearchService';
+    protected $formName = 'CategoryFormService';
+    protected $model = Category::class;
 
-    private $routeConf;
-
-    public function __construct()
-    {
-        $this->routeConf = Helper::routeDefault('category');
-    }
-
-    public function list()
-    {
-        return view('backstage.list', [
-            'tableName' => $this->tableServices . 'CategoryTableService',
-            'searchBarName' => $this->searchServices . 'CategorySearchService',
-            'addRoute' => route($this->routeConf['addPage']),
-            'dataRoute' => route($this->routeConf['data']),
-            'formEvent' => $this->formEvent,
-        ]);
-    }
-
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function listData(Request $request)
     {
         $categoryList = Category::getModelData(
-            $request->conditions, $request->page, $request->limit
+            $request->conditions,
+            $request->page,
+            $request->limit
         );
         $this->handleDataDisplay($categoryList);
-        return $this->successfulResponse(['successful', $categoryList, Category::count()]);
+        return $this->successfulResponse([
+            'successful',
+            $categoryList,
+            Category::count()
+        ]);
     }
 
+    /**
+     * @param $data
+     */
     public function handleDataDisplay(&$data)
     {
         $data->each(function ($item, $key) {
@@ -46,41 +46,32 @@ class CategoryController extends Controller
         });
     }
 
-    public function editor($id = null)
-    {
-        return view('backstage.editor', [
-            'editRoute' => route($this->routeConf['edit']),
-            'listRoute' => route($this->routeConf['list']),
-            'formName' => $this->formServices . 'CategoryFormService',
-            'modelId' => $id,
-            'formEvent' => $this->formEvent,
-        ]);
-    }
-
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function edit(Request $request)
     {
+        $this->validate($request, $this->validateRules(), $this->validateMessages());
+        $input = $request->all();
         try {
-            $this->validate($request, $this->validateRules(), $this->validateMessages());
-            $input = $request->all();
-            $msg = '操作异常!';
             if (!empty($input['id'])) {
-                $label = Category::find($input['id']);
-                if ($label->update($input)) {
-                    $msg = '更新成功!';
-                }
+                Category::find($input['id'])->update($input);
+                $msg = '更新成功!';
             } else {
-                if (Category::create($input)) {
-                    $msg = '新增成功!';
-                }
+                Category::create($input);
+                $msg = '新增成功!';
             }
             $request->session()->flash('msg', $msg);
             return $this->successfulResponse([$msg, route($this->routeConf['list'])]);
         } catch (\Throwable $e) {
-            $getError = env('APP_DEBUG') ? $e->getMessage() : '当前操作发生错误!';
-            return $this->failedResponse([$getError]);
+            return $this->failedResponse([$this->exceptionMsg($e)]);
         }
     }
 
+    /**
+     * @return array
+     */
     private function validateRules()
     {
         return [
@@ -89,6 +80,9 @@ class CategoryController extends Controller
         ];
     }
 
+    /**
+     * @return array
+     */
     private function validateMessages()
     {
         return [
@@ -98,13 +92,12 @@ class CategoryController extends Controller
         ];
     }
 
-    private function handleInput(&$input, ...$support)
-    {
-
-    }
-
+    /**
+     * @param $id
+     * @return array
+     */
     public function delLabel($id)
     {
-        return parent::del(Category::class, $id, route($this->routeConf['list']));
+        return parent::del($id, route($this->routeConf['list']));
     }
 }
