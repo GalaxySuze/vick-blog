@@ -53,8 +53,15 @@
                     Vick
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">退出</a></dd>
+                    @auth
+                        <dd><a href="#!">个人中心</a></dd>
+                        <dd>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">登出</a>
+                        </dd>
+                    @endauth
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                 </dl>
             </li>
         </ul>

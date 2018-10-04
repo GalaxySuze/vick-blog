@@ -17,6 +17,8 @@
                         </a>
                     </li>
                 @endforeach
+            @else
+                <li><a href="#!">未生成目录</a></li>
             @endif
         </ul>
     @endsection

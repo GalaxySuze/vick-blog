@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col s12 m12">
                     <h4>关于:</h4>
-                    <blockquote>90后，PHP程序员。目前居住于上海。</blockquote>
+                    <blockquote>我从不相信什么懒洋洋的自由，我向往的自由是通过勤奋和努力实现更广阔的人生，那样的自由才是珍贵的、有价值的。我相信一万小时定律，我从来不相信天上掉馅饼的灵感和坐等的成就。做一个自由又自律的人，靠势必实现的决心认真地活着。</blockquote>
                 </div>
             </div>
             <div class="row">
@@ -54,16 +54,16 @@
                             <div class="collapsible-body">
                                 <ul class="collection">
                                     <li class="collection-item">
-                                        <div class="chip">基本信息</div> 张伟康/男/1994
+                                        <div class="chip">基本信息</div> 张伟康(Vick Zhang)/男/1994
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">工作年限</div> {{ floor((time() - strtotime('2015-03-01'))/86400/360) }}年
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">期望职位</div> PHP高级开发
+                                        <div class="chip">职位</div> PHP高级开发
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">期望城市</div> 上海/杭州
+                                        <div class="chip">城市</div> 上海
                                     </li>
                                 </ul>
                             </div>
@@ -75,7 +75,7 @@
                             <div class="collapsible-body">
                                 <ul class="collection">
                                     <li class="collection-item">
-                                        <div class="chip">2015/03 ≈ 2015/08</div> 培训机构 <div class="chip">参与开发和维护:</div>
+                                        <div class="chip">2015/03 ≈ 2015/08</div> 培训机构 &nbsp;<div class="chip">参与开发和维护:</div>
                                         <div class="valign-wrapper">
                                             <div class="card-panel blue accent-1 center" style="width: 260px;">
                                               <span class="white-text">
@@ -85,7 +85,7 @@
                                         </div>
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">2015/08 ≈ 至今</div> 上海迈创智慧供应链有限公司 <div class="chip">参与开发和维护:</div>
+                                        <div class="chip">2015/08 ≈ 至今</div> 上海迈创智慧供应链有限公司 &nbsp;<div class="chip">参与开发和维护:</div>
                                         <div class="valign-wrapper">
                                             <div class="card-panel blue accent-1 center" style="width: 260px;">
                                               <span class="white-text">
@@ -110,7 +110,7 @@
                                         </div>
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">2015/03 ≈ 至今</div> 个人开发项目 <div class="chip">参与开发和维护:</div>
+                                        <div class="chip">2015/03 ≈ 至今</div> 个人开发项目 &nbsp;<div class="chip">参与开发和维护:</div>
                                         <div class="valign-wrapper">
                                             <div class="card-panel blue accent-1 center" style="width: 260px;">
                                               <span class="white-text">
@@ -135,26 +135,26 @@
                                 <ul class="collection">
                                     <li class="collection-item valign-wrapper">
                                         <div class="chip center" style="width: 82px;">PHP</div>
-                                        <div class="progress" style="height: 8px;">
+                                        <div class="progress tooltipped" style="height: 8px;" data-position="top" data-delay="50" data-tooltip="80%">
                                             <div class="determinate red accent-1" style="width: 80%;"></div>
                                         </div>
                                     </li>
                                     <li class="collection-item valign-wrapper">
                                         <div class="chip center" style="width: 82px;">Laravel</div>
-                                        <div class="progress" style="height: 8px;">
+                                        <div class="progress tooltipped" style="height: 8px;" data-position="top" data-delay="50" data-tooltip="75%">
                                             <div class="determinate red accent-1" style="width: 75%;"></div>
                                         </div>
                                     </li>
                                     <li class="collection-item valign-wrapper">
                                         <div class="chip center" style="width: 82px;">Linux</div>
-                                        <div class="progress" style="height: 8px;">
+                                        <div class="progress tooltipped" style="height: 8px;" data-position="top" data-delay="50" data-tooltip="65%">
                                             <div class="determinate red accent-1" style="width: 65%;"></div>
                                         </div>
                                     </li>
                                     <li class="collection-item valign-wrapper">
                                         <div class="chip center" style="width: 82px;">Vuejs</div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="determinate red accent-1" style="width: 80%;"></div>
+                                        <div class="progress tooltipped" style="height: 8px;" data-position="top" data-delay="50" data-tooltip="70%">
+                                            <div class="determinate red accent-1" style="width: 70%;"></div>
                                         </div>
                                     </li>
                                 </ul>
