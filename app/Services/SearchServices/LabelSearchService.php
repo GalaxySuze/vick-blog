@@ -11,11 +11,6 @@ namespace App\Services\SearchServices;
 
 class LabelSearchService
 {
-    public function __construct()
-    {
-
-    }
-
     public function setSearch()
     {
         $searchBar = [

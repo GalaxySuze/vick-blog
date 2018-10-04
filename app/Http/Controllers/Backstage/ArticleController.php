@@ -11,6 +11,7 @@ use App\Traits\ArticleIMGOperation;
 use App\Support\UploadSupport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -26,49 +27,33 @@ class ArticleController extends Controller
     protected $model = Article::class;
 
     /**
-     * 获取模型数据
-     * @param Request $request
-     * @return array
-     */
-    public function listData(Request $request)
-    {
-        $articlesList = Article::getModelData(
-            $request->conditions,
-            $request->page,
-            $request->limit
-        );
-        $this->handleDataDisplay($articlesList);
-        return $this->successfulResponse([
-            'successful',
-            $articlesList,
-            Article::count()
-        ]);
-    }
-
-    /**
      * 处理数据显示
      * @param $data
      */
     public function handleDataDisplay(&$data)
     {
-        $upload = $this->setSupport(UploadSupport::class);
-        $table = $this->setSupport(ArticleFormService::class);
-        $data->each(function ($item, $key) use ($upload, $table) {
-            $item->editRoute = route($this->routeConf['editPage'], $item->id);
-            $item->delRoute = route($this->routeConf['del'], $item->id);
-            $item->status = Article::$statusConf[$item->status];
-            $labelData = $table->setArticleLabels(
-                Label::getModelData(['id' => $item->label['labels']])
-            );
-            $item->label = implode(', ', $labelData);
-            $item->category = optional(Category::find($item->category))->name;
-            $item->is_original = $item->is_original ? '是' : '否';
-            $pageImg = $item->page_image ?? null;
-            if (Article::IMG_SAVE_LOCAL) {
-                $pageImg = $pageImg ? $upload->setFileUrl($item->page_image, true) : null;
-            }
-            $item->page_image = $pageImg;
-        });
+        if ($data) {
+            $upload = $this->setSupport(UploadSupport::class);
+            $table = $this->setSupport(ArticleFormService::class);
+            $data->each(function ($item, $key) use ($upload, $table) {
+                $item->editRoute = route($this->routeConf['editPage'], $item->id);
+                $item->delRoute = route($this->routeConf['del'], $item->id);
+                $item->status = Article::$statusConf[$item->status];
+                $labelData = $table->setArticleLabels(
+                    Label::getModelData(['id' => $item->label['labels']])
+                );
+                $item->label = implode(', ', $labelData);
+                $item->category = optional(Category::find($item->category))->name;
+                $item->is_original = $item->is_original ? '是' : '否';
+                $pageImg = $item->page_image ?? null;
+                if (Article::IMG_SAVE_LOCAL) {
+                    $pageImg = $pageImg ? $upload->setFileUrl($item->page_image, true) : null;
+                }
+                $item->page_image = $pageImg;
+                $item->allowEdit = true;
+                $item->allowDel = true;
+            });
+        }
     }
 
     /**
@@ -82,27 +67,27 @@ class ArticleController extends Controller
     }
 
     /**
-     * 新增/修改 操作
      * @param Request $request
-     * @param UploadSupport $uploadSupport
-     * @param MarkdownSupport $markdownSupport
      * @return array
      */
-    public function edit(Request $request, UploadSupport $uploadSupport, MarkdownSupport $markdownSupport)
+    public function edit(Request $request)
     {
-        $this->validate($request, $this->validateRules(), $this->validateMessages());
+        $this->validate($request, $this->verifyRules(), $this->verifyMessages());
         $input = $request->all();
         $pageImg = $input['page_image'];
+        $uploadSupport = $this->setSupport(UploadSupport::class);
+        $markdownSupport = $this->setSupport(MarkdownSupport::class);
         try {
             $this->handleInput($input, $markdownSupport);
             if (!empty($input['id'])) {
-                Article::find($input['id'])->update($input);
+                $this->model::find($input['id'])->update($input);
                 $msg = '更新成功!';
                 if (Article::IMG_SAVE_LOCAL) {
                     $this->updateUpload($input, $uploadSupport);
                 }
             } else {
-                Article::create($input);
+                $input['user_id'] = Auth::id();
+                $this->model::create($input);
                 $msg = '新增成功!';
                 if (Article::IMG_SAVE_LOCAL && !empty($pageImg)) {
                     $uploadSupport->moveFile($pageImg);
@@ -118,7 +103,7 @@ class ArticleController extends Controller
     /**
      * @return array
      */
-    private function validateRules()
+    public function verifyRules()
     {
         return [
             'title' => 'required|max:80',
@@ -138,7 +123,7 @@ class ArticleController extends Controller
     /**
      * @return array
      */
-    private function validateMessages()
+    public function verifyMessages()
     {
         return [
             'title.required' => '请输入「标题」.',
@@ -166,7 +151,6 @@ class ArticleController extends Controller
             $mdSupport->parse($input['content'])
         );
         $input['label'] = ['labels' => array_keys($input['label'])];
-        $input['user_id'] = 1; //TODO: 用户登录的id
         $input['is_original'] = empty($input['is_original']) ? 0 : 1;
     }
 

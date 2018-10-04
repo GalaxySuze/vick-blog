@@ -12,8 +12,15 @@ use App\Models\Label;
 
 class LabelFormService
 {
+    /**
+     * @var null
+     */
     private $labelInfo = null;
 
+    /**
+     * LabelFormService constructor.
+     * @param null $modelId
+     */
     public function __construct($modelId = null)
     {
         if ($modelId) {
@@ -21,6 +28,9 @@ class LabelFormService
         }
     }
 
+    /**
+     * @return array
+     */
     public function setForm()
     {
         $form = [

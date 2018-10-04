@@ -9,6 +9,6 @@
                lay-skin="switch"
                lay-text="是|否"
                {{ $value ? 'checked' : '' }}
-                {!! $required ? 'required lay-verify="required"' : '' !!}>
+               {!! $required ? 'required lay-verify="required"' : '' !!}>
     </div>
 </div>

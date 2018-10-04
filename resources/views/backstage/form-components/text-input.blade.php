@@ -4,7 +4,7 @@
         {{ $label }}
     </label>
     <div class="layui-input-block">
-        <input type="text"
+        <input type="{{ $inputBoxType ?? 'text' }}"
                name="{{ $inputName }}"
                value="{{ $value }}"
                placeholder="{{ $placeholder }}"

@@ -2,35 +2,42 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Comment extends BaseModel
+class User extends BaseModel
 {
     use SoftDeletes;
 
-    // 评论类别
-    const COMMENT_TYPE_ARTICLE = 1;
-    const COMMENT_TYPE_SITE = 2;
+    // 前台/后台
+    const IS_BACKSTAGE_OUTER = 1;
+    const IS_BACKSTAGE_INSIDE = 2;
 
-    protected $table = 'comments';
+    // 用户状态值
+    const USER_STATUS_NORMAL = 1;
+    const USER_STATUS_DISABLED = 2;
+
+    protected $table = 'users';
 
     protected $fillable = [
+        'name',
         'nickname',
+        'avatar',
         'email',
-        'content',
-        'target',
-        'reply_comment_id',
-        'comment_type',
-        'ip',
-        'thumb',
+        'password',
+        'status',
+        'is_admin',
+        'role_id',
+        'email_notify_enabled',
+        'remember_token',
     ];
 
     /**
      * @var array
      */
-    public static $commentType = [
-        self::COMMENT_TYPE_ARTICLE => '文章评论',
-        self::COMMENT_TYPE_SITE => '站内留言',
+    public static $userStatus = [
+        self::USER_STATUS_NORMAL => '正常',
+        self::USER_STATUS_DISABLED => '禁用',
     ];
 
     /**
@@ -39,7 +46,7 @@ class Comment extends BaseModel
      */
     public static function getModelData(...$arguments)
     {
-        self::modelBuild(Comment::class);
+        self::modelBuild(User::class);
         self::$instance->argumentParse($arguments);
         return self::$instance->modelProcess();
     }
@@ -49,7 +56,7 @@ class Comment extends BaseModel
      */
     public static function modelProcess()
     {
-        self::$instance->query = Comment::orderBy('comments.updated_at', 'desc');
+        self::$instance->query = User::orderBy('users.updated_at', 'desc');
         self::$instance->filterAndPagination();
         return self::$instance->query->get();
     }
@@ -57,9 +64,9 @@ class Comment extends BaseModel
     /**
      * @param $value
      */
-    public function nicknameFilter($value)
+    public function nameFilter($value)
     {
-        $this->query->where('nickname', 'like', '%' . $value . '%');
+        $this->query->where('name', 'like', '%' . $value . '%');
     }
 
     /**
@@ -73,8 +80,8 @@ class Comment extends BaseModel
     /**
      * @param $value
      */
-    public function commentTypeFilter($value)
+    public function roleIdFilter($value)
     {
-        $this->query->where('comment_type', $value);
+        $this->query->where('role_id', $value);
     }
 }

@@ -11,6 +11,9 @@ namespace App\Services\NavigationServices;
 
 class BackstageNavService
 {
+    /**
+     * @return array
+     */
     public function setNav()
     {
         return [
@@ -38,7 +41,7 @@ class BackstageNavService
             '评论管理' => [
                 'icon' => 'layui-icon-reply-fill',
                 'color' => '#82b1ff',
-                'navItemRoute' => '#',
+                'navItemRoute' => route('backstage.comment.list'),
             ],
             '友链管理' => [
                 'icon' => 'layui-icon-link',
@@ -48,7 +51,22 @@ class BackstageNavService
             '用户管理' => [
                 'icon' => 'layui-icon-group',
                 'color' => '#b9f6ca',
+                'navItemRoute' => route('backstage.user.list'),
+            ],
+            '权限管理' => [
+                'icon' => 'layui-icon-auz',
+                'color' => '#ff8a80',
                 'navItemRoute' => '#',
+                'subNav' => [
+                    [
+                        'name' => '角色列表',
+                        'navChildRoute' => route('backstage.role.list'),
+                    ],
+                    [
+                        'name' => '权限列表',
+                        'navChildRoute' => route('backstage.permissions.list'),
+                    ],
+                ]
             ],
             '日志管理' => [
                 'icon' => 'layui-icon-log',

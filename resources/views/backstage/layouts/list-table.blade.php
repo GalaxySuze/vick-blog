@@ -24,12 +24,16 @@
 </table>
 
 <script type="text/html" id="operationBar">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">
-        <i class="layui-icon layui-icon-edit"></i>编辑
-    </a>
-    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">
-        <i class="layui-icon layui-icon-delete"></i>删除
-    </a>
+    @{{# if(d.allowEdit){ }}
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">
+            <i class="layui-icon layui-icon-edit"></i>编辑
+        </a>
+    @{{# } }}
+    @{{# if(d.allowDel){ }}
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">
+            <i class="layui-icon layui-icon-delete"></i>删除
+        </a>
+    @{{# } }}
 </script>
 
 <script type="text/html" id="uploadImageTd">

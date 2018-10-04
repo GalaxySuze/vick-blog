@@ -20,10 +20,12 @@ class CreateUsersTable extends Migration
             $table->text('avatar')->nullable()->comment('头像');
             $table->string('email')->unique();
             $table->string('password');
-            $table->tinyInteger('status')->default(0)->comment('状态');
+            $table->tinyInteger('status')->default(1)->comment('状态');
             $table->boolean('is_admin')->default(false)->comment('是否管理员');
-            $table->enum('email_notify_enabled', ['yes',  'no'])->default('yes')->comment('启用电子邮件通知');
+            $table->boolean('email_notify_enabled')->default(true)->comment('启用电子邮件通知');
+            $table->integer('role_id')->default(1)->comment('用户角色');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Support\Helper;
 use App\Traits\ResponseHelper;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -98,6 +99,42 @@ class Controller extends BaseController
     }
 
     /**
+     * 获取数据
+     * @param Request $request
+     * @return array
+     */
+    public function listData(Request $request)
+    {
+        $data = $this->model::getModelData(
+            $request->conditions,
+            $request->page,
+            $request->limit
+        );
+        $this->handleDataDisplay($data);
+        return $this->successfulResponse([
+            'successful',
+            $data,
+            $this->model::count()
+        ]);
+    }
+
+    /**
+     * 处理列表数据
+     * @param $data
+     */
+    public function handleDataDisplay(&$data)
+    {
+        if ($data) {
+            $data->each(function ($item, $key) {
+                $item->editRoute = route($this->routeConf['editPage'], $item->id);
+                $item->delRoute = route($this->routeConf['del'], $item->id);
+                $item->allowEdit = true;
+                $item->allowDel = true;
+            });
+        }
+    }
+
+    /**
      * 编辑页面
      * @param null $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -111,6 +148,99 @@ class Controller extends BaseController
             'formEvent' => $this->formEvent,
             'modelId' => $id,
         ]);
+    }
+
+    /**
+     * 新增/编辑 操作
+     * @param Request $request
+     * @return array
+     */
+    public function edit(Request $request)
+    {
+        $this->validate($request, $this->verifyRules(), $this->verifyMessages());
+        $input = $request->all();
+        $this->inputFilter($input);
+        try {
+            if (!empty($input['id'])) {
+                $this->beforeUpdate($input);
+                $instance = $this->model::find($input['id'])->update($input);
+                $this->afterUpdate($instance, $input);
+                $msg = '更新成功!';
+            } else {
+                $this->beforeAdd($input);
+                $instance = $this->model::create($input);
+                $this->afterAdd($instance, $input);
+                $msg = '新增成功!';
+            }
+            $request->session()->flash('msg', $msg);
+            return $this->successfulResponse([$msg, route($this->routeConf['list'])]);
+        } catch (\Throwable $e) {
+            return $this->failedResponse([$this->exceptionMsg($e)]);
+        }
+    }
+
+    /**
+     * @param $input
+     */
+    public function inputFilter(&$input)
+    {
+
+    }
+
+    /**
+     * 新增之前
+     * @param $input
+     */
+    public function beforeAdd(&$input)
+    {
+
+    }
+
+    /**
+     * 更新之前
+     * @param $input
+     */
+    public function beforeUpdate(&$input)
+    {
+
+    }
+
+    /**
+     * 新增之后
+     * @param $model
+     * @param $input
+     */
+    public function afterAdd($model, $input)
+    {
+
+    }
+
+    /**
+     * 更新之后
+     * @param $model
+     * @param $input
+     */
+    public function afterUpdate($model, $input)
+    {
+
+    }
+
+    /**
+     * 验证规则
+     * @return array
+     */
+    public function verifyRules()
+    {
+        return [];
+    }
+
+    /**
+     * 验证提示
+     * @return array
+     */
+    public function verifyMessages()
+    {
+        return [];
     }
 
     /**
