@@ -9,8 +9,8 @@ class Role extends BaseModel
 {
     use SoftDeletes;
 
-    const IS_BACKSTAGE_OUTER = 1;
-    const IS_BACKSTAGE_INSIDE = 2;
+    const IS_BACKSTAGE_COMMON = 1;
+    const IS_BACKSTAGE_ADMIN = 2;
 
     protected $table = 'roles';
 
@@ -22,8 +22,8 @@ class Role extends BaseModel
     ];
 
     public static $isBackstage = [
-        self::IS_BACKSTAGE_OUTER => '前台',
-        self::IS_BACKSTAGE_INSIDE => '后台',
+        self::IS_BACKSTAGE_COMMON => '前台',
+        self::IS_BACKSTAGE_ADMIN => '后台',
     ];
 
     /**

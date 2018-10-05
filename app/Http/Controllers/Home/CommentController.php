@@ -67,6 +67,7 @@ class CommentController extends Controller
         if (!$comments->isEmpty()) {
             $articleComments = $comments->each(function ($v, $k) {
                 $v['comment_time'] = Carbon::parse($v['created_at'])->diffForHumans();
+                $v['floor'] = $k + 1;
                 return $v;
             })->toArray();
             $commentsCount = $comments->count();

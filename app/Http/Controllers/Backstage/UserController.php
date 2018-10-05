@@ -27,6 +27,7 @@ class UserController extends Controller
                 $item->delRoute = route($this->routeConf['del'], $item->id);
                 $item->status = User::$userStatus[$item->status];
                 $item->is_admin = $item->is_admin ? '是' : '否';
+                $item->email_notify_enabled = $item->email_notify_enabled ? '是' : '否';
                 $item->role_name = optional(Role::find($item->role_id))->role_name;
                 $item->allowEdit = true;
                 $item->allowDel = true;

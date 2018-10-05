@@ -10,8 +10,8 @@ class User extends BaseModel
     use SoftDeletes;
 
     // 前台/后台
-    const IS_BACKSTAGE_OUTER = 1;
-    const IS_BACKSTAGE_INSIDE = 2;
+    const IS_BACKSTAGE_COMMON = 1;
+    const IS_BACKSTAGE_ADMIN = 2;
 
     // 用户状态值
     const USER_STATUS_NORMAL = 1;

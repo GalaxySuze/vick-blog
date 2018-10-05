@@ -85,16 +85,24 @@
                         </div>
                         <form class="col s12 m12" action="#" method="post" id="discuss-form">
                             @csrf
-                            <div class="input-field col s6">
-                                <i class="material-icons prefix">person_pin</i>
-                                <input id="nickname" type="text" class="validate" name="nickname">
-                                <label for="nickname">昵称(必填)</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <i class="material-icons prefix">email</i>
-                                <input id="email" type="email" class="validate" name="email">
-                                <label for="email">邮箱(必填,不会公开)</label>
-                            </div>
+
+                            @guest
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">person_pin</i>
+                                    <input id="nickname" type="text" class="validate" name="nickname">
+                                    <label for="nickname">昵称(必填)</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">email</i>
+                                    <input id="email" type="email" class="validate" name="email">
+                                    <label for="email">邮箱(必填,不会公开)</label>
+                                </div>
+                            @else
+                                <div class="input-field col s12">
+                                    <input id="nickname" type="hidden" name="nickname" value="{{ Auth::user()->name }}">
+                                    <input id="email" type="hidden" name="email" value="{{ Auth::user()->email }}">
+                                </div>
+                            @endguest
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">mode_edit</i>
                                 <textarea id="content" class="materialize-textarea" name="content" length="420"></textarea>
@@ -133,7 +141,7 @@
                                             <p>「 {{ $comment['content'] }} 」</p>
                                         </div>
                                         <div class="card-action grey lighten-5" style="padding: 16px;">
-                                            #{{ $comment['id'] }} · {{ $comment['comment_time'] }} · <a href="#!" class="reply-comment" style="display: inline;padding: 0">回复</a>
+                                            #{{ $comment['floor'] }} · {{ $comment['comment_time'] }} · <a href="#!" class="reply-comment" style="display: inline;padding: 0">回复</a>
                                         </div>
                                     </div>
                                 </div>

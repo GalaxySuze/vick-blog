@@ -15,7 +15,7 @@ use App\Support\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'home', 'namespace' => '\Home', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'home', 'namespace' => '\Home'], function () {
     // 主页
     Route::get('home-page', 'HomePageController@homePage')->name('home.home-page');
     // 文章列表
@@ -30,26 +30,26 @@ Route::group(['prefix' => 'home', 'namespace' => '\Home', 'middleware' => 'auth'
     Route::get('time-line/articles', 'TimeLineController@timeLineArticles')->name('home.time-line.articles');
     // 发表评论
     Route::post('discuss-article', 'CommentController@discussArticle')->name('home.discuss-article');
-
+    // 关于
     Route::get('about', function () {
         return view('home.about');
     })->name('home.about');
-
+    // 404
     Route::get('not-open', function () {
         abort('404');
     })->name('home.not-open');
-
+    // 书籍推荐
     Route::get('bookcase', function () {
         return view('home.bookcase');
     });
-
+    // 个人中心
     Route::get('metro', function () {
         return view('metro');
-    });
+    })->middleware('auth');
 });
 
 Route::group(['prefix' => 'backstage', 'namespace' => '\Backstage', 'middleware' => ['auth', 'checkRole']], function () {
-    // 登录页
+    // 后台登录页
     Route::get('login', 'LoginController@login')->name('backstage.login');
     // 后台首页
     Route::get('dashboard', 'DashboardController@index')->name('backstage.dashboard');
@@ -74,12 +74,12 @@ Route::group(['prefix' => 'backstage', 'namespace' => '\Backstage', 'middleware'
     // 日志管理
     Helper::routeDefine('log');
 });
-Auth::routes();
-
-//Route::get('/home', 'HomeController@index')->name('home');
+// 前台首页
 Route::get('/home', function () {
     return redirect(route('home.home-page'));
 })->name('home.home');
 Route::get('/', function () {
     return redirect(route('home.home-page'));
 })->name('home.index');
+// 身份验证
+Auth::routes();

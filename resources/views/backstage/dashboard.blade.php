@@ -45,14 +45,14 @@
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="#">
+                <a href="#!">
                     <i class="layui-icon layui-icon-notice" style="font-size: 20px;"></i><span class="layui-badge-dot layui-bg-red"></span>
                 </a>
             </li>
             <li class="layui-nav-item">
-                <a href="#">
+                <a href="#!">
                     <img src="{{ asset('icon.png') }}" class="layui-nav-img">
-                    Vick
+                    {{ Auth::user()->name }}
                 </a>
                 <dl class="layui-nav-child">
                     @auth

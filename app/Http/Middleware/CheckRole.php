@@ -20,9 +20,9 @@ class CheckRole
         // 只有admin或者后台用户可以登录后台
         $authUser = Auth::user();
         $isBackstage = optional(Role::find($authUser->role_id))->is_backstage;
-        if (!$authUser->is_admin && $isBackstage == Role::IS_BACKSTAGE_INSIDE) {
-            return redirect('/');
+        if ($authUser->is_admin || $isBackstage == Role::IS_BACKSTAGE_ADMIN) {
+            return $next($request);
         }
-        return $next($request);
+        return redirect('/');
     }
 }

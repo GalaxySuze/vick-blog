@@ -181,8 +181,9 @@
                 <div class="col l4 offset-l2 s12">
                     <h5 class="white-text">友情链接</h5>
                     <ul>
-                        @if(isset($linkList))
-                            @foreach($linkList as $link)
+                        @inject('BuildFriendLinkNav', 'App\Services\NavigationServices\FriendLinkNavService')
+                        @if(!$BuildFriendLinkNav->setNav()->isEmpty())
+                            @foreach($BuildFriendLinkNav->setNav() as $link)
                                 <li>
                                     <a class="grey-text text-lighten-3" href="{{ $link['link'] }}">{{ $link['name'] }}</a>
                                 </li>
