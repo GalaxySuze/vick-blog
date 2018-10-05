@@ -17,22 +17,6 @@ class LabelController extends Controller
     protected $model = Label::class;
 
     /**
-     * @param $data
-     */
-    public function handleDataDisplay(&$data)
-    {
-        if ($data) {
-            $data->each(function ($item, $key) {
-                $item->editRoute = route($this->routeConf['editPage'], $item->id);
-                $item->delRoute = route($this->routeConf['del'], $item->id);
-                $item->label_icon = app('url')->asset('img/icon/' . $item->label_icon);
-                $item->allowEdit = true;
-                $item->allowDel = true;
-            });
-        }
-    }
-
-    /**
      * @return array
      */
     public function validateRules()

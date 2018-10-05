@@ -10,7 +10,7 @@
                             <span class="selected-label">
                                 {{ isset($selectedLabel) && $selectedLabel == $label['id'] ? '🌈' : '' }}
                             </span>
-                            <img src="{{ asset("img/icon/{$label['label_icon']}") }}" class="responsive-img" alt="{{ $label['desc'] }}">
+                            <img src="{{ $label['label_icon'] }}" class="responsive-img" alt="{{ $label['label'] }}">
                             {{ $label['label'] }}: {{ $label['articleTotal'] }}
                         </div>
                     </a>

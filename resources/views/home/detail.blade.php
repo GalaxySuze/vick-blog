@@ -31,7 +31,7 @@
                     @foreach($detail['label'] as $tag )
                         <div class="chip tooltipped" data-position="top" data-delay="50" data-tooltip="点击查看标签">
                             <a href="{{ route('home.label-page', ['label' => $tag['id']]) }}" style="color: #0C0C0C;">
-                                <img src="{{ asset('img/icon/' . $tag['label_icon']) }}" class="responsive-img" alt="{{ $tag['desc'] }}">
+                                <img src="{{ $tag['label_icon'] }}" class="responsive-img" alt="{{ $tag['desc'] }}">
                                 {{ $tag['label'] }}
                             </a>
                         </div>

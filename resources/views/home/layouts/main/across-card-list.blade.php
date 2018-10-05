@@ -20,7 +20,7 @@
                             <div class="card-action">
                                 @foreach($item['label'] as $tags)
                                     <a href="{{ route('home.label-page', ['label' => $tags['id']]) }}" class="card-label-btn">
-                                        <img src="{{ asset('img/icon/' . $tags['label_icon']) }}"
+                                        <img src="{{ $tags['label_icon'] }}"
                                              class="circle responsive-img tooltipped hoverable"
                                              alt="{{ $tags['label'] }}"
                                              width="8%"
