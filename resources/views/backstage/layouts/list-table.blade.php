@@ -46,12 +46,16 @@
 
 <script type="text/html" id="labelIconTd">
     <div class="labelIconAlbum">
+        @{{# if(d.label_icon){ }}
         <img layer-pid="@{{ d.id }}" src="@{{ d.label_icon }}" alt="@{{ d.label }}" width="15%" height="15%">
+        @{{# } }}
     </div>
 </script>
 
-<script>
-@section('scriptMain')
-
-@endsection
+<script type="text/html" id="linkImageTd">
+    <div class="linkImageAlbum">
+        @{{# if(d.image){ }}
+        <img layer-pid="@{{ d.id }}" src="@{{ d.image }}" alt="@{{ d.label }}" width="100%" height="100%">
+        @{{# } }}
+    </div>
 </script>

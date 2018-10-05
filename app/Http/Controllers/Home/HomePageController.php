@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Label;
+use App\Models\Link;
 use App\Support\Helper;
 use App\Support\MarkdownSupport;
 use App\Support\SolarTermSupport;
@@ -51,7 +52,10 @@ class HomePageController extends Controller
      */
     public function homePage()
     {
-        return view('home.home', ['index' => true]);
+        return view('home.home', [
+            'index' => true,
+            'linkList' => Link::all()
+        ]);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Support\Helper;
 use App\Traits\ResponseHelper;
+use App\Traits\Toolkit;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -12,7 +13,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ResponseHelper;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ResponseHelper, Toolkit;
 
     /**
      * @var string
@@ -70,6 +71,18 @@ class Controller extends BaseController
      * @var
      */
     protected $listRoute;
+    /**
+     * @var
+     */
+    protected $navTop;
+    /**
+     * @var
+     */
+    protected $navSecond;
+    /**
+     * @var
+     */
+    protected $navSecondEdit;
 
     /**
      * Controller constructor.
@@ -244,8 +257,7 @@ class Controller extends BaseController
     }
 
     /**
-     * 删除记录
-     * @param $model
+     * 删除操作
      * @param $id
      * @param $jumpRoute
      * @return array
@@ -259,31 +271,5 @@ class Controller extends BaseController
         } catch (\Throwable $e) {
             return $this->failedResponse([$this->exceptionMsg($e)]);
         }
-    }
-
-    /**
-     * 美化错误信息
-     * @param $e
-     * @return string
-     */
-    public function exceptionMsg($e)
-    {
-        $msg = '操作发生错误!';
-        if (env('APP_DEBUG')) {
-            $msg = '[错误信息]: ' . $e->getMessage() . '<br/>';
-            $msg .= '[错误行数]: ' . $e->getLine() . '<br/>';
-            $msg .= '[错误文件]: ' . $e->getFile();
-        }
-        return $msg;
-    }
-
-    /**
-     * 实例依赖类
-     * @param $support
-     * @return mixed
-     */
-    public function setSupport($support)
-    {
-        return new $support();
     }
 }

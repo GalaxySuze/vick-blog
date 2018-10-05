@@ -31,6 +31,16 @@ class CommentController extends Controller
     }
 
     /**
+     * @param null $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function editor($id = null)
+    {
+        request()->session()->flash('msg', '后台不支持新增评论');
+        return back();
+    }
+
+    /**
      * @param $id
      * @return array
      */

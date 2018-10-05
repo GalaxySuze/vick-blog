@@ -48,7 +48,7 @@
                 <div class="valign-wrapper" style="color: #757575; font-size: 0.5rem; display: -webkit-inline-flex; display: inline-flex;">
                     <i class="material-icons red-text">assignment_ind</i>&nbsp; {{ $detail['created_user'] }} &nbsp;&nbsp;
                     <i class="material-icons orange-text">visibility</i>&nbsp; {{ $detail['views'] }} &nbsp;&nbsp;
-                    <i class="material-icons green-text">reply</i>&nbsp; {{ $detail['share'] }} &nbsp;&nbsp;
+                    {{--<i class="material-icons green-text">reply</i>&nbsp; {{ $detail['share'] }} &nbsp;&nbsp;--}}
                     <i class="material-icons blue-text">textsms</i>&nbsp; {{ $detail['comments_count'] }} &nbsp;&nbsp;
                     <i class="material-icons pink-text">schedule</i>&nbsp; {{ $detail['release_time_pop'] }}
                 </div>
@@ -119,7 +119,7 @@
                                 <input name="content-sort" type="radio" id="sort-time" class="with-gap" />
                                 <label for="sort-time">时间</label>
                                 <input name="content-sort" type="radio" id="sort-thumb" class="with-gap" />
-                                <label for="sort-thumb">点赞</label>
+                                <label for="sort-thumb">热度</label>
                             </div>
                         </div>
                         <div class="section center-align">
@@ -133,7 +133,7 @@
                                             <p>「 {{ $comment['content'] }} 」</p>
                                         </div>
                                         <div class="card-action grey lighten-5" style="padding: 16px;">
-                                            #{{ $comment['id'] }} · {{ $comment['comment_time'] }} · <a href="#!" id="reply-comment" style="display: inline;padding: 0">回复</a>
+                                            #{{ $comment['id'] }} · {{ $comment['comment_time'] }} · <a href="#!" class="reply-comment" style="display: inline;padding: 0">回复</a>
                                         </div>
                                     </div>
                                 </div>

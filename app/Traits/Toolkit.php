@@ -28,6 +28,7 @@ trait Toolkit
     }
 
     /**
+     * 自定义key分组
      * @param $data
      * @param $key
      */
@@ -40,6 +41,7 @@ trait Toolkit
     }
 
     /**
+     * 自定义数组切片
      * @param $array
      * @param $size
      * @return array
@@ -52,5 +54,31 @@ trait Toolkit
             $resultArray[$group][] = $array[$i];
         }
         return $resultArray;
+    }
+
+    /**
+     * 格式化错误信息
+     * @param $e
+     * @return string
+     */
+    public function exceptionMsg($e)
+    {
+        $msg = '操作发生错误!';
+        if (env('APP_DEBUG')) {
+            $msg = '[错误信息]: ' . $e->getMessage() . '<br/>';
+            $msg .= '[错误行数]: ' . $e->getLine() . '<br/>';
+            $msg .= '[错误文件]: ' . $e->getFile();
+        }
+        return $msg;
+    }
+
+    /**
+     * 实例依赖类
+     * @param $support
+     * @return mixed
+     */
+    public function setSupport($support)
+    {
+        return new $support();
     }
 }

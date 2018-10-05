@@ -33,6 +33,7 @@ class DetailController extends Controller
      */
     public function detail($id)
     {
+        Article::find($id)->increment('views');
         return view('home.detail', [
             'detail' => $this->handlePostView($id)
         ]);

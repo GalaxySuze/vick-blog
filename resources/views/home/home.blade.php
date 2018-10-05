@@ -31,149 +31,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
 
-    <style>
-        html {
-            height: 100%;
-            font-family: "Helvetica Neue", NotoSansHans-Regular, AvenirNext-Regular, arial, Hiragino Sans GB, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
-        }
-
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-            background-color: #f5f8fa;
-        }
-
-        ::-webkit-scrollbar {
-            display: none;
-        }
-
-        main {
-            flex: 1 0 auto;
-        }
-
-        .parallax-container {
-            height: 100%;
-        }
-
-        .card-image {
-            pointer-events: none;
-        }
-
-        .card-content > a {
-            color: #09003f;
-        }
-
-        .comments-href {
-            display: inline;
-            padding: 0
-        }
-
-        .theme-color-gradient {
-            -webkit-animation: color-gradient 5s;
-            animation: color-gradient 5s;
-            background-color: #98A9F9
-        }
-
-        @-webkit-keyframes color-gradient {
-            0% {
-                background-color: #bbdefb;
-            }
-            50% {
-                background-color: #82b1ff;
-            }
-            100% {
-                background-color: #98A9F9;
-            }
-        }
-
-        @keyframes color-gradient {
-            0% {
-                background-color: #bbdefb;
-            }
-            50% {
-                background-color: #82b1ff;
-            }
-            100% {
-                background-color: #98A9F9;
-            }
-        }
-
-        #normal-card > .card {
-            visibility: hidden;
-        }
-
-        .content-typo > p {
-            line-height: 1.8;
-            font-size: 16px;
-        }
-
-        .content-typo > blockquote {
-            margin: 20px 0;
-            padding: 1.5rem;
-            border-left: 6px solid #ee6e73;
-            color: #8796A8;
-            word-break: break-all;
-
-            position: relative;
-            background: #f5f8fc;
-            background: linear-gradient(-150deg, transparent 1.5em, #ffffff 0);
-        }
-
-        .content-typo > blockquote::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: linear-gradient(to left bottom, transparent 50%, rgba(0, 0, 0, .2) 0, rgba(0, 0, 0, .4)) 100% 0 no-repeat;
-            width: 1.73em;
-            height: 3em;
-            transform: translateY(-1.3em) rotate(-30deg);
-            transform-origin: bottom right;
-            border-bottom-left-radius: inherit;
-            box-shadow: -.2em .2em .3em -.1em rgba(0, 0, 0, .15);
-        }
-
-        .content-typo > img {
-            margin-left: auto;
-            margin-right:auto;
-            display:block;
-        }
-
-        .anchor-top {
-            top:50%;
-        }
-
-        #loading-bar {
-            /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/
-            border-radius: 50%;
-            background-image: url("{{ asset('img/mascot-vicky.gif') }}");
-            /*开车送花*/
-            width: 205px;
-            height: 205px;
-            background-position: 53% 58%;
-            /*奔奔跳跳*/
-            /*width: 175px;*/
-            /*height: 175px;*/
-            /*background-position: 106% 18%;*/
-            /*洗澡*/
-            /*width: 195px;*/
-            /*height: 195px;*/
-            /*background-position: 54% 18%;*/
-        }
-
-        #vicky:hover {
-            /*background-position: 2% 78%;*/
-            background-position: 55% 19%;
-        }
-
-        #vicky {
-            display: block;
-            background: url('{{ asset('img/mascot-vicky.gif') }}') no-repeat 1% 57%;
-            width: 160px;
-            height: 180px;
-        }
-    </style>
+    <!-- vick blog css -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/vick-blog.css') }}" media="screen,projection"/>
 </head>
 <body>
     <header id="header-top">
@@ -244,9 +103,9 @@
                                 </a>
                             </li>
                             <ul id="loggedUser" class="dropdown-content">
-                                <li>
-                                    <a href="{{ route('home.not-open') }}">个人中心</a>
-                                </li>
+                                {{--<li>--}}
+                                    {{--<a href="{{ route('home.not-open') }}">个人中心</a>--}}
+                                {{--</li>--}}
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                         登出
@@ -322,12 +181,13 @@
                 <div class="col l4 offset-l2 s12">
                     <h5 class="white-text">友情链接</h5>
                     <ul>
-                        <li><a class="grey-text text-lighten-3" href="https://laravel-china.org">😉Laravel China</a></li>
-                        <li><a class="grey-text text-lighten-3" href="https://vuejscaff.com">😊Vuejs Caff</a></li>
-                        <li><a class="grey-text text-lighten-3" href="https://pythoncaff.com">☺️Python Caff</a></li>
-                        <li><a class="grey-text text-lighten-3" href="http://www.materializecss.cn">😘Materialize Css</a>
-                        </li>
-                        <li><a class="grey-text text-lighten-3" href="http://www.layui.com/">😎Layui</a></li>
+                        @if(isset($linkList))
+                            @foreach($linkList as $link)
+                                <li>
+                                    <a class="grey-text text-lighten-3" href="{{ $link['link'] }}">{{ $link['name'] }}</a>
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -379,17 +239,6 @@
             $('#sidenav-overlay').remove();
         });
 
-        @if(false)
-        $(window).scroll(function () {
-            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            if (scrollTop >= 100) {
-                $("#navbar-div").removeClass('navbar-fixed');
-            } else {
-                $("#navbar-div").addClass('navbar-fixed');
-            }
-        });
-        @endif
-
         // 初始化模态层
         $('.modal').modal({
             dismissible: false,
@@ -429,10 +278,12 @@
             }
             return false; // 阻止a链接跳转
         });
+
         // 页面文章列表初始化
         if ($(".card-list-box").length > 0) {
             cardListData("{{ url('home/articles-list') }}", cardListQuery());
         }
+
         // 时间轴文章ajax
         $(".month-li").click(function () {
             var monthVal = $(this).find('a').attr('href');
@@ -444,10 +295,12 @@
                 $("#loading-bar").modal('close');
             });
         });
+
         // 时间轴页面文章初始化
         if ($("[href='#2017-January-01']").length > 0) {
             $("[href='#2017-January-01']").trigger('click');
         }
+
         // 搜索文章
         $("#search-form").submit(function () {
             if ($("#search-content").val().length <= 0) {
@@ -457,6 +310,7 @@
             cardListData("{{ url('home/articles-list') }}", cardListQuery());
             return false;
         });
+
         // 提交评论
         $("#discuss-form").submit(function () {
             $.ajax({
@@ -469,6 +323,9 @@
                 success: function (result) {
                     Materialize.toast(result.msg, 4000);
                     $("#discuss-form")[0].reset();
+                    setTimeout(function(){
+                        location.reload();
+                    },4000);
                 },
                 error: function (e) {
                     var eContent = errMsg(e);
@@ -478,6 +335,12 @@
             });
             return false;
         });
+
+        // 评论回复功能
+        $(".reply-comment").click(function () {
+            Materialize.toast('评论回复功能还未开放哦', 5000);
+        });
+
         // ajax错误信息处理
         function errMsg(ajaxErrResult) {
             var errMsgStr = '';

@@ -6,8 +6,11 @@
     <link rel="shortcut icon" type="images/x-icon" href="{{ asset('icon.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Vick`Blog @yield('title')</title>
+    <title>Vick`Blog Admin @yield('title')</title>
+
+    <!-- layui css -->
     <link rel="stylesheet" href="{{ asset('layui/css/layui.css') }}">
+    <!-- markdown 编辑器 css -->
     <link rel="stylesheet" href="{{ asset('editormd/css/editormd.min.css') }}">
 
     <style>
@@ -43,8 +46,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="#">
-                    <i class="layui-icon layui-icon-notice" style="font-size: 20px;"></i><span
-                            class="layui-badge-dot layui-bg-red"></span>
+                    <i class="layui-icon layui-icon-notice" style="font-size: 20px;"></i><span class="layui-badge-dot layui-bg-red"></span>
                 </a>
             </li>
             <li class="layui-nav-item">
@@ -54,14 +56,13 @@
                 </a>
                 <dl class="layui-nav-child">
                     @auth
-                        <dd><a href="#!">个人中心</a></dd>
                         <dd>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">登出</a>
                         </dd>
                     @endauth
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </dl>
             </li>
         </ul>
@@ -72,7 +73,7 @@
             <ul class="layui-nav layui-nav-tree">
                 @inject('BuildNav', 'App\Services\NavigationServices\BackstageNavService')
                 @foreach($BuildNav->setNav() as $navTitle => $navInfo)
-                    <li class="layui-nav-item {{ $navTitle=='文章管理' ? 'layui-nav-itemed' : '' }}">
+                    <li class="layui-nav-item {{ in_array($navTitle, ['文章管理', '权限管理']) ? 'layui-nav-itemed' : '' }}">
                         <a href="{{ isset($navInfo['subNav']) ? '#' : $navInfo['navItemRoute'] }}">
                             <i class="layui-icon {{ $navInfo['icon'] }}" style="color: {{ $navInfo['color'] }};"></i>&nbsp;
                             {{ $navTitle }}
@@ -96,7 +97,7 @@
         <div class="layui-row layui-col-space15" style="padding: 20px;">
             <div class="layui-col-md12">
                 <fieldset class="layui-elem-field layui-field-title">
-                    <legend style="font-size: 15px;">主页 / 文章管理 / 文章中心</legend>
+                    <legend style="font-size: 15px;">{{ $BuildNav->setBreadcrumbNav()[ request()->route()->uri ] }}</legend>
                 </fieldset>
             </div>
             @section('main')
@@ -108,7 +109,7 @@
                                     <i class="layui-icon layui-icon-edit" style="font-size: 42px;color: #5FB878"></i>
                                 </div>
                                 <div class="layui-card-body">
-                                    <h4>这周文章数：10</h4>
+                                    <h4>这周文章数：{{ $weekArticles ?? 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +119,7 @@
                                     <i class="layui-icon layui-icon-flag" style="font-size: 42px;color: #1E9FFF"></i>
                                 </div>
                                 <div class="layui-card-body">
-                                    <h4>未发布文章数：10</h4>
+                                    <h4>未发布文章数：{{ $weekNotRelease ?? 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +130,7 @@
                                        style="font-size: 42px;color: #FFB800"></i>
                                 </div>
                                 <div class="layui-card-body">
-                                    <h4>这周新增评论数：10</h4>
+                                    <h4>这周新增评论数：{{ $weekComments ?? 0 }}</h4>
                                 </div>
                             </div>
                         </div>
@@ -139,60 +140,59 @@
                                     <i class="layui-icon layui-icon-fire" style="font-size: 42px;color: #FF5722"></i>
                                 </div>
                                 <div class="layui-card-body">
-                                    <h4>今日文章浏览量：10</h4>
+                                    <h4>文章总浏览量：{{ $articleViews ?? 0 }}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="layui-col-md12">
-                    <blockquote class="layui-elem-quote" style="border-left-color: #FFB800;">光阴似箭：</blockquote>
+                    <blockquote class="layui-elem-quote" style="border-left-color: #FFB800;">光阴似箭，来看看自己的脚印吧：</blockquote>
                 </div>
+
+                <!-- 时间轴 -->
                 <div class="layui-col-md9">
                     <ul class="layui-timeline">
+                        @if(isset($articlesList))
+                            <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                <div class="layui-timeline-content layui-text">
+                                    <div class="layui-timeline-title">学无止境</div>
+                                </div>
+                            </li>
+                            @foreach($articlesList as $yearItems)
+                                @foreach($yearItems as $item)
+                                <li class="layui-timeline-item">
+                                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                    <div class="layui-timeline-content layui-text">
+                                        <h3 class="layui-timeline-title">{{ $item['release_month'] }}月{{ $item['release_day'] }}日</h3>
+                                        <fieldset class="layui-elem-field layui-field-title">
+                                            <legend>
+                                                <span class="layui-badge-dot layui-bg-blue"></span> <strong>{{ $item['title'] }}</strong>
+                                            </legend>
+                                            <div class="layui-field-box">
+                                                <ul>
+                                                    <li><i class="layui-icon">&#xe66e;</i> 分类: {{ $item['category'] }}</li>
+                                                    <li><i class="layui-icon">&#xe702;</i> 描述: {{ $item['desc'] }}</li>
+                                                    <li><i class="layui-icon">&#xe60e;</i> {{ $item['release_humans'] }}</li>
+                                                </ul>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </li>
+                                @endforeach
+                            @endforeach
+                        @endif
                         <li class="layui-timeline-item">
                             <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                             <div class="layui-timeline-content layui-text">
-                                <h3 class="layui-timeline-title">8月18日</h3>
-                                <p>
-                                    layui 2.0 的一切准备工作似乎都已到位。发布之弦，一触即发。
-                                    <br>不枉近百个日日夜夜与之为伴。因小而大，因弱而强。
-                                    <br>无论它能走多远，抑或如何支撑？至少我曾倾注全心，无怨无悔 <i class="layui-icon"></i>
-                                </p>
-                            </div>
-                        </li>
-                        <li class="layui-timeline-item">
-                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                            <div class="layui-timeline-content layui-text">
-                                <h3 class="layui-timeline-title">8月16日</h3>
-                                <p>杜甫的思想核心是儒家的仁政思想，他有“<em>致君尧舜上，再使风俗淳</em>”的宏伟抱负。个人最爱的名篇有：</p>
-                                <ul>
-                                    <li>《登高》</li>
-                                    <li>《茅屋为秋风所破歌》</li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="layui-timeline-item">
-                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                            <div class="layui-timeline-content layui-text">
-                                <h3 class="layui-timeline-title">8月15日</h3>
-                                <p>
-                                    中国人民抗日战争胜利72周年
-                                    <br>常常在想，尽管对这个国家有这样那样的抱怨，但我们的确生在了最好的时代
-                                    <br>铭记、感恩
-                                    <br>所有为中华民族浴血奋战的英雄将士
-                                    <br>永垂不朽
-                                </p>
-                            </div>
-                        </li>
-                        <li class="layui-timeline-item">
-                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                            <div class="layui-timeline-content layui-text">
-                                <div class="layui-timeline-title">过去</div>
+                                <div class="layui-timeline-title">End</div>
                             </div>
                         </li>
                     </ul>
                 </div>
+
+                <!-- 提示栏 -->
                 <div class="layui-col-md3">
                     <div class="layui-collapse" lay-accordion>
                         <div class="layui-colla-item">
@@ -200,20 +200,20 @@
                                                              style="color: #FF5722"></i> ToDo List</h2>
                             <div class="layui-colla-content layui-show">
                                 <ul>
-                                    <li>*《登高》</li>
-                                    <li>*《茅屋为秋风所破歌》</li>
+                                    <li>* 看书</li>
+                                    <li>* 敲码</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="layui-colla-item">
                             <h2 class="layui-colla-title"><i class="layui-icon layui-icon-survey"
                                                              style="color: #FF5722"></i> 备忘录</h2>
-                            <div class="layui-colla-content layui-show">内容区域</div>
+                            <div class="layui-colla-content layui-show">请在滴一声后留言</div>
                         </div>
                         <div class="layui-colla-item">
                             <h2 class="layui-colla-title"><i class="layui-icon layui-icon-snowflake"
                                                              style="color: #FF5722"></i> 今天天气</h2>
-                            <div class="layui-colla-content layui-show">内容区域</div>
+                            <div class="layui-colla-content layui-show">API接口异常</div>
                         </div>
                     </div>
                 </div>
@@ -222,7 +222,7 @@
     </div>
 
     <div class="layui-footer">
-        <center>© Vick ` Blog - 「 指落惊风雨，码成泣鬼神 」</center>
+        <center>© Vick ` Blog Admin - 「 指落惊风雨，码成泣鬼神 」</center>
     </div>
 </div>
 <!-- JS -->
