@@ -13,6 +13,17 @@
     <!-- markdown 编辑器 css -->
     <link rel="stylesheet" href="{{ asset('editormd/css/editormd.min.css') }}">
 
+    <!-- 百度网站统计 -->
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?c5d1faf4548a7b97c3308cdfd3c18494";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
     <style>
         body {
             background-color: #f5f8fa;
@@ -336,15 +347,6 @@
                 window.location.href = row.editRoute;
             }
         });
-
-        // 百度网站统计
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?c5d1faf4548a7b97c3308cdfd3c18494";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
 
         @yield('scriptMain')
     });
