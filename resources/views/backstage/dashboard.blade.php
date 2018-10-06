@@ -337,6 +337,15 @@
             }
         });
 
+        // 百度网站统计
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?c5d1faf4548a7b97c3308cdfd3c18494";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+
         @yield('scriptMain')
     });
 </script>
