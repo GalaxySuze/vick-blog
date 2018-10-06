@@ -38,7 +38,7 @@ class BaseModel extends Model
     /**
      * @return object
      */
-    public static function modelBuild(): object
+    public static function modelBuild()
     {
         return self::$instance = new static();
     }
