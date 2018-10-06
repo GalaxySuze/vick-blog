@@ -10,7 +10,7 @@
                             <span class="card-title">{{ $item['release_time'] }}</span>
                         </div>
                         <a href="{{ url('home/detail', $item['id']) }}">
-                            <div class="card-content waves-effect black-text">
+                            <div class="card-content waves-effect black-text" style="width: 100%;">
                                 {{ $item['desc'] }}
                             </div>
                         </a>

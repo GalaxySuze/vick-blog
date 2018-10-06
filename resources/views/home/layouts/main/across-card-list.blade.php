@@ -11,10 +11,10 @@
                         </div>
                         <div class="card-stacked center-align">
                             <div class="card-content">
-                                <a href="{{ url('home/detail', $item['id']) }}" class="waves-effect">
-                                    <blockquote>
-                                        <h5><b>{{ $item['title'] }}</b></h5>
-                                    </blockquote>
+                                <blockquote>
+                                    <h5><b>{{ $item['title'] }}</b></h5>
+                                </blockquote>
+                                <a href="{{ url('home/detail', $item['id']) }}" class="waves-effect" style="width: 100%;">
                                     {{ $item['desc'] }}
                                 </a>
                             </div>

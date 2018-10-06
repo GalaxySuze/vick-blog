@@ -89,7 +89,7 @@ class UserFormService
                         'required' => true,
                         'label' => '密码',
                         'placeholder' => '请输入密码',
-                        'value' => optional($this->userInfo)->password,
+                        'value' => '',
                     ]
                 ]
             ],
