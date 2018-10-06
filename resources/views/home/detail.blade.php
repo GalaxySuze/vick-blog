@@ -61,6 +61,11 @@
             <!-- 文章内容 -->
             <div class="col s12 m12 content-typo card-panel z-depth-2" style="background-color: #f5f8fa; padding: 15px 20px 1px 30px">
                 {!! $detail['content'] !!}
+
+                <!-- 知识共享协议 -->
+                <p class="red-text" style="padding: 15px; border: 1px #ff8a80 solid; margin-top: 6px; font-size: 13px;border-radius: 5px;">
+                    <em>由 {{ $detail['created_user'] }} 创作，采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/">知识共享 署名-非商业性使用 4.0 国际 许可协议进行许可。</a> 转载请注明出处。</em>
+                </p>
             </div>
 
             <!-- 社交分享 -->

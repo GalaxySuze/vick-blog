@@ -91,11 +91,6 @@ class SolarTermSupport
         '12' => ['zh' => '十二月', 'en' => 'December'],
     ];
 
-    public function __construct()
-    {
-
-    }
-
     /**
      * @param $date
      * @return string

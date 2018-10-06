@@ -61,6 +61,11 @@ class TimeLineController extends Controller
         return $yearList;
     }
 
+    /**
+     * @param $model
+     * @param $timeField
+     * @return Carbon
+     */
     public function setTimeCarbon($model, $timeField)
     {
         return Carbon::parse(
@@ -89,8 +94,14 @@ class TimeLineController extends Controller
         $year = $request->year;
         $monthTmp = explode(self::DATA_SEPARATOR, $request->month);
         $month = end($monthTmp);
-        $articleList = Article::getTimeLineArticles("{$year}-{$month}")->toArray();
-        $articleList['data'] = $this->articleService->displayProcess($articleList['data']);
-        return view('home.layouts.main.across-card-list', ['articles' => $articleList]);
+        $data = Article::getTimeLineArticles("{$year}-{$month}");
+        $articleList = $data->toArray();
+        if (!empty($articleList['data'])) {
+            $articleList['data'] = $this->articleService->displayProcess($articleList['data']);
+        }
+        return view('home.layouts.main.across-card-list', [
+            'totalQty' => $data->count(),
+            'articles' => $articleList,
+        ]);
     }
 }

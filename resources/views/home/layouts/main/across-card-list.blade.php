@@ -2,6 +2,7 @@
     <div class="row">
         <!-- articles -->
         @if(isset($articles['data']) && !empty($articles['data']))
+            <div class="col s12 m12 center-align" style="color: rgba(238,110,115,0.7);">{{ $totalQty }}篇</div>
             @foreach($articles['data'] as $item)
                 <div class="col s12 m12">
                     <div class="card small horizontal hoverable">
