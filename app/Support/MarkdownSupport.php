@@ -9,17 +9,30 @@
 namespace App\Support;
 
 
+use App\Traits\Toolkit;
 use Parsedown;
 
 class MarkdownSupport
 {
+    use Toolkit;
+
+    /**
+     * @var Parsedown
+     */
     public $md;
 
-    public function __construct(Parsedown $parseDown)
+    /**
+     * MarkdownSupport constructor.
+     */
+    public function __construct()
     {
-        $this->md = $parseDown;
+        $this->md = $this->setSupport(Parsedown::class);
     }
 
+    /**
+     * @param $content
+     * @return string
+     */
     public function parse($content)
     {
         return $this->md->text($content);
