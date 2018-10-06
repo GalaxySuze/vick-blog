@@ -53,6 +53,11 @@
                     <i class="layui-icon layui-icon-home"></i> 主页
                 </a>
             </li>
+            <li class="layui-nav-item">
+                <a href="{{ url('/') }}">
+                    <i class="layui-icon layui-icon-star"></i> 博客
+                </a>
+            </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">

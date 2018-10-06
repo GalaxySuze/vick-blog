@@ -1,5 +1,13 @@
 @extends('home.home')
 
+@section('headTitle')
+    {{ $detail['title'] }}
+@endsection
+
+@section('headKeywords')
+    {{ $detail['keyword'] }}
+@endsection
+
 @section('content')
     <!-- 目录 -->
     @section('outlineBar')

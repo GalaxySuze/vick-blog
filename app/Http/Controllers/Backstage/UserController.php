@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backstage;
 use App\Models\Role;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use function Couchbase\defaultDecoder;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -42,6 +42,7 @@ class UserController extends Controller
     {
         $input['is_admin'] = isset($input['is_admin']) ? true : false;
         $input['email_notify_enabled'] = isset($input['email_notify_enabled']) ? true : false;
+        $input['password'] = Hash::make($input['password']);
     }
 
     /**

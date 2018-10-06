@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backstage;
 
+use App\Models\Article;
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
 
@@ -24,6 +25,7 @@ class CommentController extends Controller
                 $item->editRoute = route($this->routeConf['editPage'], $item->id);
                 $item->delRoute = route($this->routeConf['del'], $item->id);
                 $item->comment_type = Comment::$commentType[$item->comment_type];
+                $item->target = optional(Article::find($item->target))->title ?? '网站留言';
                 $item->allowEdit = false;
                 $item->allowDel = true;
             });

@@ -9,10 +9,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Hello World {{ config('app.name', 'Vick`Blog') }}</title>
+    <title>Hello World {{ config('app.name', 'Vick`Blog') }} @yield('headTitle')</title>
     <meta name="author" content="Vick Zhang">
     <meta name="description" content="laravel教程,laravel学习,laravel入门,laravel示例,php教程,php学习,php书籍,vuejs教程,vuejs学习,vuejs书籍,张伟康的个人博客,vick blog,vick zhang blog,vick的个人博客,vick zhang的个人博客">
-    <meta name="keywords" content="laravel教程,laravel学习,laravel入门,laravel示例,php教程,php学习,php书籍,vuejs教程,vuejs学习,vuejs书籍,张伟康的个人博客,vick blog,vick zhang blog,vick的个人博客,vick zhang的个人博客">
+    <meta name="keywords" content="laravel教程,laravel学习,laravel入门,laravel示例,php教程,php学习,php书籍,vuejs教程,vuejs学习,vuejs书籍,张伟康的个人博客,vick blog,vick zhang blog,vick的个人博客,vick zhang的个人博客,@yield('headKeywords')">
 
     <!-- master css -->
     <link type="text/css" rel="stylesheet" href="{{ asset('materialize/css/materialize.min.css') }}" media="screen,projection"/>
