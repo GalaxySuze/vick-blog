@@ -1,12 +1,8 @@
 @extends('home.home')
 
-@section('headTitle')
-    {{ $detail['title'] }}
-@endsection
+@section('headTitle')- {{ $detail['title'] }}@endsection
 
-@section('headKeywords')
-    {{ $detail['keyword'] }}
-@endsection
+@section('headKeywords'){{ $detail['keyword'] }}@endsection
 
 @section('content')
     <!-- 目录 -->
@@ -62,19 +58,9 @@
                 </div>
             </div>
 
-            <!-- 分割线 -->
-            <div class="col s12 m12">
-                <hr class="grey darken-1" style="height: 2px; border: none;">
-            </div>
-
             <!-- 文章内容 -->
-            <div class="col s12 m12 content-typo">
+            <div class="col s12 m12 content-typo card-panel z-depth-2" style="background-color: #f5f8fa; padding: 15px 20px 1px 30px">
                 {!! $detail['content'] !!}
-            </div>
-
-            <!-- 分割线 -->
-            <div class="col s12 m12">
-                <hr class="grey darken-1" style="height: 2px; border: none;">
             </div>
 
             <!-- 社交分享 -->
