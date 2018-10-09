@@ -14,6 +14,27 @@
         footer{text-align:center; margin-top: 26px;}
         .footer-a {text-decoration: none;color: #eeeeff; font-size: 14px;}
     </style>
+
+    <!-- 百度网站统计 -->
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?c5d1faf4548a7b97c3308cdfd3c18494";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics Google网站统计 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127193501-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-127193501-1');
+    </script>
 </head>
 <body>
 <main>
