@@ -60,6 +60,9 @@
                                         <div class="chip">工作年限</div> {{ floor((time() - strtotime('2015-03-01'))/86400/360) }}年
                                     </li>
                                     <li class="collection-item">
+                                        <div class="chip">学历</div> 金华职业技术学院/计算机应用技术
+                                    </li>
+                                    <li class="collection-item">
                                         <div class="chip">职位</div> PHP高级开发
                                     </li>
                                     <li class="collection-item">

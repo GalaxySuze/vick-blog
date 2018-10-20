@@ -61,9 +61,9 @@
 
         gtag('config', 'UA-127193501-1');
     </script>
-
 </head>
 <body>
+    <!-- header -->
     <header id="header-top">
         <!-- navigation bar -->
         <div class="navbar-fixed" id="navbar-div">
@@ -151,33 +151,36 @@
             </nav>
         </div>
     </header>
+
+    <!-- main -->
     @section('body')
-    <main>
-    @section('content')
+        <main>
+        @section('content')
             <!-- scrolling banner -->
             <div class="slider">
                 <ul class="slides" style="background: #98A9F9">
                     <li>
-                        <img src="{{ asset('img/soul.jpg') }}">
-                        <div class="caption left-align">
-                            <h3> 『 Kill Time 』 </h3>
-                            <h5 class="light grey-text text-lighten-3">「 Or Kiss Time 」</h5>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="{{ asset('img/iceberg.jpg') }}">
+                        <img src="{{ asset('img/pick-moon.jpg') }}">
                         <div class="caption center-align">
-                            <h3>『 指落惊风雨 』</h3>
-                            <h5 class="light grey-text text-lighten-3">「 码成泣鬼神 」</h5>
+                            <h3 class="logo-mark-banner"></h3>
+                            {{--<h3> 『 Kill Time 』 </h3>--}}
+                            {{--<h5 class="light grey-text text-lighten-3">「 Or Kiss Time 」</h5>--}}
                         </div>
                     </li>
                     <li>
                         <img src="{{ asset('img/bird.jpg') }}">
                         <div class="caption center-align">
-                            <h3>『 落花人独立 』</h3>
-                            <h5 class="light grey-text text-lighten-3">「 微雨燕双飞 」</h5>
+                            <h3>『 指落惊风雨 』</h3>
+                            <h5 class="light grey-text text-lighten-3">「 码成泣鬼神 」</h5>
                         </div>
                     </li>
+                    {{--<li>--}}
+                        {{--<img src="{{ asset('img/bird.jpg') }}">--}}
+                        {{--<div class="caption center-align">--}}
+                            {{--<h3>『 落花人独立 』</h3>--}}
+                            {{--<h5 class="light grey-text text-lighten-3">「 微雨燕双飞 」</h5>--}}
+                        {{--</div>--}}
+                    {{--</li>--}}
                 </ul>
             </div>
 
@@ -186,7 +189,7 @@
 
             <!-- card list -->
             <div class="section card-list-box"></div>
-    @show
+        @show
 
         <!-- loading bar -->
         @include('home.layouts.main.loading-bar')
@@ -194,7 +197,7 @@
         <!-- 图钉 -->
         @includeWhen($index ?? false, 'home.layouts.footer.pushpin')
 
-    </main>
+        </main>
     @show
 
     <!-- footer -->
@@ -224,14 +227,13 @@
         </div>
         @include('home.layouts.footer.footer-copyright')
     </footer>
-
 </body>
 <script>
     $(document).ready(function () {
         // 代码高亮
         hljs.initHighlightingOnLoad();
 
-        $('.slider').slider({full_width: true});
+        $('.slider').slider({full_width: true, interval: 10000});
 
         $('.collapsible').collapsible();
 

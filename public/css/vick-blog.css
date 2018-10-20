@@ -139,3 +139,25 @@ main {
     width: 160px;
     height: 180px;
 }
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+        /*filter: blur(0px);*/
+    }
+    50% {
+        background-position: 500px 0;
+        /*filter: blur(20px);*/
+    }
+}
+.logo-mark-banner {
+    width: 360px;
+    height: 180px;
+    animation: move 30s infinite;
+    background: url('../img/c5.jpg');
+    background-size: cover;
+    -webkit-mask-image: url('../vick-blog.png');
+    -webkit-mask-size: cover;
+    mask-image: url('../vick-blog.png');
+    mask-size: cover;
+}
