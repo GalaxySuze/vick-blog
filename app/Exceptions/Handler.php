@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -47,9 +48,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if (env('APP_DEBUG') == false) {
-            //自定义404页面
-            return response()->view('errors.404');
+        /* 自定义404错误页面 */
+        if ($exception instanceof NotFoundHttpException) {
+            $code = $exception->getStatusCode();
+            if (view()->exists('errors.' . $code)) {
+                return response()->view('errors.' . $code);
+            }
         }
         return parent::render($request, $exception);
     }
