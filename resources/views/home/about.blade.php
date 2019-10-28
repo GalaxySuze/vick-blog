@@ -54,13 +54,13 @@
                             <div class="collapsible-body">
                                 <ul class="collection">
                                     <li class="collection-item">
-                                        <div class="chip">基本信息</div> 张伟康(Vick Zhang)/男/1994
+                                        <div class="chip">基本信息</div> Vick Zhang(张阿简)/男/1994
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">工作年限</div> {{ floor((time() - strtotime('2015-03-01'))/86400/360) }}年
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">学历</div> 金华职业技术学院/计算机应用技术
+                                        <div class="chip">学历</div> 大专/计算机应用技术
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">职位</div> PHP高级开发
@@ -78,7 +78,7 @@
                             <div class="collapsible-body">
                                 <ul class="collection">
                                     <li class="collection-item">
-                                        <div class="chip">2015/03 ≈ 2015/08</div> 培训机构 &nbsp;<div class="chip">参与开发和维护:</div>
+                                        <div class="chip">2015/03 ≈ 2015/08</div> 个人学习 &nbsp;<div class="chip">参与开发和维护:</div>
                                         <div class="valign-wrapper">
                                             <div class="card-panel blue accent-1 center" style="width: 260px;">
                                               <span class="white-text">
