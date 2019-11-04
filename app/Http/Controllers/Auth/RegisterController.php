@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use mysql_xdevapi\Exception;
 
 class RegisterController extends Controller
 {
@@ -43,34 +44,17 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
-        return '测试系统不开放注册~';
-
         return Validator::make($data, [
-            'name' => 'required|string|max:20|min:2',
-            'email' => 'required|email|max:50|unique:users',
+            'name'     => 'required|string|max:20|min:2',
+            'email'    => 'required|email|max:50|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'captcha' => 'required|captcha',
+            'captcha'  => 'required|captcha',
         ], $this->validateMessages());
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
     }
 
     /**
@@ -80,7 +64,21 @@ class RegisterController extends Controller
     {
         return [
             'captcha.required' => '请输入验证码。',
-            'captcha.captcha' => '验证码不匹配。',
+            'captcha.captcha'  => '验证码不匹配。',
         ];
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     * @throws \Throwable
+     */
+    protected function create(array $data)
+    {
+        return User::create([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
     }
 }

@@ -1,6 +1,56 @@
 @extends('home.home')
 
 @section('body')
+
+    @if(true)
+    <div class="container">
+        <div class="row" style="margin: 5% auto;">
+            <div class="col s12 m12 l12 center">
+                <div class="col s12 m12 l6 push-l3">
+                    <div class="card-panel blue-grey lighten-5 z-depth-1">
+                        <div class="section valign-wrapper">
+                            <div class="col s2">
+                                <img src="{{ asset('img/cat.jpg') }}" alt="" class="circle responsive-img">
+                            </div>
+                            <div class="col s10">
+                              <span class="black-text">
+                                  @if ($errors->has('name'))
+                                      <blockquote>
+                                          <strong class="red-text">{{ $errors->first('name') }}</strong>
+                                      </blockquote>
+                                  @elseif ($errors->has('email'))
+                                      <blockquote>
+                                          <strong class="red-text">{{ $errors->first('email') }}</strong>
+                                      </blockquote>
+                                  @elseif ($errors->has('password'))
+                                      <blockquote>
+                                          <strong class="red-text">{{ $errors->first('password') }}</strong>
+                                      </blockquote>
+                                  @elseif ($errors->has('captcha'))
+                                      <blockquote>
+                                          <strong class="red-text">{{ $errors->first('captcha') }}</strong>
+                                      </blockquote>
+                                  @else
+                                      「 醉后不知天在水，满船清梦压星河。 」
+                                  @endif
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l6 push-l3" style="margin-top: 16px;">
+                <div class="row">
+                    <div class="col s12">
+                        <h4>测试系统目前不开放注册~</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if(false)
     <div class="container">
         <div class="row" style="margin: 5% auto;">
             <div class="col s12 m12 l12 center">
@@ -92,6 +142,8 @@
             </div>
         </div>
     </div>
+    @endif
+
 @endsection
 
 @section('scriptContent')
