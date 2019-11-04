@@ -48,6 +48,8 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        return '测试系统不开放注册~';
+
         return Validator::make($data, [
             'name' => 'required|string|max:20|min:2',
             'email' => 'required|email|max:50|unique:users',
