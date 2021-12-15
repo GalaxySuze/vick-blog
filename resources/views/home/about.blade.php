@@ -30,19 +30,19 @@
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">微博</div>
-                                        <a href="https://weibo.com/helloworldvick">个人首页</a>
+                                        <a href="#">个人首页</a>
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">Github</div>
-                                        <a href="https://github.com/GalaxySuze">个人首页</a>
+                                        <a href="#">个人首页</a>
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">Coding</div>
-                                        <a href="https://coding.net/u/VickStar">个人首页</a>
+                                        <a href="#">个人首页</a>
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">Laravel-China</div>
-                                        <a href="https://laravel-china.org/code-is-make-the-gods-cry">个人首页</a>
+                                        <a href="#">个人首页</a>
                                     </li>
                                 </ul>
                             </div>
@@ -54,19 +54,19 @@
                             <div class="collapsible-body">
                                 <ul class="collection">
                                     <li class="collection-item">
-                                        <div class="chip">基本信息</div> Vick Zhang(张阿简)/男/1994
+                                        <div class="chip">基本信息</div> XXX
                                     </li>
                                     <li class="collection-item">
                                         <div class="chip">工作年限</div> {{ floor((time() - strtotime('2015-03-01'))/86400/360) }}年
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">学历</div> 大专/计算机应用技术
+                                        <div class="chip">学历</div> XXX
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">职位</div> PHP高级开发
+                                        <div class="chip">职位</div> XXX
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">城市</div> 上海
+                                        <div class="chip">城市</div> XXX
                                     </li>
                                 </ul>
                             </div>
@@ -88,26 +88,26 @@
                                         </div>
                                     </li>
                                     <li class="collection-item">
-                                        <div class="chip">2015/08 ≈ 至今</div> 上海迈创智慧供应链有限公司 &nbsp;<div class="chip">参与开发和维护:</div>
+                                        <div class="chip">2015/08 ≈ 至今</div> XXX有限公司 &nbsp;<div class="chip">参与开发和维护:</div>
                                         <div class="valign-wrapper">
                                             <div class="card-panel blue accent-1 center" style="width: 260px;">
                                               <span class="white-text">
-                                                  联想手机海外售后服务系统
+                                                  XXXXXX系统
                                               </span>
                                             </div>
                                             <div class="card-panel blue accent-1 center" style="width: 260px; margin-left: 6px;">
                                               <span class="white-text">
-                                                  小米手机售后维修系统
+                                                  XXX系统
                                               </span>
                                             </div>
                                             <div class="card-panel blue accent-1 center" style="width: 260px; margin-left: 6px;">
                                               <span class="white-text">
-                                                  小米手机售后计划系统
+                                                  XXX系统
                                               </span>
                                             </div>
                                             <div class="card-panel blue accent-1 center" style="width: 260px; margin-left: 6px;">
                                               <span class="white-text">
-                                                  上海通用汽车ASCM系统
+                                                  XXX系统
                                               </span>
                                             </div>
                                         </div>
@@ -117,12 +117,12 @@
                                         <div class="valign-wrapper">
                                             <div class="card-panel blue accent-1 center" style="width: 260px;">
                                               <span class="white-text">
-                                                  福建亿利环境技术企业站
+                                                  XXX企业站
                                               </span>
                                             </div>
                                             <div class="card-panel blue accent-1 center" style="width: 260px; margin-left: 6px;">
                                               <span class="white-text">
-                                                  Vick ` Blog
+                                                  XXX
                                               </span>
                                             </div>
                                         </div>

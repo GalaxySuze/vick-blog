@@ -32,11 +32,11 @@
 
     <!-- highlight - 代码高亮 -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
     <!-- 分享功能 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('share/css/share.min.css') }}">
+    <script src="{{ asset('share/js/social-share.min.js') }}"></script>
 
     <!-- vick blog css -->
     <link type="text/css" rel="stylesheet" href="{{ asset('css/vick-blog.css') }}" media="screen,projection"/>
